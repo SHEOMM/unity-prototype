@@ -20,6 +20,8 @@ public class LibraEffect : IStarEffect
             visualType = SpellVisualType.Strike
         });
 
+        if (ctx.isRetriggered) return;
+
         bool isEqual = ctx.leading.Count == ctx.trailing.Count;
         int repeatCount = isEqual ? 3 : 1;
 
@@ -49,6 +51,7 @@ public class LibraEffect : IStarEffect
                     trailing = ctx.trailing,
                     enemies = ctx.enemies,
                     damageMultiplier = ctx.damageMultiplier * 0.5f,
+                    isRetriggered = true,
                     extraHits = 0,
                     areaMultiplier = ctx.areaMultiplier,
                     isPhaseActive = false,

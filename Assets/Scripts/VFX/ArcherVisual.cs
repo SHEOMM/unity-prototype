@@ -19,7 +19,7 @@ public class ArcherVisual : ISpellVisual
         var lr = fx.AddComponent<LineRenderer>();
         lr.startWidth = 0.08f;
         lr.endWidth = 0.03f;
-        lr.material = new Material(Shader.Find("Sprites/Default"));
+        lr.material = GameConstants.SpriteMaterial;
         lr.sortingOrder = 15;
         lr.startColor = ctx.elementColor;
         lr.endColor = ctx.elementColor * 0.6f;

@@ -17,7 +17,7 @@ public class AquariusVisual : ISpellVisual
 
         var fx = new GameObject("FX_Wave");
         var lr = fx.AddComponent<LineRenderer>();
-        lr.material = new Material(Shader.Find("Sprites/Default"));
+        lr.material = GameConstants.SpriteMaterial;
         lr.sortingOrder = 15;
         lr.startColor = ctx.elementColor;
         lr.endColor = new Color(ctx.elementColor.r, ctx.elementColor.g, ctx.elementColor.b, 0.3f);

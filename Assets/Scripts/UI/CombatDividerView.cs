@@ -15,7 +15,7 @@ public class CombatDividerView : MonoBehaviour
         lr.SetPosition(1, new Vector3(GameConstants.DividerLineExtent, dividerY, 0));
         lr.startWidth = GameConstants.Orbit.PathWidth;
         lr.endWidth = GameConstants.Orbit.PathWidth;
-        lr.material = new Material(Shader.Find("Sprites/Default"));
+        lr.material = GameConstants.SpriteMaterial;
         lr.startColor = GameConstants.Colors.DividerLine;
         lr.endColor = GameConstants.Colors.DividerLine;
         lr.sortingOrder = GameConstants.SortingOrder.Background;

@@ -18,7 +18,7 @@ public class DefaultVisual : ISpellVisual
         var lr = fx.AddComponent<LineRenderer>();
         lr.startWidth = 0.12f;
         lr.endWidth = 0.04f;
-        lr.material = new Material(Shader.Find("Sprites/Default"));
+        lr.material = GameConstants.SpriteMaterial;
         lr.sortingOrder = 15;
         lr.startColor = ctx.elementColor;
         lr.endColor = Color.white;

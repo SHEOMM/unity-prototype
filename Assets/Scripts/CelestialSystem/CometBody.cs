@@ -6,6 +6,8 @@ using UnityEngine;
 /// </summary>
 public class CometBody : MonoBehaviour, ISlashTarget
 {
+    public static readonly System.Collections.Generic.List<CometBody> ActiveComets = new System.Collections.Generic.List<CometBody>();
+
     public CometSO Data { get; private set; }
 
     public System.Action<CometBody> OnCaptured;
@@ -17,6 +19,9 @@ public class CometBody : MonoBehaviour, ISlashTarget
     private float _duration;
     private bool _captured;
     private float _baseScale;
+
+    void OnEnable() { ActiveComets.Add(this); }
+    void OnDisable() { ActiveComets.Remove(this); }
 
     public void Initialize(CometSO data, Sprite sprite, Vector2 start, Vector2 end)
     {

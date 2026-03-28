@@ -20,6 +20,9 @@ public class TwinEffect : IStarEffect
             visualType = SpellVisualType.Strike
         });
 
+        // 재발동된 컨텍스트면 기본 데미지만 내고 재발동은 하지 않음
+        if (ctx.isRetriggered) return;
+
         List<PlanetBody> toRepeat;
         if (ctx.leading.Count < ctx.trailing.Count)
             toRepeat = ctx.leading;
@@ -44,6 +47,7 @@ public class TwinEffect : IStarEffect
                 trailing = ctx.trailing,
                 enemies = ctx.enemies,
                 damageMultiplier = ctx.damageMultiplier * 0.5f,
+                isRetriggered = true,
                 isPhaseActive = false,
                 result = ctx.result
             };

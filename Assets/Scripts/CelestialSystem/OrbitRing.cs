@@ -48,7 +48,7 @@ public class OrbitRing : MonoBehaviour
         lr.loop = true;
         lr.startWidth = GameConstants.Orbit.PathWidth;
         lr.endWidth = GameConstants.Orbit.PathWidth;
-        lr.material = new Material(Shader.Find("Sprites/Default"));
+        lr.material = GameConstants.SpriteMaterial;
         lr.startColor = GameConstants.Colors.OrbitPath;
         lr.endColor = GameConstants.Colors.OrbitPath;
         lr.sortingOrder = GameConstants.SortingOrder.OrbitPath;

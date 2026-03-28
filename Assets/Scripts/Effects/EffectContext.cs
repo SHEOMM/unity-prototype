@@ -33,6 +33,9 @@ public class EffectContext
     /// <summary>위성에 의한 범위 배율</summary>
     public float areaMultiplier = 1f;
 
+    /// <summary>다른 효과에 의해 재발동된 컨텍스트인가 (재발동 계열 효과의 재귀 방지)</summary>
+    public bool isRetriggered;
+
     /// <summary>위상이 발동되었는가</summary>
     public bool isPhaseActive;
 

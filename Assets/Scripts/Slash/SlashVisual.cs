@@ -17,7 +17,7 @@ public class SlashVisual : MonoBehaviour
         var go = new GameObject("SlashLineVisual");
         go.transform.SetParent(transform);
         _lr = go.AddComponent<LineRenderer>();
-        _lr.material = new Material(Shader.Find("Sprites/Default"));
+        _lr.material = GameConstants.SpriteMaterial;
         _lr.positionCount = 0;
         _lr.sortingOrder = 10;
         ApplyStyle(0);

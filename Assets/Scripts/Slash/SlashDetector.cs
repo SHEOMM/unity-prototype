@@ -42,9 +42,8 @@ public class SlashDetector : MonoBehaviour
 
     public List<CometBody> DetectComets(Vector2 start, Vector2 end)
     {
-        var comets = FindObjectsByType<CometBody>(FindObjectsSortMode.None);
         var hits = new List<CometBody>();
-        foreach (var c in comets)
+        foreach (var c in CometBody.ActiveComets)
         {
             if (c.IntersectsLine(start, end, slashWidth))
                 hits.Add(c);

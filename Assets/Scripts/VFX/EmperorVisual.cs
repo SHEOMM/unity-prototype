@@ -17,7 +17,7 @@ public class EmperorVisual : ISpellVisual
 
         var fx = new GameObject("FX_Lightning");
         var lr = fx.AddComponent<LineRenderer>();
-        lr.material = new Material(Shader.Find("Sprites/Default"));
+        lr.material = GameConstants.SpriteMaterial;
         lr.sortingOrder = 16;
 
         // 지그재그 번개 경로 생성

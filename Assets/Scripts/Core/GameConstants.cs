@@ -129,4 +129,16 @@ public static class GameConstants
         public const float DefaultSpawnXMax = 10f;
         public const float DefaultDelayBetweenWaves = 5f;
     }
+
+    // ── 캐싱된 공유 리소스 ──
+    private static Material _spriteMaterial;
+    public static Material SpriteMaterial
+    {
+        get
+        {
+            if (_spriteMaterial == null)
+                _spriteMaterial = new Material(Shader.Find("Sprites/Default"));
+            return _spriteMaterial;
+        }
+    }
 }
