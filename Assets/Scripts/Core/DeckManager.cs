@@ -5,28 +5,26 @@ public class DeckManager : MonoBehaviour
 {
     public static DeckManager Instance;
     private List<StarSystem> _stars = new List<StarSystem>();
-    private Sprite _starSprite;
-    private Sprite _planetSprite;
 
     void Awake()
     {
         Instance = this;
-        _starSprite = Resources.Load<Sprite>("StarSprite");
-        _planetSprite = _starSprite;
     }
 
     public StarSystem CreateStar(StarSO data)
     {
+        var sprite = CelestialSpriteGenerator.GenerateStarSprite(data.bodyColor);
         var sys = new GameObject(data.bodyName).AddComponent<StarSystem>();
-        sys.Initialize(data, _starSprite);
+        sys.Initialize(data, sprite);
         _stars.Add(sys);
         return sys;
     }
 
     public PlanetBody CreatePlanet(PlanetSO data)
     {
+        var sprite = CelestialSpriteGenerator.GeneratePlanetSprite(data.element, data.bodyColor);
         var body = new GameObject(data.bodyName).AddComponent<PlanetBody>();
-        body.Initialize(data, _planetSprite);
+        body.Initialize(data, sprite);
         return body;
     }
 
@@ -37,8 +35,9 @@ public class DeckManager : MonoBehaviour
 
     public SatelliteBody CreateSatellite(SatelliteSO data)
     {
+        var sprite = CelestialSpriteGenerator.GenerateSatelliteSprite(data.bodyColor);
         var body = new GameObject(data.bodyName).AddComponent<SatelliteBody>();
-        body.Initialize(data, _starSprite);
+        body.Initialize(data, sprite);
         return body;
     }
 

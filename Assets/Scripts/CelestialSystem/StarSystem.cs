@@ -19,7 +19,7 @@ public class StarSystem : MonoBehaviour
 
         var sr = gameObject.AddComponent<SpriteRenderer>();
         if (starSprite != null) sr.sprite = starSprite;
-        sr.color = data.bodyColor;
+        sr.color = Color.white;
         sr.sortingOrder = 2;
 
         CreateLabel(data.bodyName, data.visualScale);
@@ -52,7 +52,7 @@ public class StarSystem : MonoBehaviour
         labelGo.transform.SetParent(transform);
         labelGo.transform.localPosition = new Vector3(0, -1.5f, 0);
         float invScale = parentScale > 0.01f ? 1f / parentScale : 1f;
-        labelGo.transform.localScale = Vector3.one * invScale;
+        labelGo.transform.localScale = Vector3.one * invScale * 0.5f;
 
         var tm = labelGo.AddComponent<TextMesh>();
         tm.text = text;

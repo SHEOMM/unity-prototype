@@ -34,7 +34,7 @@ public class PlanetBody : MonoBehaviour
         _sr = GetComponent<SpriteRenderer>();
         if (_sr == null) _sr = gameObject.AddComponent<SpriteRenderer>();
         if (sprite != null) _sr.sprite = sprite;
-        _sr.color = data.bodyColor;
+        _sr.color = Color.white; // 프로시저럴 스프라이트에 색상이 내장됨
         _sr.sortingOrder = 5;
         transform.localScale = Vector3.one * data.visualScale;
         _baseScale = data.visualScale;
@@ -55,7 +55,7 @@ public class PlanetBody : MonoBehaviour
         labelGo.transform.localPosition = new Vector3(0, -1.2f, 0);
         // 부모 스케일을 상쇄하여 월드 기준 고정 크기로 표시
         float invScale = _baseScale > 0.01f ? 1f / _baseScale : 1f;
-        labelGo.transform.localScale = Vector3.one * invScale;
+        labelGo.transform.localScale = Vector3.one * invScale * 0.5f;
 
         var tm = labelGo.AddComponent<TextMesh>();
         tm.text = text;
@@ -93,7 +93,7 @@ public class PlanetBody : MonoBehaviour
         _hud?.UpdateHUD();
         float pulse = 1f + Mathf.Sin(Time.time * 3f) * 0.1f;
         transform.localScale = Vector3.one * _baseScale * pulse;
-        _sr.color = _highlighted ? Color.yellow : Planet.bodyColor;
+        _sr.color = _highlighted ? new Color(1f, 1f, 0.5f, 1f) : Color.white;
     }
 
     public void Highlight(bool on) { _highlighted = on; }
