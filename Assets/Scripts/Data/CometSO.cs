@@ -21,13 +21,15 @@ public class RewardOption
     [TextArea] public string description;
     public CometRewardType type;
     public float value;
+    public RelicSO relicSO;
 }
 
 public enum CometRewardType
 {
-    DamageBoost,        // 전체 데미지 증가
-    SpeedBoost,         // 공전 속도 증가
-    ExtraSlashWidth,    // 슬래시 폭 증가
-    HealPlayer,         // 플레이어 회복
-    GrantSatellite      // 위성 획득
+    DamageBoost,
+    SpeedBoost,
+    ExtraSlashWidth,
+    HealPlayer,
+    GrantSatellite,
+    GrantRelic
 }

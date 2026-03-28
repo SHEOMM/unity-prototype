@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fce248b1632558945ac9e584fa714d0f, type: 3}
+  m_Name: Room_Combat_Medium
+  m_EditorClassIdentifier: Assembly-CSharp::RoomDefinitionSO
+  roomName: "\uD63C\uD569 \uACF5\uC138"
+  roomType: 0
+  waveDefs:
+  - {fileID: 11400000, guid: 5b0bf2c914f046245bae0b6a7e0213fe, type: 2}
+  rewardPool:
+  - {fileID: 11400000, guid: cf1fb5640e68dab4e8771be271bbfb54, type: 2}
+  - {fileID: 11400000, guid: 42f310924e1d73944aba0a7c0dc8f8ee, type: 2}
+  - {fileID: 11400000, guid: bfb7d58b557b9fe468d01f7e0194d63e, type: 2}

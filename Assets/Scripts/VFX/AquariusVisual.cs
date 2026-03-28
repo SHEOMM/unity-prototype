@@ -30,7 +30,8 @@ public class AquariusVisual : ISpellVisual
         int wavePoints = 12;
         lr.positionCount = wavePoints;
 
-        ctx.target.TakeDamage(ctx.command.damage, ctx.command.element);
+        if (ctx.target != null)
+            ctx.target.TakeDamage(ctx.command.damage, ctx.command.element);
 
         while (elapsed < duration)
         {

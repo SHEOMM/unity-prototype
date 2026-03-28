@@ -99,7 +99,12 @@ public class Enemy : MonoBehaviour
             _flashTimer -= Time.deltaTime;
             _sr.color = Color.Lerp(_origColor, Color.white, _flashTimer * 5f);
         }
-        if (transform.position.x < -12f) _deathTimer = 0.01f;
+        if (transform.position.x < -12f)
+        {
+            if (PlayerState.Instance != null && Data != null)
+                PlayerState.Instance.TakeDamage(Data.attackDamage);
+            _deathTimer = 0.01f;
+        }
     }
 
     public void TakeDamage(float dmg, Element element = Element.None)
@@ -117,6 +122,7 @@ public class Enemy : MonoBehaviour
 
         if (currentHP <= 0)
         {
+            PlayerState.Instance?.NotifyEnemyKilled(this);
             bool normalDeath = _behavior?.OnDeath(this) ?? true;
             if (normalDeath) _deathTimer = 0.1f;
         }

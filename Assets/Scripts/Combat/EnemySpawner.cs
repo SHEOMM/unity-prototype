@@ -14,9 +14,10 @@ public class EnemySpawner : MonoBehaviour
     public float delayBetweenWaves = 5f;
 
     public System.Action<int> OnWaveStart;
+    public System.Action<int> OnWaveComplete;
     public System.Action OnAllWavesComplete;
 
-    void Start()
+    public void StartWaves()
     {
         if (waves != null && waves.Length > 0)
             StartCoroutine(RunWaves());
@@ -33,6 +34,7 @@ public class EnemySpawner : MonoBehaviour
             // 전멸 대기
             yield return new WaitUntil(() =>
                 EnemyRegistry.Instance == null || EnemyRegistry.Instance.GetAll().Count == 0);
+            OnWaveComplete?.Invoke(w);
             yield return new WaitForSeconds(delayBetweenWaves);
         }
         OnAllWavesComplete?.Invoke();

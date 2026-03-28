@@ -39,7 +39,8 @@ public class SlashResolver : MonoBehaviour
                 leading = leading,
                 trailing = trailing,
                 enemies = enemies,
-                damageMultiplier = SatelliteBuffCalculator.GetDamageMultiplier(planet),
+                damageMultiplier = SatelliteBuffCalculator.GetDamageMultiplier(planet)
+                                   * (PlayerState.Instance?.bonusDamageMultiplier ?? 1f),
                 extraHits = SatelliteBuffCalculator.GetExtraHits(planet),
                 areaMultiplier = SatelliteBuffCalculator.GetAreaMultiplier(planet),
                 isPhaseActive = phaseActive,

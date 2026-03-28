@@ -39,7 +39,8 @@ public class EmperorVisual : ISpellVisual
         float duration = 0.25f;
         float elapsed = 0f;
 
-        ctx.target.TakeDamage(ctx.command.damage, ctx.command.element);
+        if (ctx.target != null)
+            ctx.target.TakeDamage(ctx.command.damage, ctx.command.element);
 
         while (elapsed < duration)
         {

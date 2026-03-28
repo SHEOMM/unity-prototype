@@ -26,7 +26,8 @@ public class DefaultVisual : ISpellVisual
         lr.SetPosition(0, origin);
         lr.SetPosition(1, ctx.targetPosition);
 
-        ctx.target.TakeDamage(ctx.command.damage, ctx.command.element);
+        if (ctx.target != null)
+            ctx.target.TakeDamage(ctx.command.damage, ctx.command.element);
 
         yield return new WaitForSeconds(0.2f);
         Object.Destroy(fx);

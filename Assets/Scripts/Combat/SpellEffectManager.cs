@@ -33,6 +33,10 @@ public class SpellEffectManager : MonoBehaviour
         Enemy target = EnemyRegistry.Instance.GetRandom();
         if (target == null) return;
 
+        // 유물 속성 보너스 적용
+        if (PlayerState.Instance != null && cmd.element != Element.None)
+            cmd.damage *= (1f + PlayerState.Instance.GetElementBonus(cmd.element));
+
         var visual = VisualRegistry.Get(cmd.visualId);
         var ctx = new SpellVisualContext
         {

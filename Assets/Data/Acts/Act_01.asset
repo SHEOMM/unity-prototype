@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a55f5af71eddcf46a2298667ff91efb, type: 3}
+  m_Name: Act_01
+  m_EditorClassIdentifier: Assembly-CSharp::ActDefinitionSO
+  actName: "\uC81C1\uB9C9: \uBCC4\uC758 \uC2DC\uB828"
+  floorCount: 5
+  bossRoom: {fileID: 11400000, guid: 37e356c5c650ecd448830268a0fecb5a, type: 2}
+  possibleCombatRooms:
+  - {fileID: 11400000, guid: 30d80cb6717231241a231a4cf44330e2, type: 2}
+  - {fileID: 11400000, guid: 991b52a906edcd642a326b6576015799, type: 2}
+  possibleEliteRooms:
+  - {fileID: 11400000, guid: 991b52a906edcd642a326b6576015799, type: 2}
+  possibleEventRooms: []
+  eliteChance: 0.15
+  eventChance: 0
+  restChance: 0.15
+  shopChance: 0

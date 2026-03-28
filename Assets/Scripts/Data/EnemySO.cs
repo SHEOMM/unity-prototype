@@ -14,6 +14,7 @@ public class EnemySO : ScriptableObject
     public float baseHP = 100f;
     public float moveSpeed = 1f;
     public float scale = 0.6f;
+    public float attackDamage = 10f;
 
     [Header("속성 상호작용")]
     public Element element = Element.None;

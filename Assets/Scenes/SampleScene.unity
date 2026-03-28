@@ -148,11 +148,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1de71df3187765443ae2eba6628a6f95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  starDeck:
+  startingStars:
   - {fileID: 11400000, guid: d74456f20b03baf41bd5ddd98416fd03, type: 2}
   - {fileID: 11400000, guid: 5c4129c090264a943b91741e8fe6e69a, type: 2}
   - {fileID: 11400000, guid: ffe4b8f6be590014391759e752795f8e, type: 2}
-  planetDeck:
+  startingPlanets:
   - {fileID: 11400000, guid: 5c5b474ef2dc055458ac6359d27be265, type: 2}
   - {fileID: 11400000, guid: 124af75a03613f04cbbdea1a64b8de47, type: 2}
   - {fileID: 11400000, guid: c018cbbacf6695a4a89cda74202b7231, type: 2}
@@ -169,12 +169,7 @@ MonoBehaviour:
   cometPool:
   - {fileID: 11400000, guid: 150c92c1b2357b04fa4ab33c186bcf88, type: 2}
   - {fileID: 11400000, guid: 655cb8cb44a0272448cf01429d569a7d, type: 2}
-  waveDefs:
-  - {fileID: 11400000, guid: c2b365d670f785b438d018c9a4f015d1, type: 2}
-  - {fileID: 11400000, guid: 5b0bf2c914f046245bae0b6a7e0213fe, type: 2}
-  - {fileID: 11400000, guid: 75844ec8c6eb2854aa2f28ba45fdcceb, type: 2}
-  celestialYCenter: 2.5
-  celestialRadius: 3
+  currentAct: {fileID: 11400000, guid: c1e12a3b5f56f8c46b782d8f6ec8d15a, type: 2}
 --- !u!4 &134544359
 Transform:
   m_ObjectHideFlags: 0

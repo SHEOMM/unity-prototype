@@ -47,7 +47,8 @@ public class ArcherVisual : ISpellVisual
             yield return null;
         }
 
-        ctx.target.TakeDamage(ctx.command.damage, ctx.command.element);
+        if (ctx.target != null)
+            ctx.target.TakeDamage(ctx.command.damage, ctx.command.element);
         Object.Destroy(fx);
     }
 }
