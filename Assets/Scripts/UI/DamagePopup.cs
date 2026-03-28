@@ -8,30 +8,33 @@ public class DamagePopup : MonoBehaviour
 {
     private TextMesh _text;
     private Color _color;
-    private float _lifetime = 0.8f;
+    private float _lifetime = GameConstants.Popup.Lifetime;
     private float _elapsed;
     private Vector3 _velocity;
 
     public static void Spawn(Vector3 position, float damage, Element element)
     {
         var go = new GameObject("DmgPopup");
-        go.transform.position = position + new Vector3(Random.Range(-0.3f, 0.3f), 0.5f, 0);
-        go.transform.localScale = Vector3.one * 0.12f;
+        go.transform.position = position + new Vector3(
+            Random.Range(-GameConstants.Popup.SpawnXJitter, GameConstants.Popup.SpawnXJitter),
+            GameConstants.Popup.SpawnYOffset, 0);
+        go.transform.localScale = Vector3.one * GameConstants.Popup.InitialScale;
 
         var popup = go.AddComponent<DamagePopup>();
         popup._color = SpellEffectManager.GetElementColor(element);
-        popup._velocity = new Vector3(Random.Range(-0.5f, 0.5f), 2f, 0);
+        popup._velocity = new Vector3(
+            Random.Range(-GameConstants.Popup.SpawnXJitter * 1.5f, GameConstants.Popup.SpawnXJitter * 1.5f),
+            GameConstants.Popup.VelocityY, 0);
 
         popup._text = go.AddComponent<TextMesh>();
         popup._text.text = Mathf.RoundToInt(damage).ToString();
-        popup._text.fontSize = 64;
+        popup._text.fontSize = GameConstants.CelestialLabel.FontSize;
         popup._text.anchor = TextAnchor.MiddleCenter;
         popup._text.alignment = TextAlignment.Center;
         popup._text.color = popup._color;
-        popup._text.characterSize = 0.1f;
+        popup._text.characterSize = GameConstants.CelestialLabel.CharacterSize;
 
-        var mr = go.GetComponent<MeshRenderer>();
-        mr.sortingOrder = 20;
+        go.GetComponent<MeshRenderer>().sortingOrder = GameConstants.SortingOrder.DamagePopup;
     }
 
     void Update()
@@ -45,11 +48,10 @@ public class DamagePopup : MonoBehaviour
 
         float t = _elapsed / _lifetime;
         transform.position += _velocity * Time.deltaTime;
-        _velocity.y -= 3f * Time.deltaTime;
+        _velocity.y -= GameConstants.Popup.Gravity * Time.deltaTime;
 
-        // 페이드아웃 + 크기 축소
         float alpha = 1f - t;
-        float scale = 0.12f * (1f + t * 0.3f);
+        float scale = GameConstants.Popup.InitialScale * (1f + t * GameConstants.Popup.ScaleGrowth);
         transform.localScale = Vector3.one * scale;
         _text.color = new Color(_color.r, _color.g, _color.b, alpha);
     }

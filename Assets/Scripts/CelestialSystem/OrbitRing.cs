@@ -10,6 +10,7 @@ public class OrbitRing : MonoBehaviour
     {
         definition = def;
         _angle = def.startAngle;
+        DrawOrbitPath(def);
     }
 
     public void AssignPlanet(PlanetBody planet)
@@ -29,5 +30,37 @@ public class OrbitRing : MonoBehaviour
             Mathf.Sin(rad) * definition.radius * definition.eccentricity,
             0
         );
+    }
+
+    void DrawOrbitPath(OrbitDefinition def)
+    {
+        var pathGo = new GameObject("OrbitPath");
+        pathGo.transform.SetParent(transform);
+        pathGo.transform.localPosition = Vector3.zero;
+
+        // 부모(StarSystem) 스케일 상쇄
+        float parentScale = transform.lossyScale.x;
+        float invScale = parentScale > 0.01f ? 1f / parentScale : 1f;
+        pathGo.transform.localScale = Vector3.one * invScale;
+
+        var lr = pathGo.AddComponent<LineRenderer>();
+        lr.useWorldSpace = false;
+        lr.loop = true;
+        lr.startWidth = GameConstants.Orbit.PathWidth;
+        lr.endWidth = GameConstants.Orbit.PathWidth;
+        lr.material = new Material(Shader.Find("Sprites/Default"));
+        lr.startColor = GameConstants.Colors.OrbitPath;
+        lr.endColor = GameConstants.Colors.OrbitPath;
+        lr.sortingOrder = GameConstants.SortingOrder.OrbitPath;
+
+        int segments = GameConstants.Orbit.PathSegments;
+        lr.positionCount = segments;
+        for (int i = 0; i < segments; i++)
+        {
+            float t = (float)i / segments * Mathf.PI * 2f;
+            float x = Mathf.Cos(t) * def.radius * parentScale;
+            float y = Mathf.Sin(t) * def.radius * def.eccentricity * parentScale;
+            lr.SetPosition(i, new Vector3(x, y, 0));
+        }
     }
 }

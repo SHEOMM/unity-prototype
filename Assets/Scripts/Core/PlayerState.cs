@@ -44,13 +44,17 @@ public class PlayerState : MonoBehaviour
         Debug.Log($"[유물] {data.relicName} 획득!");
     }
 
+    public event System.Action<float> OnDamaged;
+    public event System.Action<float, float> OnHPChanged;
+
     public void TakeDamage(float damage)
     {
         for (int i = 0; i < _relics.Count; i++)
             _relics[i].effect.OnBeforeDamage(ref damage, this);
 
         currentHP -= damage;
-        DamagePopup.Spawn(Camera.main.transform.position + Vector3.down * 3f, damage, Element.None);
+        OnDamaged?.Invoke(damage);
+        OnHPChanged?.Invoke(currentHP, maxHP);
 
         for (int i = 0; i < _relics.Count; i++)
             _relics[i].effect.OnAfterDamage(damage, this);
@@ -65,6 +69,7 @@ public class PlayerState : MonoBehaviour
     public void Heal(float amount)
     {
         currentHP = Mathf.Min(currentHP + amount, maxHP);
+        OnHPChanged?.Invoke(currentHP, maxHP);
     }
 
     public void AddElementBonus(Element element, float bonus)

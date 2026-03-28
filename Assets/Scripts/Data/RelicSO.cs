@@ -1,8 +1,13 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewRelic", menuName = "Data/Relic")]
-public class RelicSO : ScriptableObject
+public class RelicSO : ScriptableObject, IRewardApplicable
 {
+    public void ApplyAsReward(PlayerState player, RunState run)
+    {
+        player?.AddRelic(this);
+    }
+
     public string relicName;
     [TextArea] public string description;
     public Sprite icon;

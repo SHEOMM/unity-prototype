@@ -4,8 +4,13 @@ using UnityEngine;
 /// 천체 공통 베이스 ScriptableObject.
 /// 항성, 행성, 위성, 혜성 모두 이것을 상속한다.
 /// </summary>
-public abstract class CelestialBodySO : ScriptableObject
+public abstract class CelestialBodySO : ScriptableObject, IRewardApplicable
 {
+    public virtual void ApplyAsReward(PlayerState player, RunState run)
+    {
+        run?.AddToDeck(this);
+    }
+
     [Header("기본 정보")]
     public string bodyName;
     [TextArea] public string description;

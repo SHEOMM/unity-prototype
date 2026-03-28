@@ -29,10 +29,8 @@ public class RewardManager : MonoBehaviour
         var reward = pool[Random.Range(0, pool.Length)];
         Debug.Log($"[보상] {reward.name} 획득!");
 
-        if (reward is RelicSO relic)
-            PlayerState.Instance?.AddRelic(relic);
-        else if (reward is CelestialBodySO celestial)
-            RunState.Instance?.AddToDeck(celestial);
+        if (reward is IRewardApplicable applicable)
+            applicable.ApplyAsReward(PlayerState.Instance, RunState.Instance);
 
         OnRewardChosen?.Invoke();
     }

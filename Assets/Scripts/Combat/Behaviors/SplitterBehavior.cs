@@ -20,6 +20,7 @@ public class SplitterBehavior : IEnemyBehavior
             var child = go.AddComponent<Enemy>();
             var sprite = EnemySpriteGenerator.GenerateEnemySprite(enemy.Data);
             child.Initialize(enemy.Data, sprite);
+            go.AddComponent<EnemyView>();
             child.maxHP = enemy.Data.baseHP * 0.4f;
             child.currentHP = child.maxHP;
             child.transform.localScale = enemy.transform.localScale * 0.6f;

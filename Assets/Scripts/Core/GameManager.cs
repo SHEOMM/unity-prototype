@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
         GetOrAdd<EnemyRegistry>();
         GetOrAdd<PlayerState>();
         GetOrAdd<PlayerHPBar>();
+        GetOrAdd<PlayerDamageView>();
         GetOrAdd<RunState>();
 
         _combat = GetOrAdd<CombatManager>();

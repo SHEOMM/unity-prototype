@@ -20,9 +20,7 @@ public class StarSystem : MonoBehaviour
         var sr = gameObject.AddComponent<SpriteRenderer>();
         if (starSprite != null) sr.sprite = starSprite;
         sr.color = Color.white;
-        sr.sortingOrder = 2;
-
-        CreateLabel(data.bodyName, data.visualScale);
+        sr.sortingOrder = GameConstants.SortingOrder.StarBody;
 
         if (data.orbits == null) return;
         for (int i = 0; i < data.orbits.Length; i++)
@@ -46,23 +44,4 @@ public class StarSystem : MonoBehaviour
 
     public List<OrbitRing> Orbits => _orbits;
 
-    void CreateLabel(string text, float parentScale)
-    {
-        var labelGo = new GameObject("Label");
-        labelGo.transform.SetParent(transform);
-        labelGo.transform.localPosition = new Vector3(0, -1.5f, 0);
-        float invScale = parentScale > 0.01f ? 1f / parentScale : 1f;
-        labelGo.transform.localScale = Vector3.one * invScale * 0.5f;
-
-        var tm = labelGo.AddComponent<TextMesh>();
-        tm.text = text;
-        tm.fontSize = 64;
-        tm.anchor = TextAnchor.MiddleCenter;
-        tm.alignment = TextAlignment.Center;
-        tm.color = new Color(1f, 1f, 0.8f, 0.8f);
-        tm.characterSize = 0.15f;
-
-        var mr = labelGo.GetComponent<MeshRenderer>();
-        mr.sortingOrder = 10;
-    }
 }

@@ -1,9 +1,8 @@
 using UnityEngine;
-using System.Collections.Generic;
 
 /// <summary>
-/// 전투 루프 담당. GameManager에서 추출.
-/// 슬래시 입력 → 판정 → 효과 → 웨이브 → 혜성을 관리한다.
+/// 전투 루프 담당. 천체 배치, 웨이브, 혜성을 관리한다.
+/// 슬래시 입력 처리는 SlashController에 위임.
 /// </summary>
 public class CombatManager : MonoBehaviour
 {
@@ -15,16 +14,9 @@ public class CombatManager : MonoBehaviour
     public float celestialRadius = 3f;
 
     private DeckManager _deck;
-    private SlashInput _slashInput;
-    private SlashDetector _slashDetector;
-    private SlashResolver _slashResolver;
-    private SlashVisual _slashVisual;
-    private SpellEffectManager _spellFx;
+    private SlashController _slashController;
     private EnemySpawner _spawner;
     private CometSpawner _cometSpawner;
-
-    private Vector2 _dragStart;
-    private bool _combatActive;
 
     public System.Action OnCombatComplete;
 
@@ -37,51 +29,51 @@ public class CombatManager : MonoBehaviour
     public void Initialize()
     {
         _deck = GetOrAdd<DeckManager>();
-        _slashInput = GetOrAdd<SlashInput>();
-        _slashDetector = GetOrAdd<SlashDetector>();
-        _slashResolver = GetOrAdd<SlashResolver>();
-        _slashVisual = GetOrAdd<SlashVisual>();
-        _spellFx = GetOrAdd<SpellEffectManager>();
         _spawner = GetOrAdd<EnemySpawner>();
         _cometSpawner = GetOrAdd<CometSpawner>();
 
-        _slashResolver.synergies = synergies;
-        _slashInput.celestialYMin = celestialYCenter - celestialRadius;
+        var input = GetOrAdd<SlashInput>();
+        var detector = GetOrAdd<SlashDetector>();
+        var resolver = GetOrAdd<SlashResolver>();
+        var visual = GetOrAdd<SlashVisual>();
+        var spellFx = GetOrAdd<SpellEffectManager>();
+
+        resolver.synergies = synergies;
+        input.celestialYMin = celestialYCenter - celestialRadius;
+
+        _slashController = GetOrAdd<SlashController>();
+        _slashController.Initialize(input, detector, resolver, visual, spellFx);
+        _slashController.OnSlashComplete += result => PlayerState.Instance?.NotifySlashPerformed(result);
+
+        GetOrAdd<SlashFeedbackView>();
     }
 
     public void StartCombat(WaveDefinitionSO[] waves, StarSO[] stars = null, PlanetSO[] planets = null)
     {
-        _combatActive = true;
-
         if (stars != null && planets != null)
             SetupCelestialBodies(stars, planets);
 
-        // 혜성
+        var divider = new GameObject("DividerLine").AddComponent<CombatDividerView>();
+        divider.Initialize(celestialYCenter - celestialRadius);
+
         if (cometPool != null && cometPool.Length > 0)
         {
             _cometSpawner.possibleComets = cometPool;
             _cometSpawner.OnCometCaptured += OnCometCaptured;
         }
 
-        // 웨이브
         _spawner.waves = waves;
         _spawner.OnWaveStart += i => PlayerState.Instance?.NotifyWaveStart(i);
         _spawner.OnWaveComplete += i => PlayerState.Instance?.NotifyWaveComplete(i);
         _spawner.OnAllWavesComplete += OnAllWavesCleared;
         _spawner.StartWaves();
 
-        // 입력
-        _slashInput.OnDragStart += OnDragStart;
-        _slashInput.OnDragUpdate += OnDragUpdate;
-        _slashInput.OnDragEnd += OnDragEnd;
+        _slashController.Activate();
     }
 
     public void EndCombat()
     {
-        _combatActive = false;
-        _slashInput.OnDragStart -= OnDragStart;
-        _slashInput.OnDragUpdate -= OnDragUpdate;
-        _slashInput.OnDragEnd -= OnDragEnd;
+        _slashController.Deactivate();
         _cometSpawner.OnCometCaptured -= OnCometCaptured;
         _spawner.OnAllWavesComplete -= OnAllWavesCleared;
     }
@@ -107,36 +99,6 @@ public class CombatManager : MonoBehaviour
     {
         EndCombat();
         OnCombatComplete?.Invoke();
-    }
-
-    void OnDragStart(Vector2 pos) { _dragStart = pos; }
-
-    void OnDragUpdate(Vector2 current)
-    {
-        var hits = _slashDetector.DetectHits(_dragStart, current);
-        _slashVisual.ShowLine(_dragStart, current, hits.Count);
-        _slashDetector.HighlightHits(_dragStart, current);
-    }
-
-    void OnDragEnd(Vector2 start, Vector2 end)
-    {
-        _slashVisual.HideLine();
-        _slashDetector.ClearHighlights();
-
-        var comets = _slashDetector.DetectComets(start, end);
-        foreach (var comet in comets)
-            comet.Capture();
-
-        var hits = _slashDetector.DetectHits(start, end);
-        if (hits.Count == 0) return;
-
-        var result = _slashResolver.Resolve(hits);
-        _spellFx.ExecuteSpells(result);
-
-        foreach (var syn in result.activatedSynergies)
-            SynergyPopup.Show(syn.synergyName);
-
-        PlayerState.Instance?.NotifySlashPerformed(result);
     }
 
     void OnCometCaptured(CometBody comet)

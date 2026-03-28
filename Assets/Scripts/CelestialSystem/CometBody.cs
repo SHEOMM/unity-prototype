@@ -68,20 +68,8 @@ public class CometBody : MonoBehaviour, ISlashTarget
     }
 
     public bool IntersectsLine(Vector2 a, Vector2 b, float width)
-    {
-        Vector2 pos = transform.position;
-        float totalR = (_baseScale * 0.5f) + width * 0.5f;
-        Vector2 ab = b - a;
-        float dot = Vector2.Dot(ab, ab);
-        if (dot < 0.0001f) return Vector2.Distance(pos, a) <= totalR;
-        float t = Mathf.Clamp01(Vector2.Dot(pos - a, ab) / dot);
-        return Vector2.Distance(pos, a + t * ab) <= totalR;
-    }
+        => SlashGeometry.IntersectsLine(transform.position, _baseScale * 0.5f, a, b, width);
 
     public float ProjectionT(Vector2 a, Vector2 b)
-    {
-        Vector2 pos = transform.position;
-        Vector2 ab = b - a;
-        return Mathf.Clamp01(Vector2.Dot(pos - a, ab) / Vector2.Dot(ab, ab));
-    }
+        => SlashGeometry.ProjectionT(transform.position, a, b);
 }

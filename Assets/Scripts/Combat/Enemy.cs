@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Reflection;
+using System;
 
 public class Enemy : MonoBehaviour
 {
@@ -8,6 +9,9 @@ public class Enemy : MonoBehaviour
     public float maxHP;
     public float currentHP;
     public float moveSpeed;
+
+    public event Action<float, Element> OnDamaged;
+    public event Action OnDeath;
     private float _baseSpeed;
     private SpriteRenderer _sr;
     private Color _origColor;
@@ -17,7 +21,6 @@ public class Enemy : MonoBehaviour
 
     private IEnemyBehavior _behavior;
     private IEnemyState _state;
-
     void OnEnable() { if (EnemyRegistry.Instance != null) EnemyRegistry.Instance.Register(this); }
     void OnDisable() { if (EnemyRegistry.Instance != null) EnemyRegistry.Instance.Unregister(this); }
 
@@ -33,14 +36,13 @@ public class Enemy : MonoBehaviour
         if (_sr == null) _sr = gameObject.AddComponent<SpriteRenderer>();
         if (sprite != null) _sr.sprite = sprite;
         _sr.color = Color.white;
-        _sr.sortingOrder = 5;
+        _sr.sortingOrder = GameConstants.SortingOrder.EnemyBody;
         transform.localScale = Vector3.one * data.scale;
         _origColor = Color.white;
 
         _behavior = EnemyBehaviorRegistry.Get(data.behaviorId);
         AttachStateIfNeeded(data.behaviorId);
 
-        CreateLabel(data.enemyName, data.scale);
     }
 
     void AttachStateIfNeeded(string behaviorId)
@@ -50,26 +52,6 @@ public class Enemy : MonoBehaviour
         var stateAttr = behaviorType.GetCustomAttribute<EnemyStateAttribute>();
         if (stateAttr?.StateType == null) return;
         _state = (IEnemyState)gameObject.AddComponent(stateAttr.StateType);
-    }
-
-    void CreateLabel(string text, float parentScale)
-    {
-        var labelGo = new GameObject("Label");
-        labelGo.transform.SetParent(transform);
-        labelGo.transform.localPosition = new Vector3(0, -0.8f, 0);
-        float invScale = parentScale > 0.01f ? 1f / parentScale : 1f;
-        labelGo.transform.localScale = Vector3.one * invScale * 0.4f;
-
-        var tm = labelGo.AddComponent<TextMesh>();
-        tm.text = text;
-        tm.fontSize = 48;
-        tm.anchor = TextAnchor.MiddleCenter;
-        tm.alignment = TextAlignment.Center;
-        tm.color = new Color(1f, 0.8f, 0.8f, 0.85f);
-        tm.characterSize = 0.1f;
-
-        var mr = labelGo.GetComponent<MeshRenderer>();
-        mr.sortingOrder = 12;
     }
 
     void Update()
@@ -97,13 +79,13 @@ public class Enemy : MonoBehaviour
         if (_flashTimer > 0)
         {
             _flashTimer -= Time.deltaTime;
-            _sr.color = Color.Lerp(_origColor, Color.white, _flashTimer * 5f);
+            _sr.color = Color.Lerp(_origColor, Color.white, _flashTimer * GameConstants.Combat.DamageFlashSpeed);
         }
-        if (transform.position.x < -12f)
+        if (transform.position.x < GameConstants.ScreenBoundaryLeft)
         {
             if (PlayerState.Instance != null && Data != null)
                 PlayerState.Instance.TakeDamage(Data.attackDamage);
-            _deathTimer = 0.01f;
+            _deathTimer = GameConstants.Combat.DeathTimerBoundary;
         }
     }
 
@@ -117,14 +99,15 @@ public class Enemy : MonoBehaviour
             dmg = _behavior.ModifyIncomingDamage(this, dmg, element);
 
         currentHP -= dmg;
-        _flashTimer = 0.2f;
-        DamagePopup.Spawn(transform.position, dmg, element);
+        _flashTimer = GameConstants.Combat.DamageFlashDuration;
+        OnDamaged?.Invoke(dmg, element);
 
         if (currentHP <= 0)
         {
+            OnDeath?.Invoke();
             PlayerState.Instance?.NotifyEnemyKilled(this);
             bool normalDeath = _behavior?.OnDeath(this) ?? true;
-            if (normalDeath) _deathTimer = 0.1f;
+            if (normalDeath) _deathTimer = GameConstants.Combat.DeathTimerNormal;
         }
     }
 
