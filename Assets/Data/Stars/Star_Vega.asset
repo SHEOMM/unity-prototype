@@ -22,12 +22,12 @@ MonoBehaviour:
   - elegant
   orbits:
   - radius: 1.5
-    angularSpeed: 40
+    angularSpeed: 13
     eccentricity: 1
     startAngle: 0
     clockwise: 0
   - radius: 2.3
-    angularSpeed: 25
+    angularSpeed: 8
     eccentricity: 0.8
     startAngle: 180
     clockwise: 1

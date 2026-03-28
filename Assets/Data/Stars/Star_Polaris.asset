@@ -23,17 +23,17 @@ MonoBehaviour:
   - center
   orbits:
   - radius: 1.2
-    angularSpeed: 30
+    angularSpeed: 10
     eccentricity: 1
     startAngle: 0
     clockwise: 0
   - radius: 2
-    angularSpeed: 45
+    angularSpeed: 15
     eccentricity: 1
     startAngle: 120
     clockwise: 0
   - radius: 2.8
-    angularSpeed: 60
+    angularSpeed: 20
     eccentricity: 0.85
     startAngle: 240
     clockwise: 1

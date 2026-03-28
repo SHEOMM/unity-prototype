@@ -23,17 +23,17 @@ MonoBehaviour:
   - swift
   orbits:
   - radius: 1
-    angularSpeed: 50
+    angularSpeed: 16
     eccentricity: 1
     startAngle: 0
     clockwise: 0
   - radius: 1.8
-    angularSpeed: 35
+    angularSpeed: 12
     eccentricity: 0.9
     startAngle: 90
     clockwise: 1
   - radius: 2.5
-    angularSpeed: 55
+    angularSpeed: 18
     eccentricity: 1
     startAngle: 180
     clockwise: 0
