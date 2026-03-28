@@ -18,6 +18,15 @@ public class EnemyRegistry : MonoBehaviour
 
     public List<Enemy> GetAll() => new List<Enemy>(_alive);
 
+    public List<Enemy> GetNearby(Vector3 position, float radius)
+    {
+        var result = new List<Enemy>();
+        foreach (var e in _alive)
+            if (e != null && Vector3.Distance(e.transform.position, position) <= radius)
+                result.Add(e);
+        return result;
+    }
+
     public Enemy GetRandom()
     {
         if (_alive.Count == 0) return null;

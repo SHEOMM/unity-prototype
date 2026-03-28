@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3129ff58c283be548842dc1a500a9327, type: 3}
+  m_Name: Enemy_Splitter
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySO
+  enemyName: "\uBD84\uC5F4\uCCB4"
+  description: "\uC0AC\uB9DD \uC2DC 2\uB9C8\uB9AC\uB85C \uBD84\uC5F4\uD55C\uB2E4."
+  baseHP: 70
+  moveSpeed: 0.9
+  scale: 0.55
+  element: 0
+  resistances: []
+  behaviorId: splitter
+  bodyColor: {r: 0.6, g: 0.3, b: 0.7, a: 1}
+  shape: 5
+  scoreValue: 15

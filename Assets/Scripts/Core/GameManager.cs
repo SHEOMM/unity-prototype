@@ -16,6 +16,9 @@ public class GameManager : MonoBehaviour
     [Header("혜성")]
     [SerializeField] private CometSO[] cometPool;
 
+    [Header("웨이브")]
+    [SerializeField] private WaveDefinitionSO[] waveDefs;
+
     [Header("배치 설정")]
     [SerializeField] private float celestialYCenter = 2.5f;
     [SerializeField] private float celestialRadius = 3f;
@@ -40,7 +43,9 @@ public class GameManager : MonoBehaviour
         _slashResolver = GetOrAdd<SlashResolver>();
         _slashVisual = GetOrAdd<SlashVisual>();
         _spellFx = GetOrAdd<SpellEffectManager>();
-        GetOrAdd<EnemySpawner>();
+        var spawner = GetOrAdd<EnemySpawner>();
+        if (waveDefs != null && waveDefs.Length > 0)
+            spawner.waves = waveDefs;
         _cometSpawner = GetOrAdd<CometSpawner>();
     }
 
