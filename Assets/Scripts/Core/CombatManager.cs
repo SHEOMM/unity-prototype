@@ -2,7 +2,7 @@ using UnityEngine;
 
 /// <summary>
 /// 전투 루프 담당. 천체 배치, 웨이브, 혜성을 관리한다.
-/// 슬래시 입력 처리는 SlashController에 위임.
+/// 원형 스코프 입력 처리는 ScopeController에 위임.
 /// </summary>
 public class CombatManager : MonoBehaviour
 {
@@ -14,7 +14,7 @@ public class CombatManager : MonoBehaviour
     public float celestialRadius = 3f;
 
     private DeckManager _deck;
-    private SlashController _slashController;
+    private ScopeController _scopeController;
     private EnemySpawner _spawner;
     private CometSpawner _cometSpawner;
 
@@ -32,20 +32,20 @@ public class CombatManager : MonoBehaviour
         _spawner = GetOrAdd<EnemySpawner>();
         _cometSpawner = GetOrAdd<CometSpawner>();
 
-        var input = GetOrAdd<SlashInput>();
-        var detector = GetOrAdd<SlashDetector>();
+        var input = GetOrAdd<ScopeInput>();
+        var detector = GetOrAdd<ScopeDetector>();
         var resolver = GetOrAdd<SlashResolver>();
-        var visual = GetOrAdd<SlashVisual>();
+        var visual = GetOrAdd<ScopeVisual>();
         var spellFx = GetOrAdd<SpellEffectManager>();
 
         resolver.synergies = synergies;
         input.celestialYMin = celestialYCenter - celestialRadius;
 
-        _slashController = GetOrAdd<SlashController>();
-        _slashController.Initialize(input, detector, resolver, visual, spellFx);
-        _slashController.OnSlashComplete += result => PlayerState.Instance?.NotifySlashPerformed(result);
+        _scopeController = GetOrAdd<ScopeController>();
+        _scopeController.Initialize(input, detector, resolver, visual, spellFx);
+        _scopeController.OnScopeComplete += result => PlayerState.Instance?.NotifySlashPerformed(result);
 
-        GetOrAdd<SlashFeedbackView>();
+        GetOrAdd<ScopeFeedbackView>();
     }
 
     public void StartCombat(WaveDefinitionSO[] waves, PlanetSO[] planets = null)
@@ -68,12 +68,12 @@ public class CombatManager : MonoBehaviour
         _spawner.OnAllWavesComplete += OnAllWavesCleared;
         _spawner.StartWaves();
 
-        _slashController.Activate();
+        _scopeController.Activate();
     }
 
     public void EndCombat()
     {
-        _slashController.Deactivate();
+        _scopeController.Deactivate();
         _cometSpawner.OnCometCaptured -= OnCometCaptured;
         _spawner.OnAllWavesComplete -= OnAllWavesCleared;
     }

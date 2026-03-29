@@ -25,6 +25,7 @@ public static class GameConstants
         public const int Label = 10;
         public const int HPBarText = 11;
         public const int EnemyLabel = 12;
+        public const int SlashLine = 14;
         public const int SpellEffect = 15;
         public const int LightningEffect = 16;
         public const int DamagePopup = 20;
