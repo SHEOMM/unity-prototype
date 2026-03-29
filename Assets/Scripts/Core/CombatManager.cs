@@ -48,10 +48,10 @@ public class CombatManager : MonoBehaviour
         GetOrAdd<SlashFeedbackView>();
     }
 
-    public void StartCombat(WaveDefinitionSO[] waves, StarSO[] stars = null, PlanetSO[] planets = null)
+    public void StartCombat(WaveDefinitionSO[] waves, PlanetSO[] planets = null)
     {
-        if (stars != null && planets != null)
-            SetupCelestialBodies(stars, planets);
+        if (planets != null)
+            SetupCelestialBodies(planets);
 
         var divider = new GameObject("DividerLine").AddComponent<CombatDividerView>();
         divider.Initialize(celestialYCenter - celestialRadius);
@@ -78,20 +78,12 @@ public class CombatManager : MonoBehaviour
         _spawner.OnAllWavesComplete -= OnAllWavesCleared;
     }
 
-    void SetupCelestialBodies(StarSO[] starDeck, PlanetSO[] planetDeck)
+    void SetupCelestialBodies(PlanetSO[] planetDeck)
     {
-        int pi = 0;
-        foreach (var sd in starDeck)
+        foreach (var data in planetDeck)
         {
-            if (sd == null) continue;
-            var star = _deck.CreateStar(sd);
-            if (planetDeck == null || sd.orbits == null) continue;
-            for (int o = 0; o < sd.orbits.Length && pi < planetDeck.Length; o++, pi++)
-            {
-                if (planetDeck[pi] == null) continue;
-                var planet = _deck.CreatePlanet(planetDeck[pi]);
-                _deck.PlacePlanetOnStar(planet, star, o);
-            }
+            if (data == null) continue;
+            _deck.CreateCelestialBody(data);
         }
     }
 

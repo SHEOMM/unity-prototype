@@ -25,3 +25,11 @@ MonoBehaviour:
   visualScale: 0.38
   phaseThreshold: 3
   phaseEffectId: warrior
+  orbitTerms:
+  - radius: 1.5
+    speed: 15
+    phase: 0
+  - radius: 1.0
+    speed: 60
+    phase: 0
+  orbitCenter: {x: -1, y: 2.5}

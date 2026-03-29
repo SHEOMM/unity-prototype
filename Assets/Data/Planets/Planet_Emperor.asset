@@ -26,3 +26,11 @@ MonoBehaviour:
   visualScale: 0.4
   phaseThreshold: 3
   phaseEffectId: emperor
+  orbitTerms:
+  - radius: 2.5
+    speed: 8
+    phase: 0
+  - radius: 1.0
+    speed: -24
+    phase: 45
+  orbitCenter: {x: 0, y: 3}

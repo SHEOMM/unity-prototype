@@ -10,7 +10,6 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     [Header("초기 덱")]
-    [SerializeField] private StarSO[] startingStars;
     [SerializeField] private PlanetSO[] startingPlanets;
 
     [Header("시저지")]
@@ -63,7 +62,6 @@ public class GameManager : MonoBehaviour
     {
         RunState.Instance.InitializeRun(
             Random.Range(0, 99999),
-            startingStars ?? new StarSO[0],
             startingPlanets ?? new PlanetSO[0]
         );
         PlayerState.Instance.ResetForNewRun();
@@ -93,7 +91,6 @@ public class GameManager : MonoBehaviour
                 if (_currentRoom?.waveDefs != null)
                     _combat.StartCombat(
                         _currentRoom.waveDefs,
-                        RunState.Instance.starDeck.ToArray(),
                         RunState.Instance.planetDeck.ToArray()
                     );
                 break;

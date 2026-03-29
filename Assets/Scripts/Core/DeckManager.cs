@@ -5,38 +5,35 @@ using System.Reflection;
 public class DeckManager : MonoBehaviour
 {
     public static DeckManager Instance;
-    private List<StarSystem> _stars = new List<StarSystem>();
+    private List<PlanetBody> _celestials = new List<PlanetBody>();
 
     void Awake()
     {
         Instance = this;
     }
 
-    public StarSystem CreateStar(StarSO data)
-    {
-        var sprite = CelestialSpriteGenerator.GenerateStarSprite(data.bodyColor);
-        var go = new GameObject(data.bodyName);
-        var sys = go.AddComponent<StarSystem>();
-        sys.Initialize(data, sprite);
-        go.AddComponent<StarLabelView>();
-        _stars.Add(sys);
-        return sys;
-    }
-
-    public PlanetBody CreatePlanet(PlanetSO data)
+    /// <summary>
+    /// 에피사이클 궤도를 가진 천체를 생성한다.
+    /// PlanetSO의 orbitTerms로 궤도를 정의하고, 독립적으로 움직인다.
+    /// </summary>
+    public PlanetBody CreateCelestialBody(PlanetSO data)
     {
         var sprite = CelestialSpriteGenerator.GeneratePlanetSprite(data.element, data.bodyColor);
         var go = new GameObject(data.bodyName);
         var body = go.AddComponent<PlanetBody>();
         body.Initialize(data, sprite);
+
+        // 에피사이클 궤도 부착
+        if (data.orbitTerms != null && data.orbitTerms.Length > 0)
+        {
+            var orbit = go.AddComponent<EpicyclicOrbit>();
+            orbit.Initialize(data.orbitTerms, data.orbitCenter);
+        }
+
         go.AddComponent<PlanetLabelView>();
         AttachHUDIfNeeded(go, data.effectId);
+        _celestials.Add(body);
         return body;
-    }
-
-    public bool PlacePlanetOnStar(PlanetBody planet, StarSystem star, int idx)
-    {
-        return star.PlacePlanet(planet, idx);
     }
 
     public SatelliteBody CreateSatellite(SatelliteSO data)
@@ -52,7 +49,7 @@ public class DeckManager : MonoBehaviour
         planet.AttachSatellite(sat);
     }
 
-    public List<StarSystem> Stars => _stars;
+    public List<PlanetBody> Celestials => _celestials;
 
     void AttachHUDIfNeeded(GameObject go, string effectId)
     {

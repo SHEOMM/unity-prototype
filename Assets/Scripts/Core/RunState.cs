@@ -12,7 +12,6 @@ public class RunState : MonoBehaviour
     public int currentAct;
     public int runSeed;
 
-    public List<StarSO> starDeck = new List<StarSO>();
     public List<PlanetSO> planetDeck = new List<PlanetSO>();
     public List<SatelliteSO> satellites = new List<SatelliteSO>();
 
@@ -22,20 +21,18 @@ public class RunState : MonoBehaviour
         Instance = this;
     }
 
-    public void InitializeRun(int seed, StarSO[] startingStars, PlanetSO[] startingPlanets)
+    public void InitializeRun(int seed, PlanetSO[] startingPlanets)
     {
         runSeed = seed;
         currentFloor = 0;
         currentAct = 1;
-        starDeck = new List<StarSO>(startingStars);
         planetDeck = new List<PlanetSO>(startingPlanets);
         satellites.Clear();
     }
 
     public void AddToDeck(CelestialBodySO item)
     {
-        if (item is StarSO star) starDeck.Add(star);
-        else if (item is PlanetSO planet) planetDeck.Add(planet);
+        if (item is PlanetSO planet) planetDeck.Add(planet);
         else if (item is SatelliteSO sat) satellites.Add(sat);
     }
 

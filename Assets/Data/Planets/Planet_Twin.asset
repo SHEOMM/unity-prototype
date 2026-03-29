@@ -26,3 +26,11 @@ MonoBehaviour:
   visualScale: 0.35
   phaseThreshold: 4
   phaseEffectId: twin
+  orbitTerms:
+  - radius: 1.8
+    speed: 10
+    phase: 0
+  - radius: 0.7
+    speed: 50
+    phase: 90
+  orbitCenter: {x: -3, y: 3.5}

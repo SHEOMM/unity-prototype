@@ -26,3 +26,11 @@ MonoBehaviour:
   visualScale: 0.38
   phaseThreshold: 3
   phaseEffectId: smith
+  orbitTerms:
+  - radius: 1.5
+    speed: 10
+    phase: 0
+  - radius: 0.6
+    speed: 60
+    phase: 0
+  orbitCenter: {x: 1, y: 4.5}

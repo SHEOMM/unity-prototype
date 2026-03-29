@@ -26,3 +26,11 @@ MonoBehaviour:
   visualScale: 0.32
   phaseThreshold: 2
   phaseEffectId: assassin
+  orbitTerms:
+  - radius: 1.2
+    speed: 20
+    phase: 0
+  - radius: 0.8
+    speed: -60
+    phase: 0
+  orbitCenter: {x: 4, y: 2.5}

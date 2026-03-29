@@ -25,3 +25,11 @@ MonoBehaviour:
   visualScale: 0.35
   phaseThreshold: 3
   phaseEffectId: scorpion
+  orbitTerms:
+  - radius: 1.4
+    speed: 15
+    phase: 0
+  - radius: 1.0
+    speed: -45
+    phase: 0
+  orbitCenter: {x: 2, y: 4.5}

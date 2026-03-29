@@ -26,3 +26,11 @@ MonoBehaviour:
   visualScale: 0.3
   phaseThreshold: 3
   phaseEffectId: messenger
+  orbitTerms:
+  - radius: 1.0
+    speed: 25
+    phase: 0
+  - radius: 0.5
+    speed: 75
+    phase: 60
+  orbitCenter: {x: 0, y: 2}

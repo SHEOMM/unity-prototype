@@ -26,3 +26,11 @@ MonoBehaviour:
   visualScale: 0.35
   phaseThreshold: 3
   phaseEffectId: storm
+  orbitTerms:
+  - radius: 1.8
+    speed: 12
+    phase: 0
+  - radius: 0.9
+    speed: 84
+    phase: 30
+  orbitCenter: {x: -2, y: 4}

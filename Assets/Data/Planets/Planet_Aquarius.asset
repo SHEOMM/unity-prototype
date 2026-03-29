@@ -25,3 +25,14 @@ MonoBehaviour:
   visualScale: 0.35
   phaseThreshold: 3
   phaseEffectId: aquarius
+  orbitTerms:
+  - radius: 1.8
+    speed: 8
+    phase: 0
+  - radius: 0.5
+    speed: 24
+    phase: 90
+  - radius: 0.4
+    speed: -16
+    phase: 180
+  orbitCenter: {x: -1, y: 4}

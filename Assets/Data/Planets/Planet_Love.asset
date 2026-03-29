@@ -26,3 +26,11 @@ MonoBehaviour:
   visualScale: 0.33
   phaseThreshold: 4
   phaseEffectId: love
+  orbitTerms:
+  - radius: 1.6
+    speed: 12
+    phase: 0
+  - radius: 0.7
+    speed: 18
+    phase: 45
+  orbitCenter: {x: -4, y: 2.5}

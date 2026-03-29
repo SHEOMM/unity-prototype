@@ -26,3 +26,11 @@ MonoBehaviour:
   visualScale: 0.35
   phaseThreshold: 3
   phaseEffectId: archer
+  orbitTerms:
+  - radius: 2.0
+    speed: 12
+    phase: 0
+  - radius: 0.8
+    speed: 36
+    phase: 0
+  orbitCenter: {x: 2, y: 3}

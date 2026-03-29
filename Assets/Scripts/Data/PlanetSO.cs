@@ -23,4 +23,11 @@ public class PlanetSO : CelestialBodySO
 
     [Tooltip("위상 효과 ID (없으면 위상 없음)")]
     public string phaseEffectId;
+
+    [Header("에피사이클 궤도")]
+    [Tooltip("궤도를 정의하는 에피사이클 항들 (2~4개 권장)")]
+    public EpicycleTerm[] orbitTerms;
+
+    [Tooltip("천구 위 궤도 중심점")]
+    public Vector2 orbitCenter;
 }
