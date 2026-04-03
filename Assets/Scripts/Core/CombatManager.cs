@@ -2,7 +2,7 @@ using UnityEngine;
 
 /// <summary>
 /// 전투 루프 담당. 천체 배치, 웨이브, 혜성을 관리한다.
-/// 슬래시 입력 처리는 SlashController에 위임.
+/// 우주선 발사 입력 처리는 ShipController에 위임.
 /// </summary>
 public class CombatManager : MonoBehaviour
 {
@@ -14,7 +14,7 @@ public class CombatManager : MonoBehaviour
     public float celestialRadius = 3f;
 
     private DeckManager _deck;
-    private SlashController _slashController;
+    private ShipController _shipController;
     private EnemySpawner _spawner;
     private CometSpawner _cometSpawner;
 
@@ -31,21 +31,21 @@ public class CombatManager : MonoBehaviour
         _deck = GetOrAdd<DeckManager>();
         _spawner = GetOrAdd<EnemySpawner>();
         _cometSpawner = GetOrAdd<CometSpawner>();
+        GetOrAdd<GravitySourceRegistry>();
 
-        var input = GetOrAdd<SlashInput>();
-        var detector = GetOrAdd<SlashDetector>();
+        var input = GetOrAdd<ShipInput>();
         var resolver = GetOrAdd<SlashResolver>();
-        var visual = GetOrAdd<SlashVisual>();
+        var visual = GetOrAdd<ShipVisual>();
         var spellFx = GetOrAdd<SpellEffectManager>();
 
         resolver.synergies = synergies;
         input.celestialYMin = celestialYCenter - celestialRadius;
 
-        _slashController = GetOrAdd<SlashController>();
-        _slashController.Initialize(input, detector, resolver, visual, spellFx);
-        _slashController.OnSlashComplete += result => PlayerState.Instance?.NotifySlashPerformed(result);
+        _shipController = GetOrAdd<ShipController>();
+        _shipController.Initialize(input, resolver, spellFx, visual);
+        _shipController.OnShipComplete += result => PlayerState.Instance?.NotifySlashPerformed(result);
 
-        GetOrAdd<SlashFeedbackView>();
+        GetOrAdd<ShipFeedbackView>();
     }
 
     public void StartCombat(WaveDefinitionSO[] waves, StarSO[] stars = null, PlanetSO[] planets = null)
@@ -68,12 +68,12 @@ public class CombatManager : MonoBehaviour
         _spawner.OnAllWavesComplete += OnAllWavesCleared;
         _spawner.StartWaves();
 
-        _slashController.Activate();
+        _shipController.Activate();
     }
 
     public void EndCombat()
     {
-        _slashController.Deactivate();
+        _shipController.Deactivate();
         _cometSpawner.OnCometCaptured -= OnCometCaptured;
         _spawner.OnAllWavesComplete -= OnAllWavesCleared;
     }

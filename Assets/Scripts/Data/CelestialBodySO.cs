@@ -22,4 +22,14 @@ public abstract class CelestialBodySO : ScriptableObject, IRewardApplicable
 
     [Header("키워드 (시저지용)")]
     public string[] keywords;
+
+    [Header("중력")]
+    [Tooltip("중력 세기 (0이면 중력 없음)")]
+    public float gravityStrength = 0f;
+
+    [Tooltip("중력 타입 ID (GravityTypeRegistry에서 매핑)")]
+    public string gravityTypeId = "standard";
+
+    [Tooltip("우주선 조우 반경")]
+    public float encounterRadius = 0.8f;
 }
