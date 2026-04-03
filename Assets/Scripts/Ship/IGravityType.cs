@@ -10,4 +10,7 @@ public interface IGravityType
     /// <param name="dirToSource">소스 방향 단위 벡터 (정규화됨)</param>
     /// <param name="forceMagnitude">거리/클램핑이 적용된 힘 크기</param>
     Vector2 CalculateForce(Vector2 shipPos, Vector2 dirToSource, float forceMagnitude);
+
+    /// <summary>중력 범위 시각화 색상</summary>
+    Color RangeColor { get; }
 }

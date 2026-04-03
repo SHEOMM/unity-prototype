@@ -135,14 +135,13 @@ public static class GameConstants
     {
         public const float FixedDt = 1f / 120f;
         public const int MaxSubSteps = 8;
-        public const float MinGravityDistance = 0.5f;
+        public const float MinGravityDistance = 0.8f;
         public const float MaxGravityForce = 50f;
         public const float MaxSpeed = 30f;
-        public const float GravityFalloffStart = 15f;
         public const float ShipCollisionRadius = 0.1f;
         public const float DefaultEnergy = 100f;
         public const float DefaultEnergyDrain = 15f;
-        public const float DefaultDrag = 0.02f;
+        public const float DefaultDrag = 0.05f;
         public const float LaunchPowerMultiplier = 5f;
         public const float BoundsMargin = 2f;
     }

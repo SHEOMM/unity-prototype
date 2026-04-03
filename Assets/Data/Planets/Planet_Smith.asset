@@ -26,3 +26,7 @@ MonoBehaviour:
   visualScale: 0.38
   phaseThreshold: 3
   phaseEffectId: smith
+  gravityStrength: 12
+  gravityTypeId: standard
+  encounterRadius: 0.8
+  gravityRange: 4

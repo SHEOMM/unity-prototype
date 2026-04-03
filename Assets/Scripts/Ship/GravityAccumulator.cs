@@ -31,7 +31,7 @@ public class GravityAccumulator
         if (distSq < minDistSq) distSq = minDistSq;
 
         float dist = Mathf.Sqrt(distSq);
-        if (dist > GameConstants.ShipPhysics.GravityFalloffStart) return Vector2.zero;
+        if (dist > src.GravityRange) return Vector2.zero;
 
         float forceMag = Mathf.Min(
             src.GravityStrength / distSq,

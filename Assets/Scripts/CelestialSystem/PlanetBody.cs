@@ -19,6 +19,7 @@ public class PlanetBody : MonoBehaviour, IGravitySource
     public Vector2 Position => transform.position;
     public float GravityStrength => Planet?.gravityStrength ?? 0f;
     public float EncounterRadius => Planet?.encounterRadius ?? GameConstants.PlanetAnim.ColliderRadius;
+    public float GravityRange => Planet?.gravityRange ?? 5f;
     public bool IsActive => gameObject.activeInHierarchy;
     public IGravityType CachedGravityType => _cachedGravityType;
 

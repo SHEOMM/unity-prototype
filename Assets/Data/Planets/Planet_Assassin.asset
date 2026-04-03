@@ -26,3 +26,7 @@ MonoBehaviour:
   visualScale: 0.32
   phaseThreshold: 2
   phaseEffectId: assassin
+  gravityStrength: 5
+  gravityTypeId: repulsive
+  encounterRadius: 0.8
+  gravityRange: 3

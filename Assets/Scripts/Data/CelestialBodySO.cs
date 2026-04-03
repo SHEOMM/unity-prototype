@@ -32,4 +32,7 @@ public abstract class CelestialBodySO : ScriptableObject, IRewardApplicable
 
     [Tooltip("우주선 조우 반경")]
     public float encounterRadius = 0.8f;
+
+    [Tooltip("중력 영향 범위 (이 거리 이상에서 중력 0)")]
+    public float gravityRange = 5f;
 }

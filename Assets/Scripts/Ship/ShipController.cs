@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 /// <summary>
 /// 우주선 발사 오케스트레이터. 입력→시뮬레이션→SlashResolver→효과 발동.
-/// SlashController와 동일한 구조적 역할.
 /// </summary>
 public class ShipController : MonoBehaviour
 {
@@ -42,6 +41,7 @@ public class ShipController : MonoBehaviour
         _input.OnAimStart += OnAimStart;
         _input.OnAimUpdate += OnAimUpdate;
         _input.OnLaunch += OnLaunch;
+        _input.OnAimCancel += OnAimCancel;
     }
 
     public void Deactivate()
@@ -51,29 +51,48 @@ public class ShipController : MonoBehaviour
         _input.OnAimStart -= OnAimStart;
         _input.OnAimUpdate -= OnAimUpdate;
         _input.OnLaunch -= OnLaunch;
+        _input.OnAimCancel -= OnAimCancel;
         _visual.HideAimLine();
+        _visual.HideLaunchMarker();
     }
 
     void Update()
     {
-        if (_activeShip == null || !_activeShip.IsAlive) return;
+        if (_visual == null || _activeShip == null || !_activeShip.IsAlive) return;
 
         _activeShip.Tick(Time.deltaTime);
-        _visual.UpdateShipPosition(_activeShip.Position, _activeShip.Velocity);
+        if (_activeShip != null && _activeShip.IsAlive)
+            _visual.UpdateShipPosition(_activeShip.Position, _activeShip.Velocity);
     }
 
-    void OnAimStart(Vector2 pos) { }
+    void OnAimStart(Vector2 pos)
+    {
+        _visual.ShowLaunchMarker(pos);
+    }
 
     void OnAimUpdate(Vector2 start, Vector2 current)
     {
         _visual.ShowAimLine(start, current);
     }
 
+    void OnAimCancel()
+    {
+        _visual.HideAimLine();
+        _visual.HideLaunchMarker();
+    }
+
     void OnLaunch(Vector2 origin, Vector2 direction, float power)
     {
+        // 비행 중이면 발사 불가. 비행 종료된 잔여 모델은 정리.
         if (_activeShip != null && _activeShip.IsAlive) return;
+        if (_activeShip != null && !_activeShip.IsAlive)
+        {
+            _activeShip = null;
+            _visual.DestroyShip();
+        }
 
         _visual.HideAimLine();
+        _visual.HideLaunchMarker();
 
         _activeShip = new ShipModel();
         _activeShip.OnPlanetEncountered += OnPlanetEncountered;
@@ -99,13 +118,11 @@ public class ShipController : MonoBehaviour
         _activeShip.OnFlightEnded -= OnFlightEnded;
         _activeShip = null;
 
-        // 하이라이트 해제
         foreach (var p in encounters)
             p.Highlight(false);
 
         if (encounters.Count == 0) return;
 
-        // SlashResolver 재사용 — 우주선이 수집한 행성 리스트로 효과 발동
         var result = _resolver.Resolve(encounters);
         _spellFx.ExecuteSpells(result);
         OnShipComplete?.Invoke(result);

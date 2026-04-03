@@ -4,6 +4,8 @@ using UnityEngine;
 [GravityTypeId("orbital")]
 public class OrbitalGravity : IGravityType
 {
+    public Color RangeColor => new Color(0.3f, 1f, 0.5f, 0.08f);
+
     public Vector2 CalculateForce(Vector2 shipPos, Vector2 dirToSource, float forceMagnitude)
     {
         Vector2 perpendicular = new Vector2(-dirToSource.y, dirToSource.x);

@@ -15,6 +15,7 @@ public class StarSystem : MonoBehaviour, IGravitySource
     public Vector2 Position => transform.position;
     public float GravityStrength => Data?.gravityStrength ?? 0f;
     public float EncounterRadius => Data?.encounterRadius ?? 1f;
+    public float GravityRange => Data?.gravityRange ?? 5f;
     public bool IsActive => gameObject.activeInHierarchy;
     public IGravityType CachedGravityType => _cachedGravityType;
 

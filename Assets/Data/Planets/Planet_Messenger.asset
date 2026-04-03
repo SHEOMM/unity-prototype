@@ -26,3 +26,7 @@ MonoBehaviour:
   visualScale: 0.3
   phaseThreshold: 3
   phaseEffectId: messenger
+  gravityStrength: 5
+  gravityTypeId: orbital
+  encounterRadius: 0.8
+  gravityRange: 3

@@ -19,6 +19,7 @@ public class DeckManager : MonoBehaviour
         var sys = go.AddComponent<StarSystem>();
         sys.Initialize(data, sprite);
         go.AddComponent<StarLabelView>();
+        go.AddComponent<GravityRangeView>();
         _stars.Add(sys);
         return sys;
     }
@@ -30,6 +31,7 @@ public class DeckManager : MonoBehaviour
         var body = go.AddComponent<PlanetBody>();
         body.Initialize(data, sprite);
         go.AddComponent<PlanetLabelView>();
+        go.AddComponent<GravityRangeView>();
         AttachHUDIfNeeded(go, data.effectId);
         return body;
     }

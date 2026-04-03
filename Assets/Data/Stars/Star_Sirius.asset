@@ -21,6 +21,10 @@ MonoBehaviour:
   keywords:
   - bright
   - swift
+  gravityStrength: 50
+  gravityTypeId: standard
+  encounterRadius: 1.5
+  gravityRange: 7
   orbits:
   - radius: 1
     angularSpeed: 16

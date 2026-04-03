@@ -26,3 +26,7 @@ MonoBehaviour:
   visualScale: 0.4
   phaseThreshold: 3
   phaseEffectId: emperor
+  gravityStrength: 15
+  gravityTypeId: standard
+  encounterRadius: 0.8
+  gravityRange: 4

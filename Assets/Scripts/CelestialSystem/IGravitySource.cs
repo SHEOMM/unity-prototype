@@ -9,6 +9,7 @@ public interface IGravitySource
     Vector2 Position { get; }
     float GravityStrength { get; }
     float EncounterRadius { get; }
+    float GravityRange { get; }
     bool IsActive { get; }
     IGravityType CachedGravityType { get; }
 }
