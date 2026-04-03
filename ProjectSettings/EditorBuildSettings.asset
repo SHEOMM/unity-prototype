@@ -6,6 +6,24 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/PersistentScene.unity
+    guid: 7d5adcfca6bfedd45a428cc378120e35
+  - enabled: 1
+    path: Assets/Scenes/MapScene.unity
+    guid: a779598663bc71145a2dcd98f4fe75e6
+  - enabled: 1
+    path: Assets/Scenes/CombatScene.unity
+    guid: 10a4fdcb5f386db408a80ddf8d6cbafa
+  - enabled: 1
+    path: Assets/Scenes/ShopScene.unity
+    guid: 57570cbb1fe178940a67e7c70c60e8a8
+  - enabled: 1
+    path: Assets/Scenes/RestScene.unity
+    guid: 8a49063026de0ae4e9964aa4c45fb985
+  - enabled: 1
+    path: Assets/Scenes/RewardScene.unity
+    guid: c12d16bf38190ef47a489c3b56f6a5b7
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   m_configObjects:

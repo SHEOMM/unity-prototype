@@ -44,9 +44,15 @@ public class SceneLoader : MonoBehaviour
             yield return load;
 
         _currentSceneName = sceneName;
+
+        // 로드된 씬을 active로 설정 (Camera.main이 이 씬의 카메라를 반환하도록)
+        var loadedScene = SceneManager.GetSceneByName(sceneName);
+        if (loadedScene.IsValid())
+            SceneManager.SetActiveScene(loadedScene);
+
         IsLoading = false;
 
-        Debug.Log($"[SceneLoader] {sceneName} 로드 완료");
+        Debug.Log($"[SceneLoader] {sceneName} 로드 완료 (active)");
         onComplete?.Invoke();
     }
 }

@@ -1,9 +1,11 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
 /// <summary>
 /// 게임 상태 머신 오케스트레이터.
-/// IRoomHandler를 통해 방 타입별로 씬/로직을 위임한다.
+/// PersistentScene에 존재하며 DontDestroyOnLoad로 영속.
+/// SceneLoader로 MapScene/CombatScene/ShopScene 등을 Additive 로드/언로드.
 /// </summary>
 public class GameManager : MonoBehaviour
 {
@@ -19,9 +21,6 @@ public class GameManager : MonoBehaviour
     [Header("혜성")]
     [SerializeField] private CometSO[] cometPool;
 
-    [Header("막 정의")]
-    [SerializeField] private ActDefinitionSO currentAct;
-
     [Header("맵 설정")]
     [SerializeField] private int mapFloors = 10;
     [SerializeField] private int mapColumns = 5;
@@ -30,53 +29,30 @@ public class GameManager : MonoBehaviour
     public GamePhase CurrentPhase { get; private set; }
     public System.Action<GamePhase, GamePhase> OnPhaseChanged;
 
-    private CombatManager _combat;
-    private RewardManager _reward;
+    // 영속 매니저 (DontDestroyOnLoad)
     private MapManager _map;
+    private SceneLoader _sceneLoader;
+
+    // 씬별 매니저 (씬 로드 후 찾기)
     private MapNode _currentNode;
 
-    private Dictionary<RoomType, IRoomHandler> _roomHandlers;
+    // 외부에서 접근 가능한 설정
+    public SynergyDefinitionSO[] Synergies => synergies;
+    public CometSO[] CometPool => cometPool;
 
     void Awake()
     {
-        if (Instance != null && Instance != this) { Destroy(this); return; }
+        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        GetOrAdd<PlanetRegistry>();
-        GetOrAdd<EnemyRegistry>();
+        // 영속 싱글턴들
         GetOrAdd<PlayerState>();
-        GetOrAdd<PlayerHPBar>();
-        GetOrAdd<PlayerDamageView>();
         GetOrAdd<RunState>();
-        GetOrAdd<SceneLoader>();
-
-        _combat = GetOrAdd<CombatManager>();
-        _combat.synergies = synergies;
-        _combat.cometPool = cometPool;
-        _combat.Initialize();
-        _reward = GetOrAdd<RewardManager>();
+        _sceneLoader = GetOrAdd<SceneLoader>();
         _map = GetOrAdd<MapManager>();
 
-        _combat.OnCombatComplete += () => EnterPhase(GamePhase.Reward);
-        _reward.OnRewardChosen += () => EnterPhase(GamePhase.Map);
         _map.OnNodeSelected += OnNodeSelected;
-
-        RegisterRoomHandlers();
-    }
-
-    void RegisterRoomHandlers()
-    {
-        _roomHandlers = new Dictionary<RoomType, IRoomHandler>();
-        var handlers = new IRoomHandler[]
-        {
-            new CombatRoomHandler(),
-            new BossRoomHandler(),
-            new ShopRoomHandler(),
-            new RestRoomHandler()
-        };
-        foreach (var h in handlers)
-            _roomHandlers[h.HandledType] = h;
     }
 
     void Start()
@@ -104,36 +80,31 @@ public class GameManager : MonoBehaviour
         CurrentPhase = phase;
         OnPhaseChanged?.Invoke(old, phase);
 
+        Debug.Log($"[GameManager] Phase: {old} → {phase}");
+
         switch (phase)
         {
             case GamePhase.Map:
                 if (_map.HasNextNodes())
-                    Debug.Log("[GameManager] 맵 화면 — 노드를 선택하세요");
+                    _sceneLoader.LoadScene("MapScene");
                 else
                     EnterPhase(GamePhase.Victory);
                 break;
 
             case GamePhase.Combat:
-                _combat.StartCombat(
-                    null, // TODO: 노드에 따른 웨이브 매핑
-                    RunState.Instance.starDeck.ToArray(),
-                    RunState.Instance.planetDeck.ToArray()
-                );
+                _sceneLoader.LoadScene("CombatScene");
                 break;
 
             case GamePhase.Reward:
-                _reward.ShowRewards(null); // TODO: 노드에 따른 보상 풀
+                _sceneLoader.LoadScene("RewardScene");
                 break;
 
             case GamePhase.Rest:
-                PlayerState.Instance?.Heal(PlayerState.Instance.maxHP * 0.3f);
-                Debug.Log("[휴식] HP 30% 회복");
-                EnterPhase(GamePhase.Map);
+                _sceneLoader.LoadScene("RestScene");
                 break;
 
             case GamePhase.Shop:
-                Debug.Log("[상점] TODO: 상점 UI");
-                EnterPhase(GamePhase.Map);
+                _sceneLoader.LoadScene("ShopScene");
                 break;
 
             case GamePhase.GameOver:
@@ -150,15 +121,8 @@ public class GameManager : MonoBehaviour
     void OnNodeSelected(MapNode node)
     {
         _currentNode = node;
+        Debug.Log($"[GameManager] 노드 선택: {node.roomType} (층 {node.floor})");
 
-        // IRoomHandler로 위임
-        if (_roomHandlers.TryGetValue(node.roomType, out var handler))
-        {
-            handler.Enter(node.roomType);
-            return;
-        }
-
-        // 핸들러 없는 타입은 기본 전투로 처리
         switch (node.roomType)
         {
             case RoomType.Combat:
@@ -173,7 +137,7 @@ public class GameManager : MonoBehaviour
                 EnterPhase(GamePhase.Shop);
                 break;
             default:
-                EnterPhase(GamePhase.Map);
+                EnterPhase(GamePhase.Combat);
                 break;
         }
     }
