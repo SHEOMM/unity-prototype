@@ -76,6 +76,7 @@ public class CombatManager : MonoBehaviour
         _shipController.Deactivate();
         _cometSpawner.OnCometCaptured -= OnCometCaptured;
         _spawner.OnAllWavesComplete -= OnAllWavesCleared;
+        _deck.ClearAll();
     }
 
     void SetupCelestialBodies(StarSO[] starDeck, PlanetSO[] planetDeck)

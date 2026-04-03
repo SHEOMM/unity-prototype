@@ -15,6 +15,7 @@ public class ShipController : MonoBehaviour
 
     private ShipModel _activeShip;
     private bool _active;
+    private bool _pendingFlightEnd; // 비행 종료를 Update 끝에서 안전하게 처리
 
     public System.Action<SlashResult> OnShipComplete;
 
@@ -58,20 +59,44 @@ public class ShipController : MonoBehaviour
 
     void Update()
     {
+        // 비행 종료 지연 처리 — Tick 중이 아닌 Update 끝에서 안전하게 정리
+        if (_pendingFlightEnd)
+        {
+            _pendingFlightEnd = false;
+            ProcessFlightEnd();
+            return;
+        }
+
         if (_visual == null || _activeShip == null || !_activeShip.IsAlive) return;
 
         _activeShip.Tick(Time.deltaTime);
-        if (_activeShip != null && _activeShip.IsAlive)
+
+        // Tick 중 비행이 끝났으면 다음 프레임에서 처리
+        if (_activeShip != null && !_activeShip.IsAlive)
+        {
+            _pendingFlightEnd = true;
+            return;
+        }
+
+        if (_activeShip != null)
             _visual.UpdateShipPosition(_activeShip.Position, _activeShip.Velocity);
     }
 
+    bool IsReadyToLaunch => _activeShip == null;
+
     void OnAimStart(Vector2 pos)
     {
+        if (!IsReadyToLaunch)
+        {
+            Debug.Log($"[Ship] 조준 시작 차단: 비행 중 (IsAlive={_activeShip?.IsAlive})");
+            return;
+        }
         _visual.ShowLaunchMarker(pos);
     }
 
     void OnAimUpdate(Vector2 start, Vector2 current)
     {
+        if (!IsReadyToLaunch) return;
         _visual.ShowAimLine(start, current);
     }
 
@@ -83,20 +108,20 @@ public class ShipController : MonoBehaviour
 
     void OnLaunch(Vector2 origin, Vector2 direction, float power)
     {
-        // 비행 중이면 발사 불가. 비행 종료된 잔여 모델은 정리.
-        if (_activeShip != null && _activeShip.IsAlive) return;
-        if (_activeShip != null && !_activeShip.IsAlive)
+        if (!IsReadyToLaunch)
         {
-            _activeShip = null;
-            _visual.DestroyShip();
+            Debug.Log($"[Ship] 발사 차단: 비행 중 (IsAlive={_activeShip?.IsAlive})");
+            return;
         }
 
         _visual.HideAimLine();
         _visual.HideLaunchMarker();
 
+        Debug.Log($"[Ship] 발사! origin={origin}, dir={direction}, power={power:F1}");
+
         _activeShip = new ShipModel();
+        _activeShip.OnFlightEnded += () => _pendingFlightEnd = true;
         _activeShip.OnPlanetEncountered += OnPlanetEncountered;
-        _activeShip.OnFlightEnded += OnFlightEnded;
         _activeShip.Launch(origin, direction * power, GameConstants.ShipPhysics.DefaultEnergy);
 
         _visual.SpawnShip(origin);
@@ -105,17 +130,18 @@ public class ShipController : MonoBehaviour
     void OnPlanetEncountered(PlanetBody planet)
     {
         planet.Highlight(true);
+        Debug.Log($"[Ship] 행성 조우: {planet.Planet.bodyName}");
     }
 
-    void OnFlightEnded()
+    void ProcessFlightEnd()
     {
         if (_activeShip == null) return;
+
+        Debug.Log($"[Ship] 비행 종료. 조우 행성 {_activeShip.Encounters.Count}개");
 
         _visual.DestroyShip();
 
         var encounters = new List<PlanetBody>(_activeShip.Encounters);
-        _activeShip.OnPlanetEncountered -= OnPlanetEncountered;
-        _activeShip.OnFlightEnded -= OnFlightEnded;
         _activeShip = null;
 
         foreach (var p in encounters)

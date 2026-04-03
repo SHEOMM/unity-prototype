@@ -48,7 +48,11 @@ public class ShipModel
 
         _timestep.Accumulate(deltaTime);
         while (_timestep.ConsumeStep())
+        {
             SimulateStep(GameConstants.ShipPhysics.FixedDt);
+            // 서브스텝 중 바운드/에너지 초과 시 즉시 중단
+            if (Energy <= 0f || IsOutOfBounds()) break;
+        }
 
         if (Energy <= 0f || IsOutOfBounds())
         {
@@ -77,8 +81,9 @@ public class ShipModel
 
     private bool IsOutOfBounds()
     {
+        // 카메라 ortho size 6 기준: 높이 ±6, 너비 ±8 (aspect ~1.3)
         float m = GameConstants.ShipPhysics.BoundsMargin;
-        return Position.x < -15f - m || Position.x > 15f + m
-            || Position.y < -10f - m || Position.y > 10f + m;
+        return Position.x < -9f - m || Position.x > 9f + m
+            || Position.y < -7f - m || Position.y > 7f + m;
     }
 }

@@ -143,7 +143,7 @@ public static class GameConstants
         public const float DefaultEnergyDrain = 15f;
         public const float DefaultDrag = 0.05f;
         public const float LaunchPowerMultiplier = 5f;
-        public const float BoundsMargin = 2f;
+        public const float BoundsMargin = 0.5f;
     }
 
     // ── 캐싱된 공유 리소스 ──

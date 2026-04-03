@@ -9,7 +9,6 @@ public class ShipInput : MonoBehaviour
 {
     public float celestialYMin = 0f;
 
-    /// <summary>발사 원점 (천상/지상 경계 중앙)</summary>
     public Vector2 LaunchOrigin => new Vector2(0f, celestialYMin + 0.2f);
 
     public System.Action<Vector2> OnAimStart;
@@ -32,14 +31,16 @@ public class ShipInput : MonoBehaviour
         if (_mouse == null || _cam == null) return;
         Vector2 mp = _cam.ScreenToWorldPoint(_mouse.position.ReadValue());
 
-        if (_mouse.leftButton.wasPressedThisFrame)
+        if (_mouse.leftButton.wasPressedThisFrame && !_aiming)
         {
             _aiming = true;
             OnAimStart?.Invoke(LaunchOrigin);
         }
 
-        if (_aiming)
+        if (_aiming && _mouse.leftButton.isPressed)
+        {
             OnAimUpdate?.Invoke(LaunchOrigin, mp);
+        }
 
         if (_mouse.leftButton.wasReleasedThisFrame && _aiming)
         {
@@ -49,13 +50,24 @@ public class ShipInput : MonoBehaviour
 
             if (dist < 0.3f)
             {
-                // 너무 짧은 드래그 — 취소
+                Debug.Log($"[ShipInput] 조준 취소: 드래그 거리 {dist:F2} < 0.3");
                 OnAimCancel?.Invoke();
                 return;
             }
 
             float power = dist * GameConstants.ShipPhysics.LaunchPowerMultiplier;
+            Debug.Log($"[ShipInput] 발사 요청: dist={dist:F2}, power={power:F1}");
             OnLaunch?.Invoke(LaunchOrigin, delta.normalized, power);
+        }
+    }
+
+    /// <summary>외부에서 조준을 강제로 취소할 때 호출</summary>
+    public void ForceCancel()
+    {
+        if (_aiming)
+        {
+            _aiming = false;
+            OnAimCancel?.Invoke();
         }
     }
 }

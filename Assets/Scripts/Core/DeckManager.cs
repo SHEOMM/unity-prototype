@@ -56,6 +56,22 @@ public class DeckManager : MonoBehaviour
 
     public List<StarSystem> Stars => _stars;
 
+    /// <summary>현재 씬의 모든 천체 GameObject를 파괴하고 리스트를 초기화한다.</summary>
+    public void ClearAll()
+    {
+        foreach (var star in _stars)
+            if (star != null) Destroy(star.gameObject);
+        _stars.Clear();
+
+        // PlanetRegistry에 남은 행성들도 정리
+        var planets = PlanetRegistry.Instance?.GetAll();
+        if (planets != null)
+        {
+            foreach (var p in planets)
+                if (p != null) Destroy(p.gameObject);
+        }
+    }
+
     void AttachHUDIfNeeded(GameObject go, string effectId)
     {
         var effectType = EffectRegistry.GetEffectType(effectId);
