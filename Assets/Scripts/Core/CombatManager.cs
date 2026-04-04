@@ -32,6 +32,7 @@ public class CombatManager : MonoBehaviour
         _spawner = GetOrAdd<EnemySpawner>();
         _cometSpawner = GetOrAdd<CometSpawner>();
         GetOrAdd<GravitySourceRegistry>();
+        GetOrAdd<EnemyRegistry>();
 
         var input = GetOrAdd<ShipInput>();
         var resolver = GetOrAdd<SlashResolver>();

@@ -33,12 +33,16 @@ public class GameManager : MonoBehaviour
     private MapManager _map;
     private SceneLoader _sceneLoader;
 
-    // 씬별 매니저 (씬 로드 후 찾기)
     private MapNode _currentNode;
 
-    // 외부에서 접근 가능한 설정
+    // 외부에서 접근 가능한 설정/상태
     public SynergyDefinitionSO[] Synergies => synergies;
     public CometSO[] CometPool => cometPool;
+    public MapNode CurrentNode => _currentNode;
+    public WaveDefinitionSO[] DefaultWaves => defaultWaves;
+
+    [Header("기본 웨이브")]
+    [SerializeField] private WaveDefinitionSO[] defaultWaves;
 
     void Awake()
     {

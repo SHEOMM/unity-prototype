@@ -172,6 +172,10 @@ MonoBehaviour:
   mapFloors: 10
   mapColumns: 5
   mapPaths: 4
+  defaultWaves:
+  - {fileID: 11400000, guid: c2b365d670f785b438d018c9a4f015d1, type: 2}
+  - {fileID: 11400000, guid: 5b0bf2c914f046245bae0b6a7e0213fe, type: 2}
+  - {fileID: 11400000, guid: 75844ec8c6eb2854aa2f28ba45fdcceb, type: 2}
 --- !u!4 &354818482
 Transform:
   m_ObjectHideFlags: 0

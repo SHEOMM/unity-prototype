@@ -7,30 +7,30 @@ public class CombatSceneBoot : MonoBehaviour
 {
     void Start()
     {
-        // 카메라 설정
-        var cam = Camera.main;
-        if (cam != null)
-        {
-            cam.transform.position = new Vector3(0, 1, -10);
-            cam.orthographicSize = 6;
-        }
+        var gm = GameManager.Instance;
+        if (gm == null) { Debug.LogError("[CombatScene] GameManager not found"); return; }
 
         // CombatManager를 이 씬에 생성
         var combatGo = new GameObject("CombatManager");
         var combat = combatGo.AddComponent<CombatManager>();
-        combat.synergies = GameManager.Instance?.Synergies;
-        combat.cometPool = GameManager.Instance?.CometPool;
+        combat.synergies = gm.Synergies;
+        combat.cometPool = gm.CometPool;
         combat.Initialize();
 
         // 전투 완료 시 → Reward 페이즈
-        combat.OnCombatComplete += () => GameManager.Instance?.EnterPhase(GamePhase.Reward);
+        combat.OnCombatComplete += () => gm.EnterPhase(GamePhase.Reward);
+
+        // 웨이브 결정
+        WaveDefinitionSO[] waves = gm.DefaultWaves;
 
         // 전투 시작
         combat.StartCombat(
-            null,
+            waves,
             RunState.Instance?.starDeck?.ToArray(),
             RunState.Instance?.planetDeck?.ToArray()
         );
+
+        Debug.Log($"[CombatScene] 전투 시작 — 웨이브 {(waves != null ? waves.Length : 0)}개");
 
         // UI
         combatGo.AddComponent<PlayerHPBar>();

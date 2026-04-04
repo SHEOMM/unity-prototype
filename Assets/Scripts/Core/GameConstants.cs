@@ -153,7 +153,13 @@ public static class GameConstants
         get
         {
             if (_spriteMaterial == null)
-                _spriteMaterial = new Material(Shader.Find("Sprites/Default"));
+            {
+                // URP 2D Lit 셰이더 우선, 없으면 기본 스프라이트 셰이더
+                var shader = Shader.Find("Universal Render Pipeline/2D/Sprite-Lit-Default");
+                if (shader == null)
+                    shader = Shader.Find("Sprites/Default");
+                _spriteMaterial = new Material(shader);
+            }
             return _spriteMaterial;
         }
     }
