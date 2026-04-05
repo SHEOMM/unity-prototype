@@ -20,6 +20,10 @@ MonoBehaviour:
   element: 0
   keywords:
   - elegant
+  gravityStrength: 35
+  gravityTypeId: orbital
+  encounterRadius: 1.5
+  gravityRange: 6
   orbits:
   - radius: 1.5
     angularSpeed: 13

@@ -21,6 +21,10 @@ MonoBehaviour:
   keywords:
   - guide
   - center
+  gravityStrength: 40
+  gravityTypeId: standard
+  encounterRadius: 1.5
+  gravityRange: 6
   orbits:
   - radius: 1.2
     angularSpeed: 10

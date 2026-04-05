@@ -5,14 +5,27 @@ using System.Collections.Generic;
 /// 항성(Star) 런타임. 고정 위치에서 궤도들을 관리한다.
 /// 행성을 궤도에 배치하고, 공전을 구동한다.
 /// </summary>
-public class StarSystem : MonoBehaviour
+public class StarSystem : MonoBehaviour, IGravitySource
 {
     public StarSO Data { get; private set; }
     private List<OrbitRing> _orbits = new List<OrbitRing>();
+    private IGravityType _cachedGravityType;
+
+    // IGravitySource 구현
+    public Vector2 Position => transform.position;
+    public float GravityStrength => Data?.gravityStrength ?? 0f;
+    public float EncounterRadius => Data?.encounterRadius ?? 1f;
+    public float GravityRange => Data?.gravityRange ?? 5f;
+    public bool IsActive => gameObject.activeInHierarchy;
+    public IGravityType CachedGravityType => _cachedGravityType;
+
+    void OnEnable() { if (GravitySourceRegistry.Instance != null) GravitySourceRegistry.Instance.Register(this); }
+    void OnDisable() { if (GravitySourceRegistry.Instance != null) GravitySourceRegistry.Instance.Unregister(this); }
 
     public void Initialize(StarSO data, Sprite starSprite)
     {
         Data = data;
+        _cachedGravityType = GravityTypeRegistry.Get(data.gravityTypeId);
         transform.position = new Vector3(data.celestialPosition.x, data.celestialPosition.y, 0);
         transform.localScale = Vector3.one * data.visualScale;
         gameObject.name = data.bodyName;

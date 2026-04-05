@@ -18,5 +18,3 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5b0bf2c914f046245bae0b6a7e0213fe, type: 2}
   rewardPool:
   - {fileID: 11400000, guid: cf1fb5640e68dab4e8771be271bbfb54, type: 2}
-  - {fileID: 11400000, guid: 42f310924e1d73944aba0a7c0dc8f8ee, type: 2}
-  - {fileID: 11400000, guid: bfb7d58b557b9fe468d01f7e0194d63e, type: 2}

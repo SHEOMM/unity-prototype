@@ -26,3 +26,7 @@ MonoBehaviour:
   visualScale: 0.35
   phaseThreshold: 3
   phaseEffectId: storm
+  gravityStrength: 10
+  gravityTypeId: repulsive
+  encounterRadius: 0.8
+  gravityRange: 4

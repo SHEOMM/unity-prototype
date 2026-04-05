@@ -130,6 +130,22 @@ public static class GameConstants
         public const float DefaultDelayBetweenWaves = 5f;
     }
 
+    // ── 우주선 물리 ──
+    public static class ShipPhysics
+    {
+        public const float FixedDt = 1f / 120f;
+        public const int MaxSubSteps = 8;
+        public const float MinGravityDistance = 0.8f;
+        public const float MaxGravityForce = 50f;
+        public const float MaxSpeed = 30f;
+        public const float ShipCollisionRadius = 0.1f;
+        public const float DefaultEnergy = 100f;
+        public const float DefaultEnergyDrain = 15f;
+        public const float DefaultDrag = 0.05f;
+        public const float LaunchPowerMultiplier = 5f;
+        public const float BoundsMargin = 0.5f;
+    }
+
     // ── 캐싱된 공유 리소스 ──
     private static Material _spriteMaterial;
     public static Material SpriteMaterial
@@ -137,7 +153,13 @@ public static class GameConstants
         get
         {
             if (_spriteMaterial == null)
-                _spriteMaterial = new Material(Shader.Find("Sprites/Default"));
+            {
+                // URP 2D Lit 셰이더 우선, 없으면 기본 스프라이트 셰이더
+                var shader = Shader.Find("Universal Render Pipeline/2D/Sprite-Lit-Default");
+                if (shader == null)
+                    shader = Shader.Find("Sprites/Default");
+                _spriteMaterial = new Material(shader);
+            }
             return _spriteMaterial;
         }
     }

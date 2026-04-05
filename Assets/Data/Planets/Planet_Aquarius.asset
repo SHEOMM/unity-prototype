@@ -25,3 +25,7 @@ MonoBehaviour:
   visualScale: 0.35
   phaseThreshold: 3
   phaseEffectId: aquarius
+  gravityStrength: 8
+  gravityTypeId: standard
+  encounterRadius: 0.8
+  gravityRange: 3
