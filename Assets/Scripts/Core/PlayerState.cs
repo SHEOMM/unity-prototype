@@ -44,6 +44,14 @@ public class PlayerState : MonoBehaviour
         Debug.Log($"[유물] {data.relicName} 획득!");
     }
 
+    public bool HasRelic(RelicSO data)
+    {
+        if (data == null) return false;
+        for (int i = 0; i < _relics.Count; i++)
+            if (_relics[i].data == data) return true;
+        return false;
+    }
+
     public event System.Action<float> OnDamaged;
     public event System.Action<float, float> OnHPChanged;
 

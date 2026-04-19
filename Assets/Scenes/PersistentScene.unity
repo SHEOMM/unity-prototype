@@ -214,6 +214,24 @@ MonoBehaviour:
   cometPool:
   - {fileID: 11400000, guid: 150c92c1b2357b04fa4ab33c186bcf88, type: 2}
   - {fileID: 11400000, guid: 655cb8cb44a0272448cf01429d569a7d, type: 2}
+  rewardOrbitPool:
+  - {fileID: 11400000, guid: 3c55ffe2bbc2ee74781303d7681cfd9f, type: 2}
+  - {fileID: 11400000, guid: eea816350b4b32b43a0af6bf7af96515, type: 2}
+  - {fileID: 11400000, guid: 3526f8b83de21d34594e8349b0b546e9, type: 2}
+  rewardPlanetPool:
+  - {fileID: 11400000, guid: 31e3d5b464b388842abdbcb974774684, type: 2}
+  - {fileID: 11400000, guid: 5c5b474ef2dc055458ac6359d27be265, type: 2}
+  - {fileID: 11400000, guid: cf1fb5640e68dab4e8771be271bbfb54, type: 2}
+  - {fileID: 11400000, guid: c018cbbacf6695a4a89cda74202b7231, type: 2}
+  - {fileID: 11400000, guid: bfb7d58b557b9fe468d01f7e0194d63e, type: 2}
+  - {fileID: 11400000, guid: 42f310924e1d73944aba0a7c0dc8f8ee, type: 2}
+  - {fileID: 11400000, guid: d288875c24cec8a48b0f00ba5e857070, type: 2}
+  - {fileID: 11400000, guid: 9af01fe1ff01b884aa5eb78ef6327732, type: 2}
+  - {fileID: 11400000, guid: a67863bf0d31ec54cadea3610f3667ff, type: 2}
+  - {fileID: 11400000, guid: 36520a051a02666449f11cc319fbc4ec, type: 2}
+  - {fileID: 11400000, guid: 124af75a03613f04cbbdea1a64b8de47, type: 2}
+  - {fileID: 11400000, guid: f6f894ebbc543be45916444a175ec42e, type: 2}
+  rewardRelicPool: []
   mapFloors: 10
   mapColumns: 5
   mapPaths: 4

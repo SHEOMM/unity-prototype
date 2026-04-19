@@ -13,6 +13,13 @@ public class EnemySpawner : MonoBehaviour
     public float spawnXMax = 10f;
     public float delayBetweenWaves = 5f;
 
+    /// <summary>
+    /// 웨이브 내 각 엔트리의 `count`에 곱해지는 난이도 승수.
+    /// CombatSceneBoot가 RunState.currentFloor + MapNode.roomType을 기반으로 계산해 주입.
+    /// 최소 1개는 보장 (Ceil).
+    /// </summary>
+    public float spawnCountMultiplier = 1f;
+
     public System.Action<int> OnWaveStart;
     public System.Action<int> OnWaveComplete;
     public System.Action OnAllWavesComplete;
@@ -46,7 +53,8 @@ public class EnemySpawner : MonoBehaviour
         {
             if (entry.enemy == null) continue;
             yield return new WaitForSeconds(entry.preDelay);
-            for (int i = 0; i < entry.count; i++)
+            int scaledCount = Mathf.Max(1, Mathf.CeilToInt(entry.count * spawnCountMultiplier));
+            for (int i = 0; i < scaledCount; i++)
             {
                 SpawnEnemy(entry.enemy);
                 yield return new WaitForSeconds(entry.spawnInterval);

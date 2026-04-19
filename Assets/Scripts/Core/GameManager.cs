@@ -25,6 +25,16 @@ public class GameManager : MonoBehaviour
     [Header("혜성")]
     [SerializeField] private CometSO[] cometPool;
 
+    [Header("보상 풀")]
+    [Tooltip("스테이지 클리어 보상으로 나올 수 있는 궤도 목록. 보유한 것은 자동 제외.")]
+    [SerializeField] private OrbitSO[] rewardOrbitPool;
+
+    [Tooltip("스테이지 클리어 보상으로 나올 수 있는 행성 목록. 덱에 이미 있으면 자동 제외.")]
+    [SerializeField] private PlanetSO[] rewardPlanetPool;
+
+    [Tooltip("스테이지 클리어 보상으로 나올 수 있는 유물. (선택) 비어있어도 무방.")]
+    [SerializeField] private RelicSO[] rewardRelicPool;
+
     [Header("맵 설정")]
     [SerializeField] private int mapFloors = 10;
     [SerializeField] private int mapColumns = 5;
@@ -48,6 +58,9 @@ public class GameManager : MonoBehaviour
     public PlanetSO[] StartingPlanets => startingPlanets;
     public OrbitSO[] StartingOrbits => startingOrbits;
     public OrbitAssignment[] DefaultAssignments => defaultAssignments;
+    public OrbitSO[] RewardOrbitPool => rewardOrbitPool;
+    public PlanetSO[] RewardPlanetPool => rewardPlanetPool;
+    public RelicSO[] RewardRelicPool => rewardRelicPool;
 
     [Header("기본 웨이브")]
     [SerializeField] private WaveDefinitionSO[] defaultWaves;

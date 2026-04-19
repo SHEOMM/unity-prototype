@@ -64,7 +64,8 @@ public class CombatManager : MonoBehaviour
     public void StartCombat(WaveDefinitionSO[] waves,
                             System.Collections.Generic.List<OrbitSO> orbits = null,
                             System.Collections.Generic.List<OrbitAssignment> assignments = null,
-                            System.Collections.Generic.List<PlanetSO> planetDeck = null)
+                            System.Collections.Generic.List<PlanetSO> planetDeck = null,
+                            float spawnCountMultiplier = 1f)
     {
         if (orbits != null && orbits.Count > 0)
             SetupCosmos(orbits, assignments, planetDeck);
@@ -79,6 +80,7 @@ public class CombatManager : MonoBehaviour
         }
 
         _spawner.waves = waves;
+        _spawner.spawnCountMultiplier = spawnCountMultiplier;
         _spawner.OnWaveStart += i => PlayerState.Instance?.NotifyWaveStart(i);
         _spawner.OnWaveComplete += i => PlayerState.Instance?.NotifyWaveComplete(i);
         _spawner.OnAllWavesComplete += OnAllWavesCleared;

@@ -9,8 +9,16 @@ using UnityEngine;
 /// 각 궤도 런타임은 OrbitBody가 담당 — 반경·공전 속도·시작 각도로 행성 1개를 공전시킴.
 /// </summary>
 [CreateAssetMenu(fileName = "NewOrbit", menuName = "Data/Orbit")]
-public class OrbitSO : ScriptableObject
+public class OrbitSO : ScriptableObject, IRewardApplicable
 {
+    /// <summary>보상 적용 시 궤도를 RunState에 추가하고 미배치 행성이 있으면 자동 부착.</summary>
+    public void ApplyAsReward(PlayerState player, RunState run)
+    {
+        if (run == null) return;
+        run.UnlockOrbit(this);
+        run.TryAutoAssignPlanetToOrbit(this);
+    }
+
     [Header("기본 정보")]
     public string orbitName;
     [TextArea] public string description;
