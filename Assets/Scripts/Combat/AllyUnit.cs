@@ -101,9 +101,11 @@ public class AllyUnit : MonoBehaviour, IStatusHost, IMoveable
         }
     }
 
-    /// <summary>기본 AI: 가장 가까운 적으로 접근 + 범위 내면 공격.</summary>
+    /// <summary>기본 AI: 가장 가까운 적으로 접근 + 범위 내면 공격. Stun(moveSpeed≤0) 시 스킵.</summary>
     void DefaultTick(float dt)
     {
+        if (moveSpeed <= 0f) return; // Stun 가드
+
         var target = FindNearestEnemy();
         if (target == null) return;
 
@@ -146,6 +148,11 @@ public class AllyUnit : MonoBehaviour, IStatusHost, IMoveable
     public void TakeDamage(float dmg, Element element = Element.None)
     {
         if (_deathTimer >= 0) return;
+
+        // Enemy와 동일한 DamageModifier 순회 (Weakness 등)
+        for (int i = 0; i < _statuses.Count; i++)
+            if (_statuses[i].effect is IDamageModifier mod)
+                dmg = mod.ModifyIncoming(dmg, element);
 
         if (_behavior != null)
             dmg = _behavior.ModifyIncomingDamage(this, dmg, element);
