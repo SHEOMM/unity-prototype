@@ -1,7 +1,7 @@
 using UnityEngine;
 
 /// <summary>
-/// MapScene 진입 시 자동 초기화. MapView를 생성하고 MapManager에 연결.
+/// MapScene 진입 시 자동 초기화. MapView + Cosmos 패널 + 버튼 생성.
 /// 활성 씬 설정 + 환경 적용은 SceneBootBase가 처리.
 /// </summary>
 public class MapSceneBoot : SceneBootBase
@@ -15,5 +15,14 @@ public class MapSceneBoot : SceneBootBase
         var view = viewGo.AddComponent<MapView>();
         view.Initialize(map);
         view.Show();
+
+        // Cosmos 패널 (초기 숨김) + 상단 토글 버튼
+        var panelGo = new GameObject("CosmosPanel");
+        var panel = panelGo.AddComponent<CosmosPanelView>();
+        panel.Initialize();
+
+        var btnGo = new GameObject("CosmosButton");
+        var btn = btnGo.AddComponent<CosmosMapButton>();
+        btn.Bind(panel);
     }
 }

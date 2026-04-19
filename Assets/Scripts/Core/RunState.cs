@@ -106,6 +106,74 @@ public class RunState : MonoBehaviour
     }
 
     public void AdvanceFloor() { currentFloor++; }
+
+    // ── Phase 9c: Cosmos 패널 수동 편집 헬퍼 ────────────────────────
+
+    /// <summary>
+    /// 궤도에 행성을 배치한다. 기존에 이 행성이 다른 궤도에 있었으면 그곳에서 제거.
+    /// 기존에 이 궤도에 다른 행성이 있었으면 그 행성도 제거(호출자가 처리 — 교환은 SwapOrbitAssignments).
+    /// 원자적 상태 변경: 모든 Cosmos 드롭 케이스의 기반이 되는 헬퍼.
+    /// </summary>
+    public void AssignPlanetToOrbit(OrbitSO orbit, PlanetSO planet)
+    {
+        if (orbit == null || planet == null) return;
+        if (string.IsNullOrEmpty(orbit.orbitName) || string.IsNullOrEmpty(planet.bodyName)) return;
+
+        // 같은 행성이 다른 궤도에 있었으면 해제
+        orbitAssignments.RemoveAll(a => a.planetName == planet.bodyName);
+        // 이 궤도에 다른 행성이 있었으면 해제
+        orbitAssignments.RemoveAll(a => a.orbitName == orbit.orbitName);
+        orbitAssignments.Add(new OrbitAssignment { orbitName = orbit.orbitName, planetName = planet.bodyName });
+    }
+
+    /// <summary>행성을 어떤 궤도에서도 분리 (인벤토리로 되돌림).</summary>
+    public void UnassignPlanet(PlanetSO planet)
+    {
+        if (planet == null) return;
+        orbitAssignments.RemoveAll(a => a.planetName == planet.bodyName);
+    }
+
+    /// <summary>두 궤도의 점유 행성을 맞바꾼다. 한쪽이 비어있으면 단순 이동.</summary>
+    public void SwapOrbitAssignments(OrbitSO a, OrbitSO b)
+    {
+        if (a == null || b == null || a == b) return;
+        string planetA = FindPlanetForOrbit(a.orbitName);
+        string planetB = FindPlanetForOrbit(b.orbitName);
+
+        orbitAssignments.RemoveAll(x => x.orbitName == a.orbitName || x.orbitName == b.orbitName);
+
+        if (!string.IsNullOrEmpty(planetA))
+            orbitAssignments.Add(new OrbitAssignment { orbitName = b.orbitName, planetName = planetA });
+        if (!string.IsNullOrEmpty(planetB))
+            orbitAssignments.Add(new OrbitAssignment { orbitName = a.orbitName, planetName = planetB });
+    }
+
+    /// <summary>현재 어떤 궤도에 배치된 행성 목록.</summary>
+    public List<PlanetSO> GetAssignedPlanets()
+    {
+        var result = new List<PlanetSO>();
+        foreach (var p in planetDeck)
+            if (p != null && FindOrbitForPlanet(p.bodyName) != null) result.Add(p);
+        return result;
+    }
+
+    /// <summary>덱에 있으나 어떤 궤도에도 배치되지 않은 행성 목록.</summary>
+    public List<PlanetSO> GetUnassignedPlanets()
+    {
+        var result = new List<PlanetSO>();
+        foreach (var p in planetDeck)
+            if (p != null && FindOrbitForPlanet(p.bodyName) == null) result.Add(p);
+        return result;
+    }
+
+    /// <summary>이름으로 덱에서 PlanetSO 찾기.</summary>
+    public PlanetSO FindPlanetByName(string planetName)
+    {
+        if (string.IsNullOrEmpty(planetName)) return null;
+        foreach (var p in planetDeck)
+            if (p != null && p.bodyName == planetName) return p;
+        return null;
+    }
 }
 
 [Serializable]
