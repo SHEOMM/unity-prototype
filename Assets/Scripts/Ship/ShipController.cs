@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 /// <summary>
 /// 우주선 발사 오케스트레이터. 입력→시뮬레이션→SlashResolver→효과 발동.
+/// 조준 중에는 슬링샷 밴드와 궤적 프리뷰를 렌더.
 /// </summary>
 public class ShipController : MonoBehaviour
 {
@@ -43,6 +44,7 @@ public class ShipController : MonoBehaviour
         _input.OnAimUpdate += OnAimUpdate;
         _input.OnLaunch += OnLaunch;
         _input.OnAimCancel += OnAimCancel;
+        _visual.ShowOriginIndicator(_input.LaunchOrigin, GameConstants.ShipPhysics.PullGateRadius);
     }
 
     public void Deactivate()
@@ -53,13 +55,13 @@ public class ShipController : MonoBehaviour
         _input.OnAimUpdate -= OnAimUpdate;
         _input.OnLaunch -= OnLaunch;
         _input.OnAimCancel -= OnAimCancel;
-        _visual.HideAimLine();
-        _visual.HideLaunchMarker();
+        _visual.HideSlingshotBand();
+        _visual.HideTrajectoryPreview();
+        _visual.HideOriginIndicator();
     }
 
     void Update()
     {
-        // 비행 종료 지연 처리 — Tick 중이 아닌 Update 끝에서 안전하게 정리
         if (_pendingFlightEnd)
         {
             _pendingFlightEnd = false;
@@ -71,7 +73,6 @@ public class ShipController : MonoBehaviour
 
         _activeShip.Tick(Time.deltaTime);
 
-        // Tick 중 비행이 끝났으면 다음 프레임에서 처리
         if (_activeShip != null && !_activeShip.IsAlive)
         {
             _pendingFlightEnd = true;
@@ -91,19 +92,26 @@ public class ShipController : MonoBehaviour
             Debug.Log($"[Ship] 조준 시작 차단: 비행 중 (IsAlive={_activeShip?.IsAlive})");
             return;
         }
-        _visual.ShowLaunchMarker(pos);
+        // 지속 표시 중인 OriginIndicator가 이미 있으므로 별도 처리 불필요
     }
 
-    void OnAimUpdate(Vector2 start, Vector2 current)
+    void OnAimUpdate(Vector2 origin, Vector2 clampedPullPos, float pullRatio)
     {
         if (!IsReadyToLaunch) return;
-        _visual.ShowAimLine(start, current);
+
+        _visual.ShowSlingshotBand(origin, clampedPullPos, pullRatio);
+
+        // 발사 방향/속도 = 당김의 반대 × LaunchPowerMultiplier
+        Vector2 pullVec = origin - clampedPullPos;
+        Vector2 launchVelocity = pullVec * GameConstants.ShipPhysics.LaunchPowerMultiplier;
+        _visual.ShowTrajectoryPreview(origin, launchVelocity);
     }
 
     void OnAimCancel()
     {
-        _visual.HideAimLine();
-        _visual.HideLaunchMarker();
+        _visual.HideSlingshotBand();
+        _visual.HideTrajectoryPreview();
+        // OriginIndicator는 다음 조준을 위해 그대로 유지
     }
 
     void OnLaunch(Vector2 origin, Vector2 direction, float power)
@@ -114,8 +122,9 @@ public class ShipController : MonoBehaviour
             return;
         }
 
-        _visual.HideAimLine();
-        _visual.HideLaunchMarker();
+        _visual.HideSlingshotBand();
+        _visual.HideTrajectoryPreview();
+        // SpawnShip이 내부에서 HideOriginIndicator 호출
 
         Debug.Log($"[Ship] 발사! origin={origin}, dir={direction}, power={power:F1}");
 
@@ -140,6 +149,7 @@ public class ShipController : MonoBehaviour
         Debug.Log($"[Ship] 비행 종료. 조우 행성 {_activeShip.Encounters.Count}개");
 
         _visual.DestroyShip();
+        _visual.ShowOriginIndicator(_input.LaunchOrigin, GameConstants.ShipPhysics.PullGateRadius);
 
         var encounters = new List<PlanetBody>(_activeShip.Encounters);
         _activeShip = null;

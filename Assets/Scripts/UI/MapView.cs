@@ -10,7 +10,7 @@ using System.Collections.Generic;
 public class MapView : MonoBehaviour
 {
     private MapManager _map;
-    private Camera _cam;
+    private System.IDisposable _viewScope;
     private readonly List<GameObject> _nodeObjects = new List<GameObject>();
     private readonly List<GameObject> _lineObjects = new List<GameObject>();
     private readonly Dictionary<MapNode, SpriteRenderer> _nodeRenderers = new Dictionary<MapNode, SpriteRenderer>();
@@ -20,7 +20,6 @@ public class MapView : MonoBehaviour
 
     public void Initialize(MapManager map)
     {
-        _cam = Camera.main;
         _map = map;
 
         _map.OnMapGenerated += OnMapGenerated;
@@ -45,7 +44,7 @@ public class MapView : MonoBehaviour
         if (!_active || _map == null) return;
 
         var mouse = Mouse.current;
-        if (mouse == null || _cam == null) return;
+        if (mouse == null || CameraService.Instance == null) return;
 
         if (mouse.leftButton.wasPressedThisFrame)
         {
@@ -55,7 +54,7 @@ public class MapView : MonoBehaviour
             if (screenPos.x < 1f || screenPos.y < 1f) return;
             if (screenPos.x > Screen.width - 1 || screenPos.y > Screen.height - 1) return;
 
-            Vector2 mp = _cam.ScreenToWorldPoint(screenPos);
+            Vector2 mp = CameraService.Instance.ScreenToWorld2D(screenPos);
             Debug.Log($"[MapView] 클릭 screen={screenPos}, world={mp}");
             TrySelectNode(mp);
         }
@@ -205,36 +204,23 @@ public class MapView : MonoBehaviour
         gameObject.SetActive(true);
         _active = true;
         UpdateReachableHighlights();
-        CenterCamera();
+
+        if (CameraService.Instance != null && _map?.CurrentMap != null)
+        {
+            float centerY = _map.CurrentMap.Floors * 1.2f * 0.5f;
+            float size = Mathf.Max(7f, _map.CurrentMap.Floors * 1.2f * 0.55f);
+            float camZ = CameraService.Instance.Camera.transform.position.z;
+            _viewScope = CameraService.Instance.PushTemporaryView(
+                new Vector3(0, centerY, camZ), size);
+        }
     }
 
     public void Hide()
     {
         gameObject.SetActive(false);
         _active = false;
-        ResetCamera();
-    }
-
-    private Vector3 _savedCamPos;
-    private float _savedCamSize;
-
-    void CenterCamera()
-    {
-        if (_cam == null || _map?.CurrentMap == null) return;
-        _savedCamPos = _cam.transform.position;
-        _savedCamSize = _cam.orthographicSize;
-
-        // 맵 중심으로 카메라 이동
-        float centerY = _map.CurrentMap.Floors * 1.2f * 0.5f;
-        _cam.transform.position = new Vector3(0, centerY, _cam.transform.position.z);
-        _cam.orthographicSize = Mathf.Max(7f, _map.CurrentMap.Floors * 1.2f * 0.55f);
-    }
-
-    void ResetCamera()
-    {
-        if (_cam == null) return;
-        _cam.transform.position = _savedCamPos;
-        _cam.orthographicSize = _savedCamSize;
+        _viewScope?.Dispose();
+        _viewScope = null;
     }
 
     static Color GetNodeColor(RoomType type)

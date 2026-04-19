@@ -217,6 +217,54 @@ SlashInput (드래그 감지)
   → OnSlashComplete 이벤트 → CombatManager/PlayerState
 ```
 
+## Scene & Camera Architecture
+
+### 원칙
+- **PersistentScene이 유일한 Main Camera와 Global Light 2D 소유자**. 전환 씬에는 부착 금지.
+- 게임 코드는 `Camera.main` 금지 → `CameraService.Instance.Camera` 또는 `CameraService.Instance.ScreenToWorld2D(screenPos)` 사용.
+- 씬 진입 로직은 `SceneBootBase`를 상속 → 활성 씬 설정과 환경 적용을 템플릿이 처리.
+
+### 구성 요소
+
+| 경로 | 역할 |
+|---|---|
+| `Core/Services/CameraService.cs` | Main Camera 타입 안전 래퍼. `Camera`, `ScreenToWorld2D`, `ApplyEnvironment`, `PushTemporaryView` IDisposable |
+| `Core/Services/LightingService.cs` | Global Light 2D 래퍼. `Light`, `ApplyEnvironment` |
+| `Core/Services/SceneEnvironment.cs` | SO 데이터: `cameraPosition`, `orthographicSize`, `backgroundColor`, `lightIntensity`, `lightColor` |
+| `Core/Services/SceneBootBase.cs` | 추상 MonoBehaviour. `Start()` 템플릿: SetActiveScene → ApplyEnvironment → `OnBoot()` |
+| `Assets/Data/SceneEnvironments/*.asset` | 씬별 환경 에셋 |
+| `Editor/SceneValidator.cs` | 에디터 검증: Main Camera/Global Light/SceneBootBase 불변 조건 감지 |
+| `Core/SceneLoader.cs` | Additive 씬 전환. `OnSceneWillUnload`/`OnSceneLoaded` 이벤트 노출 |
+
+### 새 씬 추가 3단계
+
+새 "Boss" 씬이 필요하다면:
+
+1. **씬 파일 생성** `Assets/Scenes/BossScene.unity` — **Main Camera/Light 추가 금지**. `BossBoot` GameObject만 추가.
+2. **환경 SO 생성** `Assets/Data/SceneEnvironments/BossEnvironment.asset` — Create → Core → Scene Environment, Inspector에서 값 지정
+3. **Boot 클래스 작성**
+   ```csharp
+   public class BossSceneBoot : SceneBootBase
+   {
+       protected override void OnBoot() { /* 보스 로직 */ }
+   }
+   ```
+   `BossBoot`에 `BossSceneBoot` 부착 + `environment` 필드에 SO 할당
+
+SceneValidator가 Main Camera 중복 같은 실수를 에디터에서 잡아줌.
+
+### 주문 비행 파이프라인
+
+```
+ShipInput (드래그 감지)
+  → ShipController (통합 조율)
+    → ShipModel (중력 적분 + 충돌 판정)
+    → ShipVisual (슬링샷 밴드 + 궤적 프리뷰 + 트레일)
+    → SlashResolver (히트 시퀀스 → SpellResult)
+    → SpellEffectManager → VisualRegistry → ISpellVisual
+  → OnShipComplete 이벤트 → PlayerState.NotifySpellCast
+```
+
 ## 게임 상태 흐름
 
 ```

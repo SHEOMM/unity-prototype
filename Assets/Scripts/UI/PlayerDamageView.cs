@@ -20,7 +20,7 @@ public class PlayerDamageView : MonoBehaviour
 
     void HandleDamaged(float damage)
     {
-        var cam = Camera.main;
+        var cam = CameraService.Instance?.Camera;
         if (cam == null) return;
         DamagePopup.Spawn(cam.transform.position + Vector3.down * 3f, damage, Element.None);
     }

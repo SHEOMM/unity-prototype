@@ -2,34 +2,38 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 /// <summary>
-/// 우주선 발사 입력. 천상 하단 고정점에서 발사된다.
-/// 클릭+드래그로 발사 방향과 파워를 결정하고, 놓으면 발사한다.
+/// 우주선 발사 입력 (앵그리버드 슬링샷 방식).
+/// 고정 원점에서 뒤로 드래그 → 반대 방향으로 발사. 당김 거리 MaxPullDistance로 클램프.
+/// MinPullDistance 미만이면 발사 취소.
+/// 스크린→월드 변환은 CameraService.ScreenToWorld2D에 위임.
 /// </summary>
 public class ShipInput : MonoBehaviour
 {
     public float celestialYMin = 0f;
 
-    public Vector2 LaunchOrigin => new Vector2(0f, celestialYMin + 0.2f);
+    public Vector2 LaunchOrigin => new Vector2(0f, celestialYMin);
 
     public System.Action<Vector2> OnAimStart;
-    public System.Action<Vector2, Vector2> OnAimUpdate;
+    /// <summary>origin, clampedPullPos, pullRatio(0~1) — pullPos는 MaxPullDistance로 클램프됨.</summary>
+    public System.Action<Vector2, Vector2, float> OnAimUpdate;
+    /// <summary>origin, launchDirection(당김의 반대), power</summary>
     public System.Action<Vector2, Vector2, float> OnLaunch;
     public System.Action OnAimCancel;
 
     private bool _aiming;
-    private Camera _cam;
     private Mouse _mouse;
 
     void Start()
     {
-        _cam = Camera.main;
         _mouse = Mouse.current;
     }
 
     void Update()
     {
-        if (_mouse == null || _cam == null) return;
-        Vector2 mp = _cam.ScreenToWorldPoint(_mouse.position.ReadValue());
+        if (_mouse == null) _mouse = Mouse.current;
+        if (_mouse == null || CameraService.Instance == null) return;
+
+        Vector2 mp = CameraService.Instance.ScreenToWorld2D(_mouse.position.ReadValue());
 
         if (_mouse.leftButton.wasPressedThisFrame && !_aiming)
         {
@@ -39,25 +43,37 @@ public class ShipInput : MonoBehaviour
 
         if (_aiming && _mouse.leftButton.isPressed)
         {
-            OnAimUpdate?.Invoke(LaunchOrigin, mp);
+            Vector2 origin = LaunchOrigin;
+            Vector2 delta = mp - origin;
+            float dist = delta.magnitude;
+            float maxPull = GameConstants.ShipPhysics.MaxPullDistance;
+            float clampedDist = Mathf.Min(dist, maxPull);
+            Vector2 clampedPullPos = dist > 0f
+                ? origin + delta.normalized * clampedDist
+                : origin;
+            float pullRatio = maxPull > 0f ? clampedDist / maxPull : 0f;
+            OnAimUpdate?.Invoke(origin, clampedPullPos, pullRatio);
         }
 
         if (_mouse.leftButton.wasReleasedThisFrame && _aiming)
         {
             _aiming = false;
-            Vector2 delta = mp - LaunchOrigin;
+            Vector2 origin = LaunchOrigin;
+            Vector2 delta = mp - origin;
             float dist = delta.magnitude;
 
-            if (dist < 0.3f)
+            if (dist < GameConstants.ShipPhysics.MinPullDistance)
             {
-                Debug.Log($"[ShipInput] 조준 취소: 드래그 거리 {dist:F2} < 0.3");
+                Debug.Log($"[ShipInput] 발사 취소: 당김 거리 {dist:F2} < {GameConstants.ShipPhysics.MinPullDistance}");
                 OnAimCancel?.Invoke();
                 return;
             }
 
-            float power = dist * GameConstants.ShipPhysics.LaunchPowerMultiplier;
-            Debug.Log($"[ShipInput] 발사 요청: dist={dist:F2}, power={power:F1}");
-            OnLaunch?.Invoke(LaunchOrigin, delta.normalized, power);
+            float clampedDist = Mathf.Min(dist, GameConstants.ShipPhysics.MaxPullDistance);
+            Vector2 launchDir = (-delta).normalized;
+            float power = clampedDist * GameConstants.ShipPhysics.LaunchPowerMultiplier;
+            Debug.Log($"[ShipInput] 발사: mp={mp} pull={dist:F2} clamp={clampedDist:F2} power={power:F1} dir={launchDir}");
+            OnLaunch?.Invoke(origin, launchDir, power);
         }
     }
 

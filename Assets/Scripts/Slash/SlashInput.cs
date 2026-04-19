@@ -14,19 +14,17 @@ public class SlashInput : MonoBehaviour
 
     private bool _dragging;
     private Vector2 _start;
-    private Camera _cam;
     private Mouse _mouse;
 
     void Start()
     {
-        _cam = Camera.main;
         _mouse = Mouse.current;
     }
 
     void Update()
     {
-        if (_mouse == null || _cam == null) return;
-        Vector2 mp = _cam.ScreenToWorldPoint(_mouse.position.ReadValue());
+        if (_mouse == null || CameraService.Instance == null) return;
+        Vector2 mp = CameraService.Instance.ScreenToWorld2D(_mouse.position.ReadValue());
 
         if (_mouse.leftButton.wasPressedThisFrame && mp.y >= celestialYMin)
         {

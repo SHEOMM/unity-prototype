@@ -14,7 +14,7 @@ public class SynergyPopup : MonoBehaviour
     {
         var go = new GameObject("SynergyPopup");
         // 화면 상단 중앙 (카메라 기준)
-        var cam = Camera.main;
+        var cam = CameraService.Instance?.Camera;
         float y = cam != null ? cam.transform.position.y + cam.orthographicSize * 0.7f : 5f;
         go.transform.position = new Vector3(0, y, 0);
         go.transform.localScale = Vector3.one * 0.2f;
