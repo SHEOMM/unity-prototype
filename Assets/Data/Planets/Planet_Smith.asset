@@ -27,7 +27,7 @@ MonoBehaviour:
   gravityRange: 4
   effectId: smith
   baseDamage: 5
-  visualScale: 0.38
+  visualScale: 1.14
   synergyFamily: 0
   phaseThreshold: 3
   phaseEffectId: smith

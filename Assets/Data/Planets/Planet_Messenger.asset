@@ -27,7 +27,7 @@ MonoBehaviour:
   gravityRange: 3
   effectId: messenger
   baseDamage: 6
-  visualScale: 0.3
+  visualScale: 0.9
   synergyFamily: 0
   phaseThreshold: 3
   phaseEffectId: messenger

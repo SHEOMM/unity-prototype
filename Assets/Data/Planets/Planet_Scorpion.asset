@@ -26,7 +26,7 @@ MonoBehaviour:
   gravityRange: 4
   effectId: scorpion
   baseDamage: 9
-  visualScale: 0.35
+  visualScale: 1.05
   synergyFamily: 0
   phaseThreshold: 3
   phaseEffectId: scorpion

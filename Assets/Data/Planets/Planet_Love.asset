@@ -27,7 +27,7 @@ MonoBehaviour:
   gravityRange: 3
   effectId: love
   baseDamage: 4
-  visualScale: 0.33
+  visualScale: 0.99
   synergyFamily: 0
   phaseThreshold: 4
   phaseEffectId: love

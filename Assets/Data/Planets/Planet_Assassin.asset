@@ -27,7 +27,7 @@ MonoBehaviour:
   gravityRange: 3
   effectId: assassin
   baseDamage: 20
-  visualScale: 0.32
+  visualScale: 0.96
   synergyFamily: 0
   phaseThreshold: 2
   phaseEffectId: assassin
