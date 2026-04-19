@@ -36,3 +36,6 @@ MonoBehaviour:
   element: 0
   displayName: "\uB300\uC7A5\uC7A5\uC774\uC758 \uB2E8\uB828"
   description: "forge \uD130\uCE58 \uC2DC \uC804\uCCB4 \uC544\uAD70 dmg\xD71.2 3\uCD08."
+  icon: {fileID: 0}
+  visualId: spawn_burst
+  visualIntensity: 1

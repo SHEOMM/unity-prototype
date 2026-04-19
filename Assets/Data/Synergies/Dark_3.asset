@@ -36,3 +36,6 @@ MonoBehaviour:
   element: 5
   displayName: "\uC5ED\uBCD1"
   description: "Dark 3\uD68C \u2014 \uC804\uCCB4 \uC801 DoT + Weakness x1.5 6\uCD08."
+  icon: {fileID: 0}
+  visualId: screen_flash
+  visualIntensity: 1

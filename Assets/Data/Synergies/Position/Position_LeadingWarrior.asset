@@ -37,3 +37,6 @@ MonoBehaviour:
   displayName: "\uC120\uBD09\uC758 \uC804\uC0AC"
   description: "\uB9E8 \uC55E\uC774 valor \uD0A4\uC6CC\uB4DC \uD589\uC131\uC774\uBA74
     \uC804\uC5ED Fire AoE."
+  icon: {fileID: 0}
+  visualId: area_pulse
+  visualIntensity: 1

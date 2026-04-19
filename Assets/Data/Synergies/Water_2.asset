@@ -36,3 +36,6 @@ MonoBehaviour:
   element: 1
   displayName: "\uBE44"
   description: "Water 2\uD68C \u2014 \uC804\uCCB4 \uC801 \uAC10\uC18D."
+  icon: {fileID: 0}
+  visualId: area_pulse
+  visualIntensity: 1

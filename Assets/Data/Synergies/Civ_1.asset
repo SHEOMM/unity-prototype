@@ -36,3 +36,6 @@ MonoBehaviour:
   element: 0
   displayName: "\uAC10\uC2DC\uD0D1"
   description: "Civ 1\uD68C \u2014 Watchtower 1\uAC1C \uC124\uCE58."
+  icon: {fileID: 0}
+  visualId: spawn_burst
+  visualIntensity: 1

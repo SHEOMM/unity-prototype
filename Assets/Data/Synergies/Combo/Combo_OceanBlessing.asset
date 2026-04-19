@@ -40,3 +40,6 @@ MonoBehaviour:
   displayName: "\uBC14\uB2E4\uC758 \uCD95\uBCF5"
   description: "tide+depth+heart \uD3EC\uD568 \uC2DC \uC804\uCCB4 \uC544\uAD70 Heal
     20 + \uC804\uCCB4 \uC801 Slow."
+  icon: {fileID: 0}
+  visualId: sweep
+  visualIntensity: 1

@@ -37,3 +37,6 @@ MonoBehaviour:
   displayName: "\uB099\uB8B0"
   description: "Lightning 2\uD68C \u2014 \uD0C0\uAE43 AoE + \uD53C\uACA9 \uC801 2\uCD08
     Stun."
+  icon: {fileID: 0}
+  visualId: area_pulse
+  visualIntensity: 1

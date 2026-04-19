@@ -36,3 +36,6 @@ MonoBehaviour:
   element: 5
   displayName: "\uB3C5 \uAD6C\uB984"
   description: "Dark 1\uD68C \u2014 \uBC18\uACBD \uB0B4 \uC801 DoT."
+  icon: {fileID: 0}
+  visualId: area_pulse
+  visualIntensity: 1

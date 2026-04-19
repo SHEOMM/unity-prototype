@@ -36,3 +36,6 @@ MonoBehaviour:
   element: 4
   displayName: "\uBCBD"
   description: "Earth 3\uD68C \u2014 Barrier \uAD6C\uC870\uBB3C 3\uAC1C \uC124\uCE58."
+  icon: {fileID: 0}
+  visualId: spawn_burst
+  visualIntensity: 1

@@ -39,3 +39,6 @@ MonoBehaviour:
   displayName: "\uADF8\uB9BC\uC790\uC758 \uC0AC\uB0E5"
   description: "shadow+venom \uD3EC\uD568 \uC2DC \uC804\uCCB4 \uC801 DoT + HP 30%
     \uC774\uD558 \uCC98\uD615."
+  icon: {fileID: 0}
+  visualId: area_pulse
+  visualIntensity: 1

@@ -37,3 +37,6 @@ MonoBehaviour:
   displayName: "\uC81C\uC655\uC758 \uB099\uB8B0"
   description: "\uB9E8 \uC55E\uC774 authority \uD0A4\uC6CC\uB4DC \uD589\uC131\uC774\uBA74
     \uD0C0\uAE43 AoE + Stun."
+  icon: {fileID: 0}
+  visualId: area_pulse
+  visualIntensity: 1

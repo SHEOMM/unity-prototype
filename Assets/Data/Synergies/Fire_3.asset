@@ -36,3 +36,6 @@ MonoBehaviour:
   element: 2
   displayName: "\uBD88\uBC14\uB2E4"
   description: "Fire 3\uD68C \u2014 \uD070 AoE \uC989\uC2DC \uD53C\uD574 + DoT."
+  icon: {fileID: 0}
+  visualId: area_pulse
+  visualIntensity: 1
