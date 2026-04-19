@@ -1,8 +1,11 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 /// <summary>
 /// 보상 카드 1개 렌더 + 클릭 감지. RewardSceneBoot이 3개 인스턴스화.
-/// Collider2D + OnMouseDown으로 클릭. 카메라는 orthographic 가정.
+/// New Input System 기반 클릭 판정 (MapView와 동일 패턴):
+///   Mouse.current.leftButton.wasPressedThisFrame → CameraService 월드좌표 변환 → BoxCollider2D.OverlapPoint
+/// (레거시 OnMouseDown은 New Input System 환경에서 비활성화될 수 있어 미사용.)
 ///
 /// 레이아웃:
 ///   [TypeBadge] (카드 상단에 얇은 띠 — 타입 색상)
@@ -26,6 +29,8 @@ public class RewardCardView : MonoBehaviour
     TextMesh _nameTm;
     TextMesh _typeTm;
     LineRenderer _orbitRing;
+    BoxCollider2D _col;
+    bool _clickable = true;
 
     public void Initialize(RewardChoice choice)
     {
@@ -35,14 +40,29 @@ public class RewardCardView : MonoBehaviour
         BuildIcon(choice);
         BuildName(choice.DisplayName);
 
-        var col = GetComponent<BoxCollider2D>();
-        col.size = new Vector2(CardWidth, CardHeight);
-        col.offset = Vector2.zero;
+        _col = GetComponent<BoxCollider2D>();
+        _col.size = new Vector2(CardWidth, CardHeight);
+        _col.offset = Vector2.zero;
     }
 
-    void OnMouseDown()
+    public void SetClickable(bool clickable) { _clickable = clickable; }
+
+    void Update()
     {
-        OnClicked?.Invoke(this);
+        if (!_clickable || _col == null) return;
+        var mouse = Mouse.current;
+        if (mouse == null || CameraService.Instance == null) return;
+        if (!mouse.leftButton.wasPressedThisFrame) return;
+
+        Vector2 screenPos = mouse.position.ReadValue();
+        if (screenPos.x < 1f || screenPos.y < 1f) return;
+        if (screenPos.x > Screen.width - 1 || screenPos.y > Screen.height - 1) return;
+
+        Vector2 mp = CameraService.Instance.ScreenToWorld2D(screenPos);
+        if (_col.OverlapPoint(mp))
+        {
+            OnClicked?.Invoke(this);
+        }
     }
 
     void BuildBackground()

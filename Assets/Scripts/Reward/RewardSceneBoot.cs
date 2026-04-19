@@ -77,8 +77,8 @@ public class RewardSceneBoot : SceneBootBase
 
     void HandleCardClicked(RewardCardView card)
     {
-        // 중복 클릭 방지: 모든 카드 비활성화
-        foreach (var c in _cards) if (c != null) c.enabled = false;
+        // 중복 클릭 방지: 모든 카드 클릭 비활성화
+        foreach (var c in _cards) if (c != null) c.SetClickable(false);
         _reward.Apply(card.Choice);
     }
 
