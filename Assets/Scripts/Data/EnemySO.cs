@@ -20,6 +20,9 @@ public class EnemySO : ScriptableObject
     public Element element = Element.None;
     public ElementResistance[] resistances;
 
+    [Tooltip("공중 유닛 여부. Wind 시너지 등에서 추가 피해 대상 판정에 사용.")]
+    public bool isFlying;
+
     [Header("행동")]
     [Tooltip("IEnemyBehavior 구현체 ID")]
     public string behaviorId;

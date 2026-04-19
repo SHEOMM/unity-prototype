@@ -12,6 +12,10 @@ public class Enemy : MonoBehaviour
 
     public event Action<float, Element> OnDamaged;
     public event Action OnDeath;
+
+    /// <summary>시너지 primitive (KnockbackApplicator)가 누적해 Update에서 소비하는 넉백 속도.</summary>
+    public Vector2 currentKnockback;
+
     private float _baseSpeed;
     private SpriteRenderer _sr;
     private Color _origColor;
@@ -76,6 +80,13 @@ public class Enemy : MonoBehaviour
         if (doDefaultMove)
             transform.Translate(Vector3.left * moveSpeed * Time.deltaTime);
 
+        // 넉백: 매 프레임 위치 이동 + 감쇠
+        if (currentKnockback.sqrMagnitude > 0.0001f)
+        {
+            transform.position += (Vector3)(currentKnockback * Time.deltaTime);
+            currentKnockback *= Mathf.Exp(-5f * Time.deltaTime);
+        }
+
         if (_flashTimer > 0)
         {
             _flashTimer -= Time.deltaTime;
@@ -123,6 +134,9 @@ public class Enemy : MonoBehaviour
     {
         currentHP = Mathf.Min(currentHP + amount, maxHP);
     }
+
+    /// <summary>원본 이동속도. SlowApplicator 등이 복원용으로 사용.</summary>
+    public float BaseSpeed => _baseSpeed;
 
     public void ApplyStatus(StatusEffect status)
     {

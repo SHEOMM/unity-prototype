@@ -17,6 +17,9 @@ public class PlanetSO : CelestialBodySO
     [Tooltip("시각적 크기")]
     public float visualScale = 0.35f;
 
+    [Tooltip("시너지 계열 — 발사체 비행 중 누적되어 시너지 발동 기준이 됨. Element(데미지 속성)와 별개.")]
+    public SynergyFamily synergyFamily = SynergyFamily.Fire;
+
     [Header("위상(Phase) 조건")]
     [Tooltip("위상 발동에 필요한 최소 뒤쪽 별 개수")]
     public int phaseThreshold = 3;

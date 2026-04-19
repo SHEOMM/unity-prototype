@@ -20,6 +20,15 @@ public class ShipController : MonoBehaviour
 
     public System.Action<SlashResult> OnShipComplete;
 
+    /// <summary>발사체가 천체에 접촉할 때마다 발행 (per-hit). SynergyDispatcher 등이 구독.</summary>
+    public event System.Action<PlanetBody> OnPlanetHit;
+
+    /// <summary>비행 시작 시 발행. 시너지 누적기 초기화용.</summary>
+    public event System.Action OnFlightStarted;
+
+    /// <summary>비행 종료 시 최종 조우 시퀀스와 함께 발행.</summary>
+    public event System.Action<System.Collections.Generic.IReadOnlyList<PlanetBody>> OnFlightEnded;
+
     void Awake()
     {
         if (Instance != null && Instance != this) { Destroy(this); return; }
@@ -134,13 +143,18 @@ public class ShipController : MonoBehaviour
         _activeShip.Launch(origin, direction * power, GameConstants.ShipPhysics.DefaultEnergy);
 
         _visual.SpawnShip(origin);
+        OnFlightStarted?.Invoke();
     }
 
     void OnPlanetEncountered(PlanetBody planet)
     {
         planet.Highlight(true);
         Debug.Log($"[Ship] 행성 조우: {planet.Planet.bodyName}");
+        OnPlanetHit?.Invoke(planet);
     }
+
+    /// <summary>외부에서 현재 비행 중인 ShipModel을 조회 (SynergyContext 등 구성용).</summary>
+    public ShipModel ActiveShip => _activeShip;
 
     void ProcessFlightEnd()
     {
@@ -156,6 +170,9 @@ public class ShipController : MonoBehaviour
 
         foreach (var p in encounters)
             p.Highlight(false);
+
+        // 시너지 구독자에게 최종 시퀀스 전달 (빈 시퀀스도 포함)
+        OnFlightEnded?.Invoke(encounters);
 
         if (encounters.Count == 0) return;
 

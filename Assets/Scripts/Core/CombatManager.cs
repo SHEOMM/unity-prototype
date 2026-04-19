@@ -9,6 +9,7 @@ public class CombatManager : MonoBehaviour
     public static CombatManager Instance { get; private set; }
 
     public SynergyDefinitionSO[] synergies;
+    public SynergyRuleSO[] synergyRules;
     public CometSO[] cometPool;
     public float celestialYCenter = 2.5f;
     public float celestialRadius = 3f;
@@ -45,6 +46,11 @@ public class CombatManager : MonoBehaviour
         _shipController = GetOrAdd<ShipController>();
         _shipController.Initialize(input, resolver, spellFx, visual);
         _shipController.OnShipComplete += result => PlayerState.Instance?.NotifySlashPerformed(result);
+
+        // 신규 시너지 시스템 (Phase 0) — 기존 synergies 배열은 SlashResolver가 계속 사용 (레거시)
+        var synergyDispatcher = GetOrAdd<SynergyDispatcher>();
+        synergyDispatcher.SetRules(synergyRules);
+        synergyDispatcher.Bind(_shipController);
 
         GetOrAdd<ShipFeedbackView>();
     }
