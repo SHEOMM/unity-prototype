@@ -161,6 +161,23 @@ StartRun → [Map] → [Combat] → [Reward] → [Map] → … → [Boss] → [V
 
 ---
 
+## 전투 루프 (Phase 9b)
+
+**Map → Combat → Reward → Map** 루프가 실제 동작.
+
+| 단계 | 메커닉 |
+|---|---|
+| **난이도 스케일** | `CombatSceneBoot.ComputeDifficulty(floor, roomType)` → `EnemySpawner.spawnCountMultiplier`. 층당 +15%, Elite ×1.5, Boss ×2.0 |
+| **전투 클리어** | 모든 웨이브 전멸 → `EnemySpawner.OnAllWavesComplete` → `CombatManager.EndCombat` → `OnCombatComplete` → `GameManager.EnterPhase(Reward)` |
+| **보상 선택** | `RewardSceneBoot`가 `RewardManager.BuildChoices`로 3 선택지 구성 (궤도·행성·유물 혼합, 보유 중인 것 자동 제외) → World Space 카드 3장 → 클릭 시 `payload.ApplyAsReward(player, run)` |
+| **자동 배치** | Cosmos 씬 대체. `OrbitSO.ApplyAsReward` → `RunState.TryAutoAssignPlanetToOrbit` / `PlanetSO` 획득 시 `TryAutoAssignOrbitToPlanet`. 빈 궤도/미배치 행성이 있으면 즉시 연결 |
+| **맵 복귀** | `RewardManager.OnRewardChosen` → `RunState.AdvanceFloor` + `EnterPhase(Map)` |
+
+**보상 풀**: `GameManager.rewardOrbitPool` / `rewardPlanetPool` / `rewardRelicPool` — Inspector에서 편집.
+**보상 확장**: 새 보상 타입 = `IRewardApplicable` 구현 클래스 추가. RewardManager.BuildChoices 카테고리에 따른 `MakeXChoice` 팩토리 하나 추가.
+
+---
+
 ## 천체·궤도 시스템 (Phase 9)
 
 항성(Star) 개념 제거. 모든 것은 **천체(Planet)**이고 각자 **고유 궤도(Orbit)**를 가진다.

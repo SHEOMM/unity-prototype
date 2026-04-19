@@ -52,6 +52,41 @@ public class RunState : MonoBehaviour
         if (orbit != null && !unlockedOrbits.Contains(orbit)) unlockedOrbits.Add(orbit);
     }
 
+    /// <summary>
+    /// 새 궤도 획득 시 — 미배치 행성 중 하나를 이 궤도에 자동 배치.
+    /// Cosmos 씬이 없는 동안 궤도 보상을 즉시 활용 가능하게 하는 폴백.
+    /// </summary>
+    public bool TryAutoAssignPlanetToOrbit(OrbitSO orbit)
+    {
+        if (orbit == null || string.IsNullOrEmpty(orbit.orbitName)) return false;
+        if (FindPlanetForOrbit(orbit.orbitName) != null) return false;
+
+        foreach (var planet in planetDeck)
+        {
+            if (planet == null) continue;
+            if (FindOrbitForPlanet(planet.bodyName) != null) continue;
+            orbitAssignments.Add(new OrbitAssignment { orbitName = orbit.orbitName, planetName = planet.bodyName });
+            return true;
+        }
+        return false;
+    }
+
+    /// <summary>새 행성 획득 시 — 빈 궤도 중 하나에 이 행성을 자동 배치.</summary>
+    public bool TryAutoAssignOrbitToPlanet(PlanetSO planet)
+    {
+        if (planet == null || string.IsNullOrEmpty(planet.bodyName)) return false;
+        if (FindOrbitForPlanet(planet.bodyName) != null) return false;
+
+        foreach (var orbit in unlockedOrbits)
+        {
+            if (orbit == null) continue;
+            if (FindPlanetForOrbit(orbit.orbitName) != null) continue;
+            orbitAssignments.Add(new OrbitAssignment { orbitName = orbit.orbitName, planetName = planet.bodyName });
+            return true;
+        }
+        return false;
+    }
+
     /// <summary>planetName이 배치된 궤도 이름을 찾는다. 없으면 null.</summary>
     public OrbitSO FindOrbitForPlanet(string planetName)
     {
