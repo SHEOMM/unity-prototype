@@ -68,12 +68,15 @@ IMoveable   : BaseSpeed, ApplyKnockback
 
 ---
 
-## 시너지 시스템 (Phase 0-4 구현 완료 — 30 시너지)
+## 시너지 시스템 (Phase 0-5 구현 완료 — 37 시너지)
 
 ### 3층 구조
-- **`SynergyRuleSO`** (데이터) — 언제 발동할지 + 파라미터: `triggerType` + `family`+`threshold` / `positionKey`+`planetKey` / `sequenceKeys`. `damage`/`radius`/`duration`/`secondary`/`count`/`element` 5+1개 공통 파라미터. `allyToSpawn`/`structureToSpawn` 레퍼런스로 유닛/구조물 SO 바인딩.
-- **`ISynergyEffect`** (로직) — `OnFlightEnd` 훅만 사용 (OnHit은 인터페이스에 남아있되 현재 미호출). Stateless. `ctx.CurrentRule`에서 파라미터 읽어 primitive 조합.
-- **`SynergyDispatcher`** (조율자) — **모든 trigger는 end-of-flight에서 판정**. FamilyAccumulation은 family별 highest-only (최고 threshold 1개). SequencePosition/PlanetCombo는 매칭되는 모두 발동.
+- **`SynergyRuleSO`** (데이터) — 언제 발동할지 + 파라미터: `triggerType` + `family`+`threshold` / `positionKey`+`planetKey` / `sequenceKeys` / `planetKey`(PerHitPlanet). `damage`/`radius`/`duration`/`secondary`/`count`/`element` 5+1개 공통 파라미터. `allyToSpawn`/`structureToSpawn` 레퍼런스로 유닛/구조물 SO 바인딩.
+- **`ISynergyEffect`** (로직) — `OnHit`(PerHitPlanet용) + `OnFlightEnd`(기타 trigger용). Stateless. `ctx.CurrentRule`에서 파라미터 읽어 primitive 조합.
+- **`SynergyDispatcher`** (조율자) — trigger별 분기 발동:
+  - `FamilyAccumulation`: end-of-flight, family별 highest-only (최고 threshold 1개)
+  - `SequencePosition` / `PlanetCombo`: end-of-flight, 매칭 모두 발동
+  - `PerHitPlanet`: 매 hit에 현재 행성 bodyName/keywords 매칭 시 즉시 OnHit 발화
 
 ### Primitive 라이브러리 (`Assets/Scripts/Synergy/Primitives/`)
 `DotApplicator`, `SlowApplicator`, `KnockbackApplicator`, `StunApplicator`, `WeaknessApplicator`, `ExecuteApplicator`, `ChainLightning`, `AoeApplicator`, `SweepLine`, `AllySpawner`, `StructureSpawner`, `PlayerBuff`, `AllyBuff`, `AllyHealApplicator`, `EnemyFiltering`. 모두 인터페이스 타겟. 새 시너지는 조합만.
@@ -101,6 +104,25 @@ IMoveable   : BaseSpeed, ApplyKnockback
 | pos_any_love | Any | heart | 전체 아군 Heal |
 
 `planetKey`는 `PlanetSO.bodyName` 또는 `keywords` 배열 중 하나와 일치하면 매칭.
+
+### Phase 5a PlanetCombo 시너지 4개 (`Effects/Combo/`)
+시퀀스에 `sequenceKeys` 모든 키워드가 포함될 때 발동 (각 키는 서로 다른 행성으로부터 매칭 가능). end-of-flight.
+
+| ID | sequenceKeys | 효과 |
+|---|---|---|
+| combo_ocean_blessing | tide + depth + heart | 전체 아군 Heal + 전체 적 Slow |
+| combo_warrior_storm | blade + valor + storm | 전역 Fire AoE + ChainLightning 5회 |
+| combo_shadow_hunt | shadow + venom | 전체 적 DoT + HP 30% 이하 처형 |
+| combo_wind_herald | swift + herald + marksman | 전체 적 넉백 + Player Wind Buff |
+
+### Phase 5b PerHitPlanet 시너지 3개 (`Effects/PerHit/`)
+비행 중 특정 키워드 행성을 터치하는 순간 즉시 발화. `OnHit` 훅 사용.
+
+| ID | planetKey | 효과 |
+|---|---|---|
+| hit_archer_volley | marksman | 터치 지점 주변 AoE |
+| hit_messenger_boost | herald | Player Wind Buff 4초 |
+| hit_smith_reinforce | forge | 전체 아군 dmg×1.2 3초 |
 
 ### SynergyFamily enum
 `Fire / Water / Wind / Earth / Lightning / War / Dark / Civilization` — Element(데미지 속성)와 별개 축. `PlanetSO.synergyFamily`로 지정.

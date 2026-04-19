@@ -87,10 +87,18 @@ public class SynergyDispatcher : MonoBehaviour
         _families.Record(planet.Planet.synergyFamily);
         _sequence.Add(planet);
 
-        // Phase 4: 모든 trigger 타입은 end-of-flight에서 일괄 판정한다.
-        // SequencePosition/PlanetCombo를 per-hit에 매칭하면 매칭이 성립된 hit 이후 모든 hit에서 중복 발동하기 때문.
-        // OnHit 훅은 ISynergyEffect 인터페이스에 남겨 두되 현재 아무도 호출하지 않는다.
-        // 미래 per-hit 전용 TriggerType을 추가할 때 여기서 분기하면 된다.
+        // Phase 5: PerHitPlanet만 per-hit 발화 (다른 trigger는 end-of-flight).
+        // 다른 타입을 per-hit에 매칭하면 매칭 성립 후 모든 후속 hit에서 중복 발동하므로 제외.
+        var ctx = BuildContext(planet, _sequence.Count - 1);
+        foreach (var rule in _rules)
+        {
+            if (rule == null || rule.triggerType != SynergyTriggerType.PerHitPlanet) continue;
+            if (!SynergyRuleMatcher.Matches(rule, ctx)) continue;
+            var effect = SynergyRegistry.Get(rule.synergyEffectId);
+            if (effect == null) continue;
+            ctx.CurrentRule = rule;
+            effect.OnHit(ctx);
+        }
     }
 
     void HandleFlightEnded(IReadOnlyList<PlanetBody> finalSequence)
@@ -99,11 +107,13 @@ public class SynergyDispatcher : MonoBehaviour
         var ctx = BuildContext(null, finalSequence.Count - 1);
         ctx.HitSequence = finalSequence;
 
-        // 1) 비-FamilyAccumulation: 기존 그대로 모두 매칭 시 발동
+        // 1) SequencePosition / PlanetCombo: 모두 매칭 시 발동.
+        //    FamilyAccumulation은 아래 highest-only에서, PerHitPlanet은 비행 중 이미 발화됨 → 여기서 제외.
         foreach (var rule in _rules)
         {
             if (rule == null) continue;
-            if (rule.triggerType == SynergyTriggerType.FamilyAccumulation) continue;
+            if (rule.triggerType != SynergyTriggerType.SequencePosition &&
+                rule.triggerType != SynergyTriggerType.PlanetCombo) continue;
             if (!SynergyRuleMatcher.Matches(rule, ctx)) continue;
             var effect = SynergyRegistry.Get(rule.synergyEffectId);
             if (effect == null) continue;
