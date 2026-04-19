@@ -2,15 +2,14 @@ using UnityEngine;
 
 /// <summary>
 /// MapScene 진입 시 자동 초기화. MapView를 생성하고 MapManager에 연결.
+/// 활성 씬 설정 + 환경 적용은 SceneBootBase가 처리.
 /// </summary>
-public class MapSceneBoot : MonoBehaviour
+public class MapSceneBoot : SceneBootBase
 {
-    void Start()
+    protected override void OnBoot()
     {
         var map = MapManager.Instance;
         if (map == null) { Debug.LogError("[MapScene] MapManager not found"); return; }
-
-        Debug.Log($"[MapScene] Boot — Camera.main = {Camera.main}");
 
         var viewGo = new GameObject("MapView");
         var view = viewGo.AddComponent<MapView>();

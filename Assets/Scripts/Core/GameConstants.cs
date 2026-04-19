@@ -144,6 +144,13 @@ public static class GameConstants
         public const float DefaultDrag = 0.05f;
         public const float LaunchPowerMultiplier = 5f;
         public const float BoundsMargin = 0.5f;
+
+        // 슬링샷 (앵그리버드 스타일)
+        public const float MaxPullDistance = 4f;
+        public const float MinPullDistance = 0.3f;
+        public const float PullGateRadius = 1.5f;            // 조준 시작 히트 반경 (슬링샷 잡기)
+        public const int TrajectoryPreviewSteps = 60;        // 0.5초 @ FixedDt
+        public const int TrajectoryPreviewDotCount = 20;
     }
 
     // ── 캐싱된 공유 리소스 ──

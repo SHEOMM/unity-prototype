@@ -1,66 +1,133 @@
 using UnityEngine;
 
 /// <summary>
-/// 우주선 비주얼. 스프라이트 + TrailRenderer + 조준선 + 발사 원점 마커.
+/// 우주선 비주얼. 스프라이트 + TrailRenderer + 슬링샷 고무줄 + 궤적 프리뷰 점 풀 + 원점 지속 표시.
 /// ShipModel(모델)의 상태를 읽어 표시만 한다.
 /// </summary>
 public class ShipVisual : MonoBehaviour
 {
     private GameObject _shipGo;
     private TrailRenderer _trail;
-    private LineRenderer _aimLine;
-    private GameObject _launchMarker;
+    private LineRenderer _band;
+
+    // 원점 지속 표시(슬링샷 시트 + 클릭 게이트 링)
+    private GameObject _originDot;
+    private LineRenderer _gateRing;
+
+    private GameObject[] _trajectoryDots;
+    private Vector2[] _trajectoryBuffer;
 
     public void Initialize()
     {
-        CreateAimLine();
+        CreateBand();
+        CreateTrajectoryDots();
+        CreateOriginIndicator();
     }
 
-    /// <summary>발사 원점 마커를 생성/표시한다.</summary>
-    public void ShowLaunchMarker(Vector2 origin)
+    /// <summary>
+    /// 발사 원점과 클릭 게이트 영역을 지속 표시. 전투 시작 / 비행 종료 후 호출.
+    /// </summary>
+    public void ShowOriginIndicator(Vector2 origin, float gateRadius)
     {
-        if (_launchMarker == null)
+        _originDot.transform.position = (Vector3)origin;
+        _originDot.SetActive(true);
+        UpdateGateRing(origin, gateRadius);
+    }
+
+    public void HideOriginIndicator()
+    {
+        if (_originDot != null) _originDot.SetActive(false);
+        if (_gateRing != null) _gateRing.positionCount = 0;
+    }
+
+    /// <summary>
+    /// 슬링샷 고무줄을 origin → clampedPullPos로 렌더.
+    /// pullRatio(0~1)에 따라 색/폭이 변하고, ratio ≥ 1이면 빨강 + 미세 떨림.
+    /// </summary>
+    public void ShowSlingshotBand(Vector2 origin, Vector2 clampedPullPos, float pullRatio)
+    {
+        Vector2 endPoint = clampedPullPos;
+        float width;
+        Color startCol, endCol;
+
+        if (pullRatio >= 1f)
         {
-            _launchMarker = new GameObject("LaunchMarker");
-            var sr = _launchMarker.AddComponent<SpriteRenderer>();
-            sr.sprite = UIFactory.MakePixel();
-            sr.color = new Color(1f, 0.9f, 0.4f, 0.6f);
-            sr.sortingOrder = GameConstants.SortingOrder.Label;
-            _launchMarker.transform.localScale = Vector3.one * 0.2f;
+            float nx = Mathf.PerlinNoise(Time.time * 15f, 0f) - 0.5f;
+            float ny = Mathf.PerlinNoise(0f, Time.time * 15f) - 0.5f;
+            endPoint += new Vector2(nx, ny) * 0.05f;
+            width = 0.12f;
+            startCol = new Color(1f, 0.25f, 0.2f, 0.95f);
+            endCol = new Color(1f, 0.4f, 0.2f, 0.55f);
         }
-        _launchMarker.transform.position = (Vector3)origin;
-        _launchMarker.SetActive(true);
+        else
+        {
+            float intensity = Mathf.Clamp01(pullRatio);
+            Color c = Color.Lerp(new Color(1f, 1f, 0.7f, 0.35f),
+                                 new Color(1f, 0.7f, 0.25f, 0.9f), intensity);
+            startCol = c;
+            endCol = new Color(c.r, c.g, c.b, c.a * 0.4f);
+            width = 0.04f + intensity * 0.06f;
+        }
+
+        _band.positionCount = 2;
+        _band.SetPosition(0, (Vector3)origin);
+        _band.SetPosition(1, (Vector3)endPoint);
+        _band.startColor = startCol;
+        _band.endColor = endCol;
+        _band.startWidth = width;
+        _band.endWidth = width * 0.5f;
     }
 
-    public void HideLaunchMarker()
+    public void HideSlingshotBand()
     {
-        if (_launchMarker != null) _launchMarker.SetActive(false);
+        _band.positionCount = 0;
     }
 
-    public void ShowAimLine(Vector2 start, Vector2 end)
+    /// <summary>
+    /// 초기 속도로 TrajectorySimulator를 돌려 궤적 점을 재배치.
+    /// 에너지 소진 / 화면 밖으로 조기 종료된 구간의 점은 비활성화.
+    /// </summary>
+    public void ShowTrajectoryPreview(Vector2 origin, Vector2 launchVelocity)
     {
-        _aimLine.positionCount = 2;
-        _aimLine.SetPosition(0, (Vector3)start);
-        _aimLine.SetPosition(1, (Vector3)end);
+        int steps = GameConstants.ShipPhysics.TrajectoryPreviewSteps;
+        int dotCount = _trajectoryDots.Length;
+        int samples = TrajectorySimulator.Simulate(
+            origin, launchVelocity,
+            GameConstants.ShipPhysics.DefaultEnergy,
+            GameConstants.ShipPhysics.DefaultDrag,
+            GameConstants.ShipPhysics.DefaultEnergyDrain,
+            _trajectoryBuffer, steps,
+            GameConstants.ShipPhysics.FixedDt);
 
-        // 드래그 거리에 따라 색상 강도 변화
-        float dist = Vector2.Distance(start, end);
-        float intensity = Mathf.Clamp01(dist * 0.3f);
-        Color c = Color.Lerp(new Color(1f, 1f, 1f, 0.2f), new Color(1f, 0.8f, 0.3f, 0.8f), intensity);
-        _aimLine.startColor = c;
-        _aimLine.endColor = new Color(c.r, c.g, c.b, c.a * 0.3f);
-        _aimLine.startWidth = 0.04f + intensity * 0.06f;
-        _aimLine.endWidth = 0.02f;
+        for (int i = 0; i < dotCount; i++)
+        {
+            int sampleIdx = Mathf.RoundToInt((i + 1) * (steps - 1) / (float)dotCount);
+            if (sampleIdx >= samples)
+            {
+                _trajectoryDots[i].SetActive(false);
+                continue;
+            }
+            var dot = _trajectoryDots[i];
+            dot.SetActive(true);
+            dot.transform.position = (Vector3)_trajectoryBuffer[sampleIdx];
+
+            var sr = dot.GetComponent<SpriteRenderer>();
+            float t = i / (float)(dotCount - 1);
+            float alpha = Mathf.Lerp(0.85f, 0.25f, t);
+            sr.color = new Color(1f, 0.95f, 0.6f, alpha);
+        }
     }
 
-    public void HideAimLine()
+    public void HideTrajectoryPreview()
     {
-        _aimLine.positionCount = 0;
+        if (_trajectoryDots == null) return;
+        for (int i = 0; i < _trajectoryDots.Length; i++)
+            if (_trajectoryDots[i] != null) _trajectoryDots[i].SetActive(false);
     }
 
     public void SpawnShip(Vector2 position)
     {
-        HideLaunchMarker();
+        HideOriginIndicator();
 
         _shipGo = new GameObject("Ship");
         var sr = _shipGo.AddComponent<SpriteRenderer>();
@@ -98,17 +165,79 @@ public class ShipVisual : MonoBehaviour
         _shipGo = null;
     }
 
-    void CreateAimLine()
+    void CreateBand()
     {
-        var go = new GameObject("AimLine");
+        var go = new GameObject("SlingshotBand");
         go.transform.SetParent(transform);
-        _aimLine = go.AddComponent<LineRenderer>();
-        _aimLine.startWidth = 0.06f;
-        _aimLine.endWidth = 0.03f;
-        _aimLine.material = GameConstants.SpriteMaterial;
-        _aimLine.startColor = new Color(1f, 0.9f, 0.4f, 0.5f);
-        _aimLine.endColor = new Color(1f, 0.9f, 0.4f, 0.15f);
-        _aimLine.sortingOrder = GameConstants.SortingOrder.Label;
-        _aimLine.positionCount = 0;
+        _band = go.AddComponent<LineRenderer>();
+        _band.startWidth = 0.06f;
+        _band.endWidth = 0.03f;
+        _band.material = GameConstants.SpriteMaterial;
+        _band.startColor = new Color(1f, 0.9f, 0.4f, 0.5f);
+        _band.endColor = new Color(1f, 0.9f, 0.4f, 0.15f);
+        _band.sortingOrder = GameConstants.SortingOrder.Label;
+        _band.positionCount = 0;
+    }
+
+    void CreateOriginIndicator()
+    {
+        // 중앙 점
+        _originDot = new GameObject("OriginDot");
+        _originDot.transform.SetParent(transform);
+        var sr = _originDot.AddComponent<SpriteRenderer>();
+        sr.sprite = UIFactory.MakePixel();
+        sr.color = new Color(1f, 0.85f, 0.35f, 0.9f);
+        sr.sortingOrder = GameConstants.SortingOrder.Label;
+        _originDot.transform.localScale = Vector3.one * 0.22f;
+        _originDot.SetActive(false);
+
+        // 클릭 게이트 링 (LineRenderer loop로 원형)
+        var ringGo = new GameObject("GateRing");
+        ringGo.transform.SetParent(transform);
+        _gateRing = ringGo.AddComponent<LineRenderer>();
+        _gateRing.loop = true;
+        _gateRing.useWorldSpace = true;
+        _gateRing.startWidth = 0.03f;
+        _gateRing.endWidth = 0.03f;
+        _gateRing.material = GameConstants.SpriteMaterial;
+        var ringCol = new Color(1f, 0.85f, 0.4f, 0.35f);
+        _gateRing.startColor = ringCol;
+        _gateRing.endColor = ringCol;
+        _gateRing.sortingOrder = GameConstants.SortingOrder.Label - 1;
+        _gateRing.positionCount = 0;
+    }
+
+    void UpdateGateRing(Vector2 center, float radius)
+    {
+        const int segments = 32;
+        _gateRing.positionCount = segments;
+        for (int i = 0; i < segments; i++)
+        {
+            float t = (i / (float)segments) * Mathf.PI * 2f;
+            _gateRing.SetPosition(i,
+                new Vector3(center.x + Mathf.Cos(t) * radius,
+                            center.y + Mathf.Sin(t) * radius, 0f));
+        }
+    }
+
+    void CreateTrajectoryDots()
+    {
+        int count = GameConstants.ShipPhysics.TrajectoryPreviewDotCount;
+        _trajectoryDots = new GameObject[count];
+        _trajectoryBuffer = new Vector2[GameConstants.ShipPhysics.TrajectoryPreviewSteps];
+
+        var sprite = UIFactory.MakePixel();
+        for (int i = 0; i < count; i++)
+        {
+            var dot = new GameObject($"TrajDot_{i}");
+            dot.transform.SetParent(transform);
+            var sr = dot.AddComponent<SpriteRenderer>();
+            sr.sprite = sprite;
+            sr.color = new Color(1f, 0.95f, 0.6f, 0.8f);
+            sr.sortingOrder = GameConstants.SortingOrder.Label - 1;
+            dot.transform.localScale = Vector3.one * 0.06f;
+            dot.SetActive(false);
+            _trajectoryDots[i] = dot;
+        }
     }
 }
