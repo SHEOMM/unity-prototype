@@ -26,6 +26,8 @@ public static class AllySpawner
         go.transform.position = (Vector3)position;
         var ally = go.AddComponent<AllyUnit>();
         ally.Initialize(prefabData, UIFactory.MakePixel());
+        go.AddComponent<AllyView>();
+        go.AddComponent<StatusIconView>();
         return ally;
     }
 }

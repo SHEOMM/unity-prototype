@@ -18,6 +18,10 @@ public class CombatManager : MonoBehaviour
     private ShipController _shipController;
     private EnemySpawner _spawner;
     private CometSpawner _cometSpawner;
+    private SynergyDispatcher _synergyDispatcher;
+
+    /// <summary>UI/VFX 레이어가 OnSynergyFired 이벤트를 구독할 수 있도록 노출.</summary>
+    public SynergyDispatcher SynergyDispatcher => _synergyDispatcher;
 
     public System.Action OnCombatComplete;
 
@@ -50,9 +54,9 @@ public class CombatManager : MonoBehaviour
         _shipController.OnShipComplete += result => PlayerState.Instance?.NotifySlashPerformed(result);
 
         // 신규 시너지 시스템 (Phase 0) — 기존 synergies 배열은 SlashResolver가 계속 사용 (레거시)
-        var synergyDispatcher = GetOrAdd<SynergyDispatcher>();
-        synergyDispatcher.SetRules(synergyRules);
-        synergyDispatcher.Bind(_shipController);
+        _synergyDispatcher = GetOrAdd<SynergyDispatcher>();
+        _synergyDispatcher.SetRules(synergyRules);
+        _synergyDispatcher.Bind(_shipController);
 
         GetOrAdd<ShipFeedbackView>();
     }

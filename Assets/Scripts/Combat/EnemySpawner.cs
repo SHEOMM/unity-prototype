@@ -64,5 +64,6 @@ public class EnemySpawner : MonoBehaviour
         var sprite = EnemySpriteGenerator.GenerateEnemySprite(data);
         enemy.Initialize(data, sprite);
         go.AddComponent<EnemyView>();
+        go.AddComponent<StatusIconView>();
     }
 }

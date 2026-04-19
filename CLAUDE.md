@@ -68,7 +68,7 @@ IMoveable   : BaseSpeed, ApplyKnockback
 
 ---
 
-## 시너지 시스템 (Phase 0-5 구현 완료 — 37 시너지)
+## 시너지 시스템 (Phase 0-6 구현 완료 — 37 시너지 + UI 강화)
 
 ### 3층 구조
 - **`SynergyRuleSO`** (데이터) — 언제 발동할지 + 파라미터: `triggerType` + `family`+`threshold` / `positionKey`+`planetKey` / `sequenceKeys` / `planetKey`(PerHitPlanet). `damage`/`radius`/`duration`/`secondary`/`count`/`element` 5+1개 공통 파라미터. `allyToSpawn`/`structureToSpawn` 레퍼런스로 유닛/구조물 SO 바인딩.
@@ -77,6 +77,7 @@ IMoveable   : BaseSpeed, ApplyKnockback
   - `FamilyAccumulation`: end-of-flight, family별 highest-only (최고 threshold 1개)
   - `SequencePosition` / `PlanetCombo`: end-of-flight, 매칭 모두 발동
   - `PerHitPlanet`: 매 hit에 현재 행성 bodyName/keywords 매칭 시 즉시 OnHit 발화
+  - **Phase 6**: effect 호출 직후 `OnSynergyFired(SynergyRuleSO, SynergyContext)` 이벤트 발화. UI/VFX/로깅 구독 전용 Observer hook.
 
 ### Primitive 라이브러리 (`Assets/Scripts/Synergy/Primitives/`)
 `DotApplicator`, `SlowApplicator`, `KnockbackApplicator`, `StunApplicator`, `WeaknessApplicator`, `ExecuteApplicator`, `ChainLightning`, `AoeApplicator`, `SweepLine`, `AllySpawner`, `StructureSpawner`, `PlayerBuff`, `AllyBuff`, `AllyHealApplicator`, `EnemyFiltering`. 모두 인터페이스 타겟. 새 시너지는 조합만.
@@ -157,7 +158,17 @@ ShipInput (슬링샷 드래그, 마우스 반대방향으로 발사)
 - 모델(Enemy, AllyUnit, Structure, PlayerState, PlanetBody, ShipModel, ProjectileBody)에 UI 참조 금지
 - 모델은 이벤트만 발행 (`OnDamaged`, `OnDeath`, `OnPlanetHit`, …)
 - View는 이벤트 구독만. View → Model 호출 금지.
-- View 부착은 팩토리/Spawner에서 (`EnemySpawner`가 `AddComponent<EnemyView>()`)
+- View 부착은 팩토리/Spawner에서 (`EnemySpawner`가 `AddComponent<EnemyView>()`, `AllySpawner`가 `AddComponent<AllyView>()`, `StructureSpawner`가 `AddComponent<StructureView>()`).
+- 모든 전투 개체는 `StatusIconView`도 함께 부착되어 `IStatusHost.ActiveStatuses`를 머리 위 색점으로 표시.
+
+### Phase 6 UI 레이어 규약
+| 위치 | 역할 |
+|---|---|
+| `UI/SynergyToastView` | `SynergyDispatcher.OnSynergyFired` 구독 → 큐 기반 순차 토스트 (중첩 방지) |
+| `UI/AllyView`, `UI/StructureView` | `EnemyView`와 대칭. `UIFactory.CreateHPBar` + `DamagePopup.Spawn` 재사용 |
+| `UI/StatusIconView` | `IStatusHost.ActiveStatuses` 관찰 → id별 아이콘 1개 렌더 |
+| `UI/StatusIconRegistry` + `[StatusIconId]` | 새 상태이상 아이콘 추가 = `[StatusIconId("x")] class XIconMeta : IStatusIconMeta` 파일 1개. `IStatusEffect.IconId`는 해당 키 반환 |
+| `SynergyDispatcher.OnSynergyFired` | 모든 trigger 타입의 effect 호출 직후 발화. UI/VFX/로깅이 DIP로 구독 |
 
 ---
 

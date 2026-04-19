@@ -7,6 +7,8 @@ public class SlowEffect : IStatusEffect
 {
     public float slowFactor = 0.4f;
 
+    public string IconId => "slow";
+
     public void Tick(IStatusHost target, float dt)
     {
         if (target is Enemy e)

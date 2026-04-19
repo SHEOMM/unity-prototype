@@ -8,6 +8,8 @@ public class WeaknessEffect : IStatusEffect, IDamageModifier
 {
     public float amplifier = 1.3f;
 
+    public string IconId => "weakness";
+
     public void Tick(IStatusHost target, float dt) { /* no-op — 수정은 ModifyIncoming에서 */ }
 
     public float ModifyIncoming(float dmg, Element element)

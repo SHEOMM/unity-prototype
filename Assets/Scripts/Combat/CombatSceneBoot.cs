@@ -32,5 +32,6 @@ public class CombatSceneBoot : SceneBootBase
 
         combatGo.AddComponent<PlayerHPBar>();
         combatGo.AddComponent<PlayerDamageView>();
+        combatGo.AddComponent<SynergyToastView>().Bind(combat.SynergyDispatcher);
     }
 }
