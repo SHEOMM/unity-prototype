@@ -15,18 +15,19 @@ MonoBehaviour:
   bodyName: "\uAD81\uC218\uBCC4"
   description: "\uC801\uB4E4\uC5D0\uAC8C 3\uAC1C\uC758 \uC720\uB3C4\uC131 \uD654\uC0B4\uC744
     \uBC1C\uC0AC\uD55C\uB2E4."
-  icon: {fileID: 0}
+  icon: {fileID: -6943683976460225617, guid: fc4a625240291f34ca96840e078cee4e, type: 3}
   bodyColor: {r: 0.4, g: 1, b: 0.5, a: 1}
   element: 3
   keywords:
   - marksman
   - swift
-  effectId: archer
-  baseDamage: 8
-  visualScale: 0.35
-  phaseThreshold: 3
-  phaseEffectId: archer
   gravityStrength: 8
   gravityTypeId: standard
   encounterRadius: 0.8
   gravityRange: 3
+  effectId: archer
+  baseDamage: 8
+  visualScale: 0.35
+  synergyFamily: 0
+  phaseThreshold: 3
+  phaseEffectId: archer

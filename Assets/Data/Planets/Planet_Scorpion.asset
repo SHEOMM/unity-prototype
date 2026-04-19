@@ -14,18 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlanetSO
   bodyName: "\uC804\uAC08\uBCC4"
   description: "\uB3C5 DoT \uBD80\uC5EC. trailing \uC218\uB9CC\uD07C \uC911\uCCA9."
-  icon: {fileID: 0}
+  icon: {fileID: 5730912024713303442, guid: 9a7c569a4720e774a8edf4015e6ff6ff, type: 3}
   bodyColor: {r: 0.4, g: 0.6, b: 0.1, a: 1}
   element: 4
   keywords:
   - venom
   - shadow
-  effectId: scorpion
-  baseDamage: 9
-  visualScale: 0.35
-  phaseThreshold: 3
-  phaseEffectId: scorpion
   gravityStrength: 10
   gravityTypeId: repulsive
   encounterRadius: 0.8
   gravityRange: 4
+  effectId: scorpion
+  baseDamage: 9
+  visualScale: 0.35
+  synergyFamily: 0
+  phaseThreshold: 3
+  phaseEffectId: scorpion

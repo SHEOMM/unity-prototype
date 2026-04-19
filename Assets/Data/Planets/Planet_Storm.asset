@@ -15,18 +15,19 @@ MonoBehaviour:
   bodyName: "\uD3ED\uD48D\uBCC4"
   description: "\uC5F0\uC1C4\uBC88\uAC1C. \uB4A4\uCABD \uBCC4 \uC218\uB9CC\uD07C
     \uCCB4\uC778."
-  icon: {fileID: 0}
+  icon: {fileID: -7741711486538788263, guid: fc4a625240291f34ca96840e078cee4e, type: 3}
   bodyColor: {r: 0.4, g: 1, b: 1, a: 1}
   element: 3
   keywords:
   - storm
   - swift
-  effectId: storm
-  baseDamage: 11
-  visualScale: 0.35
-  phaseThreshold: 3
-  phaseEffectId: storm
   gravityStrength: 10
   gravityTypeId: repulsive
   encounterRadius: 0.8
   gravityRange: 4
+  effectId: storm
+  baseDamage: 11
+  visualScale: 0.35
+  synergyFamily: 0
+  phaseThreshold: 3
+  phaseEffectId: storm
