@@ -15,8 +15,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private StarSO[] startingStars;
     [SerializeField] private PlanetSO[] startingPlanets;
 
-    [Header("시저지")]
+    [Header("시너지")]
     [SerializeField] private SynergyDefinitionSO[] synergies;
+    [Tooltip("Phase 3+ 신규 시너지 규칙. SynergyDispatcher가 구독.")]
+    [SerializeField] private SynergyRuleSO[] synergyRules;
 
     [Header("혜성")]
     [SerializeField] private CometSO[] cometPool;
@@ -37,6 +39,7 @@ public class GameManager : MonoBehaviour
 
     // 외부에서 접근 가능한 설정/상태
     public SynergyDefinitionSO[] Synergies => synergies;
+    public SynergyRuleSO[] SynergyRules => synergyRules;
     public CometSO[] CometPool => cometPool;
     public MapNode CurrentNode => _currentNode;
     public WaveDefinitionSO[] DefaultWaves => defaultWaves;

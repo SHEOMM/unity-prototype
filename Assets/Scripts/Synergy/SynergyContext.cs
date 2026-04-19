@@ -31,4 +31,8 @@ public class SynergyContext
 
     /// <summary>시너지별 랜덤 결정 (재현성 필요 시 seed 주입 가능).</summary>
     public System.Random Rng;
+
+    /// <summary>현재 발동 중인 rule. Dispatcher가 effect 호출 직전에 세팅.
+    /// Effect 구현체는 여기서 damage/radius/duration 등 데이터 파라미터를 읽는다.</summary>
+    public SynergyRuleSO CurrentRule;
 }

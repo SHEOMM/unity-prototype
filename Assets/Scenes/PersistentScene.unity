@@ -166,6 +166,19 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d1ea27d8be7d28944b23ff92bf74084b, type: 2}
   - {fileID: 11400000, guid: 8f806f15addb60e4ebb7821ae280e71c, type: 2}
   - {fileID: 11400000, guid: 2e8b247fbb784f8419c86c2d58d2c025, type: 2}
+  synergyRules:
+  - {fileID: 11400000, guid: 70aac774cabf3624592772102cb8cdfe, type: 2}
+  - {fileID: 11400000, guid: 601f56c4c2a70484482c0cc88e256071, type: 2}
+  - {fileID: 11400000, guid: 41a3828b2b49e724794671609d2ffed4, type: 2}
+  - {fileID: 11400000, guid: a73dcd6c2b332b847b333e4b4573e361, type: 2}
+  - {fileID: 11400000, guid: 3f1a820d22596854fa54dd784928b012, type: 2}
+  - {fileID: 11400000, guid: 367d33940dd86ac4da266b8bcb0f8d31, type: 2}
+  - {fileID: 11400000, guid: 405869c223b15734fb1929202a0962c6, type: 2}
+  - {fileID: 11400000, guid: 6181cc754bfd8b848befa89b4f1e05d6, type: 2}
+  - {fileID: 11400000, guid: 9f886636d081f2d4092f11963169c91a, type: 2}
+  - {fileID: 11400000, guid: 1eaa7df9b5bc1a94ca1695953ec67da0, type: 2}
+  - {fileID: 11400000, guid: a41604fb9d306f54f976132441ff5262, type: 2}
+  - {fileID: 11400000, guid: 2eddc18b820219c46a5ba18120088d32, type: 2}
   cometPool:
   - {fileID: 11400000, guid: 150c92c1b2357b04fa4ab33c186bcf88, type: 2}
   - {fileID: 11400000, guid: 655cb8cb44a0272448cf01429d569a7d, type: 2}
