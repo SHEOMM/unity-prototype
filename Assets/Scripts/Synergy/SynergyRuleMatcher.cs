@@ -12,8 +12,16 @@ public static class SynergyRuleMatcher
             case SynergyTriggerType.FamilyAccumulation: return MatchFamilyAccumulation(rule, ctx);
             case SynergyTriggerType.SequencePosition:   return MatchSequencePosition(rule, ctx);
             case SynergyTriggerType.PlanetCombo:        return MatchPlanetCombo(rule, ctx);
+            case SynergyTriggerType.PerHitPlanet:       return MatchPerHitPlanet(rule, ctx);
             default: return false;
         }
+    }
+
+    /// <summary>현재 터치 중인 행성의 bodyName 또는 keywords가 planetKey와 일치하면 true.</summary>
+    static bool MatchPerHitPlanet(SynergyRuleSO rule, SynergyContext ctx)
+    {
+        if (ctx.CurrentPlanet?.Planet == null || string.IsNullOrEmpty(rule.planetKey)) return false;
+        return MatchesPlanetKey(ctx.CurrentPlanet.Planet, rule.planetKey);
     }
 
     static bool MatchFamilyAccumulation(SynergyRuleSO rule, SynergyContext ctx)

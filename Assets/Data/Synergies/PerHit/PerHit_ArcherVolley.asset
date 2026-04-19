@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e92739ec651370d4d9965a20729ad99e, type: 3}
+  m_Name: PerHit_ArcherVolley
+  m_EditorClassIdentifier: Assembly-CSharp::SynergyRuleSO
+  synergyEffectId: hit_archer_volley
+  triggerType: 3
+  family: 0
+  threshold: 1
+  positionKey: 0
+  planetKey: marksman
+  sequenceKeys: []
+  spawnArea:
+    serializedVersion: 2
+    x: -3
+    y: -2
+    width: 6
+    height: 1
+  spawnCount: 1
+  allyToSpawn: {fileID: 0}
+  structureToSpawn: {fileID: 0}
+  damage: 8
+  radius: 1.5
+  duration: 3
+  secondary: 0.5
+  count: 1
+  element: 3
+  displayName: "\uAD81\uC218\uC758 \uC77C\uC81C\uC0AC\uACA9"
+  description: "marksman \uD130\uCE58 \uC2DC \uD130\uCE58 \uC9C0\uC810 \uC8FC\uBCC0
+    \uC18C\uD615 AoE."
