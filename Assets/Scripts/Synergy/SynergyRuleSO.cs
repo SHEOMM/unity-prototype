@@ -36,6 +36,13 @@ public class SynergyRuleSO : ScriptableObject
     [Tooltip("시퀀스에 모두 포함되어야 하는 bodyName/keyword 리스트.")]
     public string[] sequenceKeys;
 
+    [Header("스폰 영역 (AllySpawner/StructureSpawner 용)")]
+    [Tooltip("이 rule이 유닛/구조물을 소환할 때 사용할 랜덤 영역. (x, y, width, height) 월드 좌표.")]
+    public Rect spawnArea = new Rect(-3f, -2f, 6f, 1f);
+
+    [Tooltip("한 번 발동 시 소환할 개수.")]
+    public int spawnCount = 1;
+
     [Header("메타")]
     public string displayName;
     [TextArea] public string description;

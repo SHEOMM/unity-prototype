@@ -4,8 +4,8 @@ using UnityEditor;
 using UnityEngine;
 
 /// <summary>
-/// Phase 0–1 primitive 스모크 테스트. Play 모드에서 적이 살아있는 상태에서 메뉴로 실행.
-/// Phase 2 진입 시 삭제 예정.
+/// Phase 0–2 primitive/확장 스모크 테스트. Play 모드에서 메뉴로 실행.
+/// Phase 3 진입 시 실제 시너지가 나오면 이 메뉴는 삭제하거나 축소.
 /// </summary>
 public static class SynergySmokeTest
 {
@@ -33,7 +33,7 @@ public static class SynergySmokeTest
         var e = GetFirstEnemy();
         if (e == null) return;
         KnockbackApplicator.Apply(e, Vector2.left, 5f);
-        Debug.Log($"[Smoke] Knockback: currentKnockback={e.currentKnockback}");
+        Debug.Log($"[Smoke] Knockback applied to {e.name} (IMoveable)");
     }
 
     [MenuItem("Tools/Synergy/Smoke — AoE (center origin r=5 dmg=20)")]
@@ -80,6 +80,58 @@ public static class SynergySmokeTest
         foreach (var _ in EnemyFiltering.GetFlying()) flying++;
         foreach (var _ in EnemyFiltering.GetGround()) ground++;
         Debug.Log($"[Smoke] flying={flying}, ground={ground}");
+    }
+
+    // ── Phase 2: Ally/Structure ──────────────────────────────
+
+    [MenuItem("Tools/Synergy/Smoke — Spawn test Ally at (0,-2)")]
+    static void SmokeSpawnAlly()
+    {
+        var so = ScriptableObject.CreateInstance<AllySO>();
+        so.allyName = "TestAlly";
+        so.baseHP = 50f; so.moveSpeed = 2f; so.attackDamage = 8f;
+        so.attackRange = 1.5f; so.attackInterval = 0.8f; so.scale = 0.4f;
+        so.bodyColor = new Color(0.3f, 0.8f, 1f);
+        var ally = AllySpawner.SpawnAt(so, new Vector2(0, -2));
+        Debug.Log($"[Smoke] Ally 스폰: {ally?.name}, HP={ally?.CurrentHP}, IsAlive={ally?.IsAlive}");
+    }
+
+    [MenuItem("Tools/Synergy/Smoke — Spawn test Structure at (2,-2)")]
+    static void SmokeSpawnStructure()
+    {
+        var so = ScriptableObject.CreateInstance<StructureSO>();
+        so.structureName = "TestBarrier";
+        so.baseHP = 100f; so.scale = 0.6f;
+        so.bodyColor = new Color(0.6f, 0.8f, 0.3f);
+        var s = StructureSpawner.SpawnAt(so, new Vector2(2, -2));
+        Debug.Log($"[Smoke] Structure 스폰: {s?.name}, HP={s?.CurrentHP}, IsAlive={s?.IsAlive}");
+    }
+
+    [MenuItem("Tools/Synergy/Smoke — Dot on first Ally")]
+    static void SmokeDotOnAlly()
+    {
+        var a = AllyRegistry.Instance?.GetAll();
+        if (a == null || a.Count == 0) { Debug.LogWarning("[Smoke] 아군 없음"); return; }
+        DotApplicator.Apply(a[0], 5f, 0.5f, 3f, Element.Darkness);
+        Debug.Log($"[Smoke] Ally DoT 부착: {a[0].name}");
+    }
+
+    [MenuItem("Tools/Synergy/Smoke — Damage first Structure (30)")]
+    static void SmokeDamageStructure()
+    {
+        var s = StructureRegistry.Instance?.GetAll();
+        if (s == null || s.Count == 0) { Debug.LogWarning("[Smoke] 구조물 없음"); return; }
+        s[0].TakeDamage(30f);
+        Debug.Log($"[Smoke] Structure 피격: {s[0].name} HP={s[0].CurrentHP}/{s[0].MaxHP}");
+    }
+
+    [MenuItem("Tools/Synergy/Smoke — Registry counts (Enemy/Ally/Structure)")]
+    static void SmokeRegistryCounts()
+    {
+        int e = EnemyRegistry.Instance?.GetAll().Count ?? -1;
+        int a = AllyRegistry.Instance?.GetAll().Count ?? -1;
+        int s = StructureRegistry.Instance?.GetAll().Count ?? -1;
+        Debug.Log($"[Smoke] Registry counts: Enemy={e}, Ally={a}, Structure={s}");
     }
 
     [MenuItem("Tools/Synergy/Smoke — Dispatcher state")]

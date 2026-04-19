@@ -4,7 +4,7 @@
 /// </summary>
 public static class DotApplicator
 {
-    public static void Apply(Enemy target, float damagePerTick, float tickInterval, float duration, Element element = Element.None)
+    public static void Apply(IStatusHost target, float damagePerTick, float tickInterval, float duration, Element element = Element.None)
     {
         if (target == null) return;
         var dot = new GenericDotEffect(damagePerTick, tickInterval, element);

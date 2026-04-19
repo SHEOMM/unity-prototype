@@ -6,9 +6,9 @@ using UnityEngine;
 /// </summary>
 public static class KnockbackApplicator
 {
-    public static void Apply(Enemy target, Vector2 direction, float strength)
+    public static void Apply(IMoveable target, Vector2 direction, float strength)
     {
         if (target == null || direction.sqrMagnitude < 1e-6f) return;
-        target.currentKnockback += direction.normalized * strength;
+        target.ApplyKnockback(direction.normalized * strength);
     }
 }
