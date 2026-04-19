@@ -26,7 +26,7 @@ public class DeckManager : MonoBehaviour
 
     public PlanetBody CreatePlanet(PlanetSO data)
     {
-        var sprite = CelestialSpriteGenerator.GeneratePlanetSprite(data.element, data.bodyColor);
+        var sprite = PlanetSpriteResolver.Resolve(data);
         var go = new GameObject(data.bodyName);
         var body = go.AddComponent<PlanetBody>();
         body.Initialize(data, sprite);

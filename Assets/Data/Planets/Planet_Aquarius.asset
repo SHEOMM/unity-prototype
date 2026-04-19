@@ -14,18 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlanetSO
   bodyName: "\uBB3C\uBCD1\uBCC4"
   description: "\uC815\uD654 + \uC911\uAC04 AoE. \uC704\uC0C1: \uB300\uD64D\uC218."
-  icon: {fileID: 0}
+  icon: {fileID: -6143254616739627551, guid: 40561cfc38081a94e9e83956cbec7cb0, type: 3}
   bodyColor: {r: 0.3, g: 0.7, b: 1, a: 1}
   element: 1
   keywords:
   - tide
   - depth
-  effectId: aquarius
-  baseDamage: 8
-  visualScale: 0.35
-  phaseThreshold: 3
-  phaseEffectId: aquarius
   gravityStrength: 8
   gravityTypeId: standard
   encounterRadius: 0.8
   gravityRange: 3
+  effectId: aquarius
+  baseDamage: 8
+  visualScale: 1.05
+  synergyFamily: 0
+  phaseThreshold: 3
+  phaseEffectId: aquarius

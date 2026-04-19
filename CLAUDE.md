@@ -157,3 +157,19 @@ StartRun → [Map] → [Combat] → [Reward] → [Map] → … → [Boss] → [V
 - Boot 스크립트는 항상 `SceneBootBase` 상속 (씬마다 `SceneEnvironment` 에셋 바인딩 필수)
 - 전투 종료 시 `AllyRegistry.DestroyAll()` + `StructureRegistry.DestroyAll()` (combat-scoped)
 - 새 `IStatusEffect` 구현 시 `IconId` 오버라이드 고려 (기본 null = 아이콘 표시 안 함)
+
+---
+
+## 행성 스프라이트 파이프라인 (Phase 8)
+
+`Assets/art/planet/*.png` 4개 시트를 Grid 슬라이싱해 픽셀 아트 아이콘 사용. 절차 생성기(`CelestialSpriteGenerator`)는 폴백으로 유지.
+
+| 레이어 | 역할 |
+|---|---|
+| `Editor/PlanetSpriteSheetSlicer` | `Tools/Art/Slice Planet Sheets` — 4 시트 Grid 슬라이싱 (셀 크기 상수, 바꾸면 재실행) |
+| `Data/PlanetSpriteLibrary` + `PlanetSpriteLibraryPopulator` | `Tools/Art/Populate Planet Sprite Library` — 서브 Sprite를 티어(big/medium/small/verySmall) 배열로 집계 |
+| `Data/PlanetIconBindingTable` + `PlanetIconBinder` | Inspector 편집 가능한 행성↔스프라이트 SO. `Tools/Art/Seed Planet Icon Bindings` (기본값 채움) + `Tools/Art/Apply Planet Icon Bindings` (PlanetSO.icon 주입) |
+| `Data/PlanetSpriteResolver.Resolve(PlanetSO)` | 렌더 시 `icon` 있으면 사용, 없으면 절차 폴백. `DeckManager.CreatePlanet` 유일 호출자 |
+
+**매핑 변경**: BindingTable SO를 Inspector에서 편집 → `Apply Planet Icon Bindings`. 코드 변경 불필요.
+**스프라이트 교체**: 시트 재슬라이싱 → Populator 재실행 → BindingTable 갱신 → Apply.
