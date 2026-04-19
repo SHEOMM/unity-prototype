@@ -24,8 +24,10 @@ public class CombatSceneBoot : SceneBootBase
 
         combat.OnCombatComplete += () => gm.EnterPhase(GamePhase.Reward);
 
-        WaveDefinitionSO[] waves = gm.DefaultWaves;
-        float difficulty = ComputeDifficulty(RunState.Instance?.currentFloor ?? 0, gm.CurrentNode?.roomType);
+        int floor = RunState.Instance?.currentFloor ?? 0;
+        var roomType = gm.CurrentNode?.roomType;
+        float difficulty = ComputeDifficulty(floor, roomType);
+        WaveDefinitionSO[] waves = BuildWaveSet(gm.DefaultWaves, floor, roomType);
 
         combat.StartCombat(
             waves,
@@ -49,5 +51,26 @@ public class CombatSceneBoot : SceneBootBase
         if (roomType == RoomType.Elite) mult *= EliteMultiplier;
         else if (roomType == RoomType.Boss) mult *= BossMultiplier;
         return mult;
+    }
+
+    /// <summary>
+    /// 층·roomType에 따라 DefaultWaves에서 앞 N개만 사용.
+    /// 초반 전투는 1 웨이브로 짧게, Elite/Boss는 전체.
+    /// </summary>
+    static WaveDefinitionSO[] BuildWaveSet(WaveDefinitionSO[] source, int floor, RoomType? roomType)
+    {
+        if (source == null || source.Length == 0) return source;
+
+        int target;
+        if (roomType == RoomType.Boss) target = source.Length;
+        else if (roomType == RoomType.Elite) target = Mathf.Min(source.Length, 3);
+        else if (floor <= 1) target = 1;
+        else if (floor <= 4) target = Mathf.Min(source.Length, 2);
+        else target = source.Length;
+
+        if (target >= source.Length) return source;
+        var result = new WaveDefinitionSO[target];
+        System.Array.Copy(source, result, target);
+        return result;
     }
 }
