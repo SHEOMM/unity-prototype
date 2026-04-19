@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 898127ef52aec624faa5f850bf43baec, type: 3}
+  m_Name: FortressStructure
+  m_EditorClassIdentifier: Assembly-CSharp::StructureSO
+  structureName: Fortress
+  description: "Civ tier3 \uC694\uC0C8. \uD2BC\uD2BC\uD55C \uBC29\uBCBD + \uC8FC\uBCC0
+    \uC801 \uC9C0\uC18D \uB109\uBC31 (barrier behavior \uC7AC\uC0AC\uC6A9, \uC2A4\uD0EF
+    \uAC15\uD654)."
+  baseHP: 400
+  scale: 1
+  behaviorId: barrier
+  bodyColor: {r: 0.45, g: 0.45, b: 0.55, a: 1}

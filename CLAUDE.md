@@ -68,15 +68,27 @@ IMoveable   : BaseSpeed, ApplyKnockback
 
 ---
 
-## 시너지 시스템 (Phase 0-2 구현 완료)
+## 시너지 시스템 (Phase 0-3 구현 완료 — 24 시너지)
 
 ### 3층 구조
-- **`SynergyRuleSO`** (데이터) — 언제 발동할지: `triggerType` + `family`+`threshold` / `positionKey`+`planetKey` / `sequenceKeys`. `synergyEffectId`로 효과 참조. `spawnArea`/`spawnCount`로 유닛/구조물 스폰 영역 지정.
-- **`ISynergyEffect`** (로직) — `OnHit(SynergyContext)`, `OnFlightEnd(SynergyContext)` 훅. `SynergyEffectBase` 상속 후 필요한 훅만 override.
-- **`SynergyDispatcher`** (조율자) — ShipController 이벤트 3종 구독, rule 순회 + Registry에서 효과 인스턴스 생성 + 호출.
+- **`SynergyRuleSO`** (데이터) — 언제 발동할지 + 파라미터: `triggerType` + `family`+`threshold` / `positionKey` / `sequenceKeys`. `damage`/`radius`/`duration`/`secondary`/`count`/`element` 5+1개 공통 파라미터. `allyToSpawn`/`structureToSpawn` 레퍼런스로 유닛/구조물 SO 바인딩.
+- **`ISynergyEffect`** (로직) — `OnHit` / `OnFlightEnd` 훅. Stateless (Registry가 호출마다 new). `ctx.CurrentRule`에서 파라미터 읽어 primitive 조합.
+- **`SynergyDispatcher`** (조율자) — **Highest-only**: FamilyAccumulation은 end-of-flight에서 family별 최고 threshold 1개만 발동. SequencePosition/PlanetCombo는 기존 per-hit 흐름.
 
 ### Primitive 라이브러리 (`Assets/Scripts/Synergy/Primitives/`)
-`DotApplicator`, `SlowApplicator`, `KnockbackApplicator`, `ExecuteApplicator`, `ChainLightning`, `AoeApplicator`, `SweepLine`, `AllySpawner`, `StructureSpawner`, `PlayerBuff`, `EnemyFiltering`. 모두 인터페이스 타겟. 새 시너지는 이들을 조합만.
+`DotApplicator`, `SlowApplicator`, `KnockbackApplicator`, `StunApplicator`, `WeaknessApplicator`, `ExecuteApplicator`, `ChainLightning`, `AoeApplicator`, `SweepLine`, `AllySpawner`, `StructureSpawner`, `PlayerBuff`, `AllyBuff`, `EnemyFiltering`. 모두 인터페이스 타겟. 새 시너지는 조합만.
+
+### 구현된 24 시너지 (`Effects/{Family}/`)
+| Family | T1 | T2 | T3 |
+|---|---|---|---|
+| Fire | Fireball | FlameBurst | Inferno (AoE+DoT) |
+| Water | Droplet | Rain | TidalWave |
+| Wind | Gust | WindAura (Player+Ally buff) | Cyclone |
+| Earth | Spike | Meteor | Wall (Barrier ×3) |
+| Lightning | Spark | Thunderbolt (+Stun) | Thunderstorm |
+| War | Recruit | Squad | Army (+AllyBuff) |
+| Dark | PoisonCloud | Curse (Execute) | Plague (DoT+Weakness) |
+| Civilization | Watchtower | Farm | Fortress |
 
 ### SynergyFamily enum
 `Fire / Water / Wind / Earth / Lightning / War / Dark / Civilization` — Element(데미지 속성)와 별개 축. `PlanetSO.synergyFamily`로 지정.
@@ -153,6 +165,6 @@ StartRun → [Map] → [Combat] → [Reward] → [Map] → … → [Boss] → [V
 ## 주요 관례 한 줄씩
 - `Camera.main` 직접 접근 금지 (`CameraService` 경유)
 - Enemy/Ally/Structure는 `IDamageable` 대신 구체 타입을 primitive에 넘기지 않기
-- `SynergyDefinitionSO`는 `[Obsolete]` (Phase 3에서 `SynergyRuleSO`로 완전 마이그레이션 예정)
+- `SynergyDefinitionSO`는 `[Obsolete]` (레거시 SlashResolver 경유만 사용, 신규 기능은 `SynergyRuleSO` + `[SynergyId]`)
 - Boot 스크립트는 항상 `SceneBootBase` 상속 (씬마다 `SceneEnvironment` 에셋 바인딩 필수)
 - 전투 종료 시 `AllyRegistry.DestroyAll()` + `StructureRegistry.DestroyAll()` (combat-scoped, run-scoped 아님)
