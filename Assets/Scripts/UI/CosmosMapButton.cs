@@ -14,7 +14,9 @@ public class CosmosMapButton : MonoBehaviour
     TextMesh _tm;
     Camera _cam;
 
-    const float YOffset = 3.8f;      // 카메라 중심에서 위로
+    // 카메라 뷰 기준 비율 (halfWidth/halfHeight 상대값, -1~+1)
+    const float XAnchor = -0.78f;
+    const float YAnchor = 0.88f;
     const float Width = 2.4f;
     const float Height = 0.7f;
 
@@ -26,11 +28,12 @@ public class CosmosMapButton : MonoBehaviour
     void Start()
     {
         _cam = CameraService.Instance?.Camera;
+        if (_cam == null) Debug.LogWarning("[CosmosMapButton] CameraService.Camera 없음 — 위치 고정 불가");
 
         _bg = gameObject.AddComponent<SpriteRenderer>();
         _bg.sprite = UIFactory.MakePixel();
         _bg.color = new Color(0.2f, 0.5f, 0.8f, 0.95f);
-        _bg.sortingOrder = 20;
+        _bg.sortingOrder = 50;  // MapView 노드보다 위
         transform.localScale = new Vector3(Width, Height, 1f);
 
         var labelGo = new GameObject("Label");
@@ -44,16 +47,31 @@ public class CosmosMapButton : MonoBehaviour
         _tm.alignment = TextAlignment.Center;
         _tm.color = Color.white;
         var mr = labelGo.GetComponent<MeshRenderer>();
-        if (mr != null) mr.sortingOrder = 21;
+        if (mr != null) mr.sortingOrder = 51;
 
         _col = GetComponent<BoxCollider2D>();
         _col.size = Vector2.one;
+
+        ApplyCameraAnchoredPosition();
     }
 
     void LateUpdate()
     {
+        ApplyCameraAnchoredPosition();
+    }
+
+    void ApplyCameraAnchoredPosition()
+    {
+        if (_cam == null) _cam = CameraService.Instance?.Camera;
         if (_cam == null) return;
-        transform.position = _cam.transform.position + new Vector3(-5.2f, YOffset, 0);
+
+        float halfH = _cam.orthographicSize;
+        float halfW = halfH * _cam.aspect;
+        var camPos = _cam.transform.position;
+        transform.position = new Vector3(
+            camPos.x + halfW * XAnchor + Width * 0.5f,
+            camPos.y + halfH * YAnchor - Height * 0.5f,
+            0);
     }
 
     void Update()
