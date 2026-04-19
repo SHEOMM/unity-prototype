@@ -17,6 +17,8 @@ public class GenericDotEffect : IStatusEffect
         _element = element;
     }
 
+    public string IconId => "dot";
+
     public void OnApplied(IStatusHost target) { _elapsed = 0f; }
 
     public void Tick(IStatusHost target, float dt)

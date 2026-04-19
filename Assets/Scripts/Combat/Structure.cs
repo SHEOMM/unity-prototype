@@ -19,6 +19,7 @@ public class Structure : MonoBehaviour, IStatusHost
     private float _flashTimer;
     private float _deathTimer = -1f;
     private readonly List<StatusEffect> _statuses = new List<StatusEffect>();
+    public IReadOnlyList<StatusEffect> ActiveStatuses => _statuses;
 
     private IStructureBehavior _behavior;
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -29,6 +30,12 @@ public class SynergyDispatcher : MonoBehaviour
 
     public FamilyAccumulator Families => _families;
     public IReadOnlyList<PlanetBody> Sequence => _sequence;
+
+    /// <summary>
+    /// 시너지 규칙이 매칭되어 effect가 실제 호출된 직후 발화. UI/VFX/로깅이 구독.
+    /// Dispatcher는 구독자 수와 무관 (Observer). 이벤트가 비어있어도 동작 무결성 유지.
+    /// </summary>
+    public event Action<SynergyRuleSO, SynergyContext> OnSynergyFired;
 
     void Awake()
     {
@@ -98,6 +105,7 @@ public class SynergyDispatcher : MonoBehaviour
             if (effect == null) continue;
             ctx.CurrentRule = rule;
             effect.OnHit(ctx);
+            OnSynergyFired?.Invoke(rule, ctx);
         }
     }
 
@@ -119,6 +127,7 @@ public class SynergyDispatcher : MonoBehaviour
             if (effect == null) continue;
             ctx.CurrentRule = rule;
             effect.OnFlightEnd(ctx);
+            OnSynergyFired?.Invoke(rule, ctx);
         }
 
         // 2) FamilyAccumulation: family별로 임계 충족한 rule 중 최고 threshold 1개만 발동
@@ -150,6 +159,7 @@ public class SynergyDispatcher : MonoBehaviour
             if (effect == null) continue;
             ctx.CurrentRule = rule;
             effect.OnFlightEnd(ctx);
+            OnSynergyFired?.Invoke(rule, ctx);
         }
     }
 

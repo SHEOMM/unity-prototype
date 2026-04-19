@@ -7,6 +7,8 @@
 [StatusEffectId("stun")]
 public class StunEffect : IStatusEffect
 {
+    public string IconId => "stun";
+
     public void Tick(IStatusHost target, float dt)
     {
         if (target is Enemy e) e.moveSpeed = 0f;

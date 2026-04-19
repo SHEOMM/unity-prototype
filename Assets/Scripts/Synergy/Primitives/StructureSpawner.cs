@@ -24,6 +24,8 @@ public static class StructureSpawner
         go.transform.position = (Vector3)position;
         var s = go.AddComponent<Structure>();
         s.Initialize(prefabData, UIFactory.MakePixel());
+        go.AddComponent<StructureView>();
+        go.AddComponent<StatusIconView>();
         return s;
     }
 }

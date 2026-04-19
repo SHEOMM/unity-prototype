@@ -72,6 +72,10 @@ public class SynergyRuleSO : ScriptableObject
     [Header("메타")]
     public string displayName;
     [TextArea] public string description;
+
+    [Header("UI")]
+    [Tooltip("Toast/HUD 표시용 아이콘 (옵셔널). 없으면 텍스트만 표시.")]
+    public Sprite icon;
 }
 
 /// <summary>시퀀스 내 위치 지정자.</summary>
