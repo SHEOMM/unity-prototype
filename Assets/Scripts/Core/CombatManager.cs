@@ -34,6 +34,8 @@ public class CombatManager : MonoBehaviour
         _cometSpawner = GetOrAdd<CometSpawner>();
         GetOrAdd<GravitySourceRegistry>();
         GetOrAdd<EnemyRegistry>();
+        GetOrAdd<AllyRegistry>();
+        GetOrAdd<StructureRegistry>();
 
         var input = GetOrAdd<ShipInput>();
         var resolver = GetOrAdd<SlashResolver>();
@@ -84,6 +86,10 @@ public class CombatManager : MonoBehaviour
         _cometSpawner.OnCometCaptured -= OnCometCaptured;
         _spawner.OnAllWavesComplete -= OnAllWavesCleared;
         _deck.ClearAll();
+
+        // 아군/구조물 전투 종료 시 정리 (Phase 2 플랜: 전투 내내 유지, combat end에 파괴)
+        AllyRegistry.Instance?.DestroyAll();
+        StructureRegistry.Instance?.DestroyAll();
     }
 
     void SetupCelestialBodies(StarSO[] starDeck, PlanetSO[] planetDeck)

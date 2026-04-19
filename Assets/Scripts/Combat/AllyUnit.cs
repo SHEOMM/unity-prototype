@@ -1,14 +1,24 @@
 using UnityEngine;
-using System.Collections.Generic;
-using System.Reflection;
 using System;
+using System.Collections.Generic;
 
-public class Enemy : MonoBehaviour, IStatusHost, IMoveable
+/// <summary>
+/// 아군 유닛 런타임. Enemy와 대칭: HP/피격/상태이상/넉백 공통, 행동은 IAllyBehavior.
+/// IStatusHost(=IDamageable) + IMoveable 구현 → 기존 primitive 재사용 가능.
+///
+/// 기본 이동: 가장 가까운 적으로 접근. 공격 범위 내면 주기적으로 데미지.
+/// 세부 로직은 IAllyBehavior 구현체가 override (Tick이 false 반환 시 기본 이동/공격 스킵).
+/// </summary>
+public class AllyUnit : MonoBehaviour, IStatusHost, IMoveable
 {
-    public EnemySO Data { get; private set; }
+    public AllySO Data { get; private set; }
     public float maxHP;
     public float currentHP;
     public float moveSpeed;
+    public float attackDamage;
+    public float attackRange;
+    public float attackInterval;
+    private float _attackCooldown;
 
     public event Action<float, Element> OnDamaged;
     public event Action OnDeath;
@@ -16,13 +26,11 @@ public class Enemy : MonoBehaviour, IStatusHost, IMoveable
     private Vector2 _knockback;
     private float _baseSpeed;
     private SpriteRenderer _sr;
-    private Color _origColor;
     private float _flashTimer;
     private float _deathTimer = -1f;
     private readonly List<StatusEffect> _statuses = new List<StatusEffect>();
 
-    private IEnemyBehavior _behavior;
-    private IEnemyState _state;
+    private IAllyBehavior _behavior;
 
     // ── IDamageable ────────────────────────────────────────────
     public float CurrentHP => currentHP;
@@ -34,36 +42,28 @@ public class Enemy : MonoBehaviour, IStatusHost, IMoveable
     public float BaseSpeed => _baseSpeed;
     public void ApplyKnockback(Vector2 delta) { _knockback += delta; }
 
-    void OnEnable() { if (EnemyRegistry.Instance != null) EnemyRegistry.Instance.Register(this); }
-    void OnDisable() { if (EnemyRegistry.Instance != null) EnemyRegistry.Instance.Unregister(this); }
+    void OnEnable() { if (AllyRegistry.Instance != null) AllyRegistry.Instance.Register(this); }
+    void OnDisable() { if (AllyRegistry.Instance != null) AllyRegistry.Instance.Unregister(this); }
 
-    public void Initialize(EnemySO data, Sprite sprite)
+    public void Initialize(AllySO data, Sprite sprite)
     {
         Data = data;
         maxHP = data.baseHP;
         currentHP = data.baseHP;
         moveSpeed = data.moveSpeed;
         _baseSpeed = data.moveSpeed;
+        attackDamage = data.attackDamage;
+        attackRange = data.attackRange;
+        attackInterval = data.attackInterval;
 
         _sr = GetComponent<SpriteRenderer>();
         if (_sr == null) _sr = gameObject.AddComponent<SpriteRenderer>();
         if (sprite != null) _sr.sprite = sprite;
-        _sr.color = Color.white;
+        _sr.color = data.bodyColor;
         _sr.sortingOrder = GameConstants.SortingOrder.EnemyBody;
         transform.localScale = Vector3.one * data.scale;
-        _origColor = Color.white;
 
-        _behavior = EnemyBehaviorRegistry.Get(data.behaviorId);
-        AttachStateIfNeeded(data.behaviorId);
-    }
-
-    void AttachStateIfNeeded(string behaviorId)
-    {
-        var behaviorType = EnemyBehaviorRegistry.GetBehaviorType(behaviorId);
-        if (behaviorType == null) return;
-        var stateAttr = behaviorType.GetCustomAttribute<EnemyStateAttribute>();
-        if (stateAttr?.StateType == null) return;
-        _state = (IEnemyState)gameObject.AddComponent(stateAttr.StateType);
+        _behavior = AllyBehaviorRegistry.Get(data.behaviorId);
     }
 
     void Update()
@@ -76,7 +76,6 @@ public class Enemy : MonoBehaviour, IStatusHost, IMoveable
         }
 
         moveSpeed = _baseSpeed;
-        _state?.Tick(Time.deltaTime);
 
         for (int i = _statuses.Count - 1; i >= 0; i--)
         {
@@ -84,11 +83,10 @@ public class Enemy : MonoBehaviour, IStatusHost, IMoveable
             if (_statuses[i].IsExpired) _statuses.RemoveAt(i);
         }
 
-        bool doDefaultMove = _behavior?.Tick(this, Time.deltaTime) ?? true;
-        if (doDefaultMove)
-            transform.Translate(Vector3.left * moveSpeed * Time.deltaTime);
+        bool doDefault = _behavior?.Tick(this, Time.deltaTime) ?? true;
+        if (doDefault) DefaultTick(Time.deltaTime);
 
-        // 넉백: 매 프레임 위치 이동 + 감쇠
+        // 넉백
         if (_knockback.sqrMagnitude > 0.0001f)
         {
             transform.position += (Vector3)(_knockback * Time.deltaTime);
@@ -98,21 +96,56 @@ public class Enemy : MonoBehaviour, IStatusHost, IMoveable
         if (_flashTimer > 0)
         {
             _flashTimer -= Time.deltaTime;
-            _sr.color = Color.Lerp(_origColor, Color.white, _flashTimer * GameConstants.Combat.DamageFlashSpeed);
+            _sr.color = Color.Lerp(Data != null ? Data.bodyColor : Color.white, Color.white,
+                                   _flashTimer * GameConstants.Combat.DamageFlashSpeed);
         }
-        if (transform.position.x < GameConstants.ScreenBoundaryLeft)
+    }
+
+    /// <summary>기본 AI: 가장 가까운 적으로 접근 + 범위 내면 공격.</summary>
+    void DefaultTick(float dt)
+    {
+        var target = FindNearestEnemy();
+        if (target == null) return;
+
+        Vector2 toTarget = (Vector2)target.transform.position - (Vector2)transform.position;
+        float dist = toTarget.magnitude;
+
+        if (dist > attackRange)
         {
-            if (PlayerState.Instance != null && Data != null)
-                PlayerState.Instance.TakeDamage(Data.attackDamage);
-            _deathTimer = GameConstants.Combat.DeathTimerBoundary;
+            // 접근
+            Vector2 dir = toTarget / Mathf.Max(dist, 1e-4f);
+            transform.Translate(dir * moveSpeed * dt);
         }
+        else
+        {
+            // 공격
+            _attackCooldown -= dt;
+            if (_attackCooldown <= 0f)
+            {
+                _attackCooldown = attackInterval;
+                target.TakeDamage(attackDamage);
+            }
+        }
+    }
+
+    Enemy FindNearestEnemy()
+    {
+        if (EnemyRegistry.Instance == null) return null;
+        var list = EnemyRegistry.Instance.GetAll();
+        Enemy best = null;
+        float bestDistSq = float.MaxValue;
+        foreach (var e in list)
+        {
+            if (e == null || !e.IsAlive) continue;
+            float d = ((Vector2)e.transform.position - (Vector2)transform.position).sqrMagnitude;
+            if (d < bestDistSq) { bestDistSq = d; best = e; }
+        }
+        return best;
     }
 
     public void TakeDamage(float dmg, Element element = Element.None)
     {
         if (_deathTimer >= 0) return;
-
-        dmg = ApplyElementResistance(dmg, element);
 
         if (_behavior != null)
             dmg = _behavior.ModifyIncomingDamage(this, dmg, element);
@@ -124,18 +157,9 @@ public class Enemy : MonoBehaviour, IStatusHost, IMoveable
         if (currentHP <= 0)
         {
             OnDeath?.Invoke();
-            PlayerState.Instance?.NotifyEnemyKilled(this);
             bool normalDeath = _behavior?.OnDeath(this) ?? true;
             if (normalDeath) _deathTimer = GameConstants.Combat.DeathTimerNormal;
         }
-    }
-
-    float ApplyElementResistance(float dmg, Element element)
-    {
-        if (Data?.resistances == null || element == Element.None) return dmg;
-        foreach (var r in Data.resistances)
-            if (r.element == element) return dmg * r.multiplier;
-        return dmg;
     }
 
     public void Heal(float amount)

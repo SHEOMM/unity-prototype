@@ -17,9 +17,9 @@ public class GenericDotEffect : IStatusEffect
         _element = element;
     }
 
-    public void OnApplied(Enemy target) { _elapsed = 0f; }
+    public void OnApplied(IStatusHost target) { _elapsed = 0f; }
 
-    public void Tick(Enemy target, float dt)
+    public void Tick(IStatusHost target, float dt)
     {
         _elapsed += dt;
         if (_elapsed >= _tickInterval)
@@ -29,5 +29,5 @@ public class GenericDotEffect : IStatusEffect
         }
     }
 
-    public void OnExpired(Enemy target) { }
+    public void OnExpired(IStatusHost target) { }
 }

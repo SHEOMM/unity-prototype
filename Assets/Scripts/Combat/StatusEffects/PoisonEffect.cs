@@ -7,8 +7,9 @@ public class PoisonEffect : IStatusEffect
     public float tickInterval = 0.5f;
     public float damagePerTick = 5f;
 
-    public void Tick(Enemy target, float dt)
+    public void Tick(IStatusHost target, float dt)
     {
+        if (target == null) return;
         _tickTimer += dt;
         if (_tickTimer >= tickInterval)
         {
