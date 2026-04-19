@@ -43,6 +43,32 @@ public class SynergyRuleSO : ScriptableObject
     [Tooltip("한 번 발동 시 소환할 개수.")]
     public int spawnCount = 1;
 
+    [Header("스폰 대상 (Ally/Structure 시너지 전용)")]
+    [Tooltip("War 계열이 소환할 아군 SO.")]
+    public AllySO allyToSpawn;
+
+    [Tooltip("Earth_3/Civilization 계열이 설치할 구조물 SO.")]
+    public StructureSO structureToSpawn;
+
+    [Header("효과 파라미터 (시너지별 해석)")]
+    [Tooltip("기본 데미지 (AoE/단일/Chain/Sweep 등).")]
+    public float damage = 10f;
+
+    [Tooltip("범위 (AoE 반경 / Chain 점프 반경 / Sweep 폭).")]
+    public float radius = 2f;
+
+    [Tooltip("지속시간 (DoT/Slow/Buff/Debuff).")]
+    public float duration = 3f;
+
+    [Tooltip("보조 값 — 시너지별 해석: DoT tickInterval / Slow factor / Knockback 강도 / Execute hpRatio / Buff multiplier 등.")]
+    public float secondary = 0.5f;
+
+    [Tooltip("카운트 — Chain 점프 수 / DoT tick 수 / Ally 소환 수 / 임계 카운트 등.")]
+    public int count = 1;
+
+    [Tooltip("피해 속성. 기본은 family에 대응.")]
+    public Element element = Element.None;
+
     [Header("메타")]
     public string displayName;
     [TextArea] public string description;

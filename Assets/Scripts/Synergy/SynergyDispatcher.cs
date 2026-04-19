@@ -89,14 +89,16 @@ public class SynergyDispatcher : MonoBehaviour
 
         var ctx = BuildContext(planet, _sequence.Count - 1);
 
-        // per-hit 훅 — 현재 규칙에 매칭되는 효과 중 OnHit에만 반응하는 것들 실행.
-        // 단순화: FamilyAccumulation으로 지금 이 hit이 threshold 도달 시에도 per-hit 발화 허용.
-        // Phase 0에서는 모든 규칙에 대해 OnHit도 호출. 구현자가 필요한 훅만 override.
+        // per-hit 훅은 비-FamilyAccumulation 규칙만 즉시 발화.
+        // FamilyAccumulation은 end-of-flight 시점에 highest-only로 일괄 발동 (Phase 3 의미론).
         foreach (var rule in _rules)
         {
-            if (rule == null || !SynergyRuleMatcher.Matches(rule, ctx)) continue;
+            if (rule == null) continue;
+            if (rule.triggerType == SynergyTriggerType.FamilyAccumulation) continue;
+            if (!SynergyRuleMatcher.Matches(rule, ctx)) continue;
             var effect = SynergyRegistry.Get(rule.synergyEffectId);
             if (effect == null) continue;
+            ctx.CurrentRule = rule;
             effect.OnHit(ctx);
         }
     }
@@ -107,11 +109,46 @@ public class SynergyDispatcher : MonoBehaviour
         var ctx = BuildContext(null, finalSequence.Count - 1);
         ctx.HitSequence = finalSequence;
 
+        // 1) 비-FamilyAccumulation: 기존 그대로 모두 매칭 시 발동
         foreach (var rule in _rules)
         {
-            if (rule == null || !SynergyRuleMatcher.Matches(rule, ctx)) continue;
+            if (rule == null) continue;
+            if (rule.triggerType == SynergyTriggerType.FamilyAccumulation) continue;
+            if (!SynergyRuleMatcher.Matches(rule, ctx)) continue;
             var effect = SynergyRegistry.Get(rule.synergyEffectId);
             if (effect == null) continue;
+            ctx.CurrentRule = rule;
+            effect.OnFlightEnd(ctx);
+        }
+
+        // 2) FamilyAccumulation: family별로 임계 충족한 rule 중 최고 threshold 1개만 발동
+        FireHighestPerFamily(ctx);
+    }
+
+    /// <summary>
+    /// 같은 family에 여러 tier(threshold=1/2/3)의 rule이 있을 때 임계 넘은 것 중
+    /// threshold가 가장 큰 1개만 발동한다 (highest-only 시맨틱).
+    /// 같은 threshold 복수 존재 시 _rules 등록 순서 상 먼저 만난 것을 사용.
+    /// </summary>
+    void FireHighestPerFamily(SynergyContext ctx)
+    {
+        var best = new Dictionary<SynergyFamily, SynergyRuleSO>();
+        foreach (var rule in _rules)
+        {
+            if (rule == null) continue;
+            if (rule.triggerType != SynergyTriggerType.FamilyAccumulation) continue;
+            if (!SynergyRuleMatcher.Matches(rule, ctx)) continue;
+
+            if (!best.TryGetValue(rule.family, out var cur) || rule.threshold > cur.threshold)
+                best[rule.family] = rule;
+        }
+
+        foreach (var kv in best)
+        {
+            var rule = kv.Value;
+            var effect = SynergyRegistry.Get(rule.synergyEffectId);
+            if (effect == null) continue;
+            ctx.CurrentRule = rule;
             effect.OnFlightEnd(ctx);
         }
     }
