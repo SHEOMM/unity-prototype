@@ -46,49 +46,6 @@ public static class CelestialSpriteGenerator
         return Sprite.Create(tex, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f), size);
     }
 
-    public static Sprite GenerateStarSprite(Color baseColor, int size = 96)
-    {
-        var tex = new Texture2D(size, size, TextureFormat.RGBA32, false);
-        tex.filterMode = FilterMode.Bilinear;
-        float half = size * 0.5f;
-        float radius = half - 1f;
-
-        for (int y = 0; y < size; y++)
-        {
-            for (int x = 0; x < size; x++)
-            {
-                float dx = x - half;
-                float dy = y - half;
-                float dist = Mathf.Sqrt(dx * dx + dy * dy);
-                float norm = dist / radius;
-
-                // 원형 글로우
-                float glow = Mathf.Max(0, 1f - norm);
-                float core = Mathf.Pow(Mathf.Max(0, 1f - norm * 2f), 2f);
-
-                // 십자형 빛줄기
-                float ax = Mathf.Abs(dx);
-                float ay = Mathf.Abs(dy);
-                float crossH = Mathf.Exp(-ay * 0.3f) * Mathf.Max(0, 1f - norm * 0.5f) * 0.5f;
-                float crossV = Mathf.Exp(-ax * 0.3f) * Mathf.Max(0, 1f - norm * 0.5f) * 0.5f;
-                // 대각선 줄기
-                float diag1 = Mathf.Exp(-Mathf.Abs(dx - dy) * 0.4f) * Mathf.Max(0, 1f - norm * 0.7f) * 0.25f;
-                float diag2 = Mathf.Exp(-Mathf.Abs(dx + dy) * 0.4f) * Mathf.Max(0, 1f - norm * 0.7f) * 0.25f;
-
-                float total = Mathf.Clamp01(glow * 0.6f + core + crossH + crossV + diag1 + diag2);
-                float edgeSoft = Mathf.Clamp01((1f - norm) * 3f + crossH + crossV + diag1 + diag2);
-
-                Color c = Color.Lerp(baseColor, Color.white, core * 0.8f);
-                c = Color.Lerp(Color.black, c, total);
-                c.a = Mathf.Clamp01(edgeSoft);
-                tex.SetPixel(x, y, c);
-            }
-        }
-
-        tex.Apply();
-        return Sprite.Create(tex, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f), size);
-    }
-
     public static Sprite GenerateSatelliteSprite(Color baseColor, int size = 32)
     {
         var tex = new Texture2D(size, size, TextureFormat.RGBA32, false);

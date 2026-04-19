@@ -2,7 +2,7 @@ using UnityEngine;
 
 /// <summary>
 /// UI 요소 생성 유틸리티. 라벨, HP바 등 공통 UI를 코드로 생성한다.
-/// Enemy, PlanetBody, StarSystem에서 중복되던 코드를 통합.
+/// Enemy, PlanetBody, OrbitBody 등에서 중복되던 코드를 통합.
 /// </summary>
 public static class UIFactory
 {

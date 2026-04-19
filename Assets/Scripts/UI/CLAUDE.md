@@ -85,7 +85,6 @@ Ally/Structure View는 EnemyView를 그대로 미러링. 공통 추상 베이스
 | 파일 | 역할 |
 |---|---|
 | `PlanetLabelView` | PlanetBody에 자동 부착, 이름 라벨 |
-| `StarLabelView` | StarSystem에 자동 부착 |
 | `AquariusHUD` | 물병별 수위 게이지 (IPlanetHUD 구현체 — DeckManager가 부착) |
 | `MapView` | 분기형 맵 시각화 (MapManager.OnMapGenerated/OnNodeSelected 구독) |
 | `GravityRangeView` | IGravitySource 반경 원 표시 |

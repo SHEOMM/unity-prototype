@@ -12,8 +12,10 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     [Header("초기 덱")]
-    [SerializeField] private StarSO[] startingStars;
     [SerializeField] private PlanetSO[] startingPlanets;
+    [SerializeField] private OrbitSO[] startingOrbits;
+    [Tooltip("시작 시 궤도↔행성 배치. 길이·순서는 startingOrbits와 독립적.")]
+    [SerializeField] private OrbitAssignment[] defaultAssignments;
 
     [Header("시너지")]
     [SerializeField] private SynergyDefinitionSO[] synergies;
@@ -43,6 +45,9 @@ public class GameManager : MonoBehaviour
     public CometSO[] CometPool => cometPool;
     public MapNode CurrentNode => _currentNode;
     public WaveDefinitionSO[] DefaultWaves => defaultWaves;
+    public PlanetSO[] StartingPlanets => startingPlanets;
+    public OrbitSO[] StartingOrbits => startingOrbits;
+    public OrbitAssignment[] DefaultAssignments => defaultAssignments;
 
     [Header("기본 웨이브")]
     [SerializeField] private WaveDefinitionSO[] defaultWaves;
@@ -71,8 +76,9 @@ public class GameManager : MonoBehaviour
     {
         RunState.Instance.InitializeRun(
             Random.Range(0, 99999),
-            startingStars ?? new StarSO[0],
-            startingPlanets ?? new PlanetSO[0]
+            startingPlanets ?? new PlanetSO[0],
+            startingOrbits ?? new OrbitSO[0],
+            defaultAssignments ?? new OrbitAssignment[0]
         );
         PlayerState.Instance.ResetForNewRun();
 

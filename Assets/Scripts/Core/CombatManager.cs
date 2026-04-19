@@ -61,10 +61,13 @@ public class CombatManager : MonoBehaviour
         GetOrAdd<ShipFeedbackView>();
     }
 
-    public void StartCombat(WaveDefinitionSO[] waves, StarSO[] stars = null, PlanetSO[] planets = null)
+    public void StartCombat(WaveDefinitionSO[] waves,
+                            System.Collections.Generic.List<OrbitSO> orbits = null,
+                            System.Collections.Generic.List<OrbitAssignment> assignments = null,
+                            System.Collections.Generic.List<PlanetSO> planetDeck = null)
     {
-        if (stars != null && planets != null)
-            SetupCelestialBodies(stars, planets);
+        if (orbits != null && orbits.Count > 0)
+            SetupCosmos(orbits, assignments, planetDeck);
 
         var divider = new GameObject("DividerLine").AddComponent<CombatDividerView>();
         divider.Initialize(celestialYCenter - celestialRadius);
@@ -96,21 +99,45 @@ public class CombatManager : MonoBehaviour
         StructureRegistry.Instance?.DestroyAll();
     }
 
-    void SetupCelestialBodies(StarSO[] starDeck, PlanetSO[] planetDeck)
+    /// <summary>
+    /// Phase 9: 궤도들을 월드 원점의 y=celestialYCenter 동심원으로 생성.
+    /// assignments에 매핑된 행성만 해당 궤도에 배치 — 매핑 없는 궤도는 빈 상태로 회전.
+    /// </summary>
+    void SetupCosmos(System.Collections.Generic.List<OrbitSO> orbits,
+                     System.Collections.Generic.List<OrbitAssignment> assignments,
+                     System.Collections.Generic.List<PlanetSO> planetDeck)
     {
-        int pi = 0;
-        foreach (var sd in starDeck)
+        Vector2 center = new Vector2(0f, celestialYCenter);
+        foreach (var orbitSo in orbits)
         {
-            if (sd == null) continue;
-            var star = _deck.CreateStar(sd);
-            if (planetDeck == null || sd.orbits == null) continue;
-            for (int o = 0; o < sd.orbits.Length && pi < planetDeck.Length; o++, pi++)
-            {
-                if (planetDeck[pi] == null) continue;
-                var planet = _deck.CreatePlanet(planetDeck[pi]);
-                _deck.PlacePlanetOnStar(planet, star, o);
-            }
+            if (orbitSo == null) continue;
+            var orbitBody = _deck.CreateOrbit(orbitSo, center);
+
+            string planetName = FindAssignedPlanet(assignments, orbitSo.orbitName);
+            if (string.IsNullOrEmpty(planetName)) continue;
+
+            var planetSo = FindPlanetByName(planetDeck, planetName);
+            if (planetSo == null) continue;
+
+            var planetBody = _deck.CreatePlanet(planetSo);
+            orbitBody.PlacePlanet(planetBody);
         }
+    }
+
+    static string FindAssignedPlanet(System.Collections.Generic.List<OrbitAssignment> assignments, string orbitName)
+    {
+        if (assignments == null) return null;
+        foreach (var a in assignments)
+            if (a.orbitName == orbitName) return a.planetName;
+        return null;
+    }
+
+    static PlanetSO FindPlanetByName(System.Collections.Generic.List<PlanetSO> deck, string planetName)
+    {
+        if (deck == null) return null;
+        foreach (var p in deck)
+            if (p != null && p.bodyName == planetName) return p;
+        return null;
     }
 
     void OnAllWavesCleared()

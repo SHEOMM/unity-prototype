@@ -24,8 +24,9 @@ public class CombatSceneBoot : SceneBootBase
 
         combat.StartCombat(
             waves,
-            RunState.Instance?.starDeck?.ToArray(),
-            RunState.Instance?.planetDeck?.ToArray()
+            RunState.Instance?.unlockedOrbits,
+            RunState.Instance?.orbitAssignments,
+            RunState.Instance?.planetDeck
         );
 
         Debug.Log($"[CombatScene] 전투 시작 — 웨이브 {(waves != null ? waves.Length : 0)}개");

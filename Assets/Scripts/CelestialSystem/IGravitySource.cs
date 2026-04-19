@@ -1,7 +1,7 @@
 using UnityEngine;
 
 /// <summary>
-/// 중력을 방출하는 천체 인터페이스. PlanetBody와 StarSystem이 구현한다.
+/// 중력을 방출하는 천체 인터페이스. Phase 9 기준 PlanetBody가 구현.
 /// CachedGravityType으로 서브스텝마다 Registry lookup을 피한다.
 /// </summary>
 public interface IGravitySource
