@@ -76,6 +76,14 @@ public class SynergyRuleSO : ScriptableObject
     [Header("UI")]
     [Tooltip("Toast/HUD 표시용 아이콘 (옵셔널). 없으면 텍스트만 표시.")]
     public Sprite icon;
+
+    [Header("VFX")]
+    [Tooltip("[SynergyVisualId] 키. 비우면 Host가 'default' 폴백. 공용 키: area_pulse / chain / sweep / spawn_burst / screen_flash / default")]
+    public string visualId;
+
+    [Range(0f, 1f)]
+    [Tooltip("Visual 강도 (예약 — 현재 대부분 Visual은 rule.radius/count로 크기 결정).")]
+    public float visualIntensity = 1f;
 }
 
 /// <summary>시퀀스 내 위치 지정자.</summary>

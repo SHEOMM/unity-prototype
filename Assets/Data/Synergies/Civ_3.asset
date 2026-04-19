@@ -36,3 +36,6 @@ MonoBehaviour:
   element: 0
   displayName: "\uC694\uC0C8"
   description: "Civ 3\uD68C \u2014 Fortress 1\uAC1C \uC124\uCE58."
+  icon: {fileID: 0}
+  visualId: spawn_burst
+  visualIntensity: 1

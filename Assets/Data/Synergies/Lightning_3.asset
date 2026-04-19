@@ -36,3 +36,6 @@ MonoBehaviour:
   element: 0
   displayName: "\uB1CC\uC6B0"
   description: "Lightning 3\uD68C \u2014 6\uD68C \uCCB4\uC778 \uC810\uD504."
+  icon: {fileID: 0}
+  visualId: chain
+  visualIntensity: 1

@@ -40,3 +40,6 @@ MonoBehaviour:
   displayName: "\uC804\uC0AC\uC758 \uD3ED\uD48D"
   description: "blade+valor+storm \uD3EC\uD568 \uC2DC \uC804\uC5ED Fire AoE + ChainLightning
     5\uD68C."
+  icon: {fileID: 0}
+  visualId: screen_flash
+  visualIntensity: 1

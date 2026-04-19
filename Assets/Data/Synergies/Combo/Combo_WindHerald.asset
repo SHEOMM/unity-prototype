@@ -40,3 +40,6 @@ MonoBehaviour:
   displayName: "\uBC14\uB78C\uC758 \uC804\uB839"
   description: "swift+herald+marksman \uD3EC\uD568 \uC2DC \uC804\uCCB4 \uC801 \uB109\uBC31
     + \uD50C\uB808\uC774\uC5B4 Wind+4 6\uCD08."
+  icon: {fileID: 0}
+  visualId: sweep
+  visualIntensity: 1

@@ -68,7 +68,7 @@ IMoveable   : BaseSpeed, ApplyKnockback
 
 ---
 
-## 시너지 시스템 (Phase 0-6 구현 완료 — 37 시너지 + UI 강화)
+## 시너지 시스템 (Phase 0-7 구현 완료 — 37 시너지 + UI/VFX 이중 레이어)
 
 ### 3층 구조
 - **`SynergyRuleSO`** (데이터) — 언제 발동할지 + 파라미터: `triggerType` + `family`+`threshold` / `positionKey`+`planetKey` / `sequenceKeys` / `planetKey`(PerHitPlanet). `damage`/`radius`/`duration`/`secondary`/`count`/`element` 5+1개 공통 파라미터. `allyToSpawn`/`structureToSpawn` 레퍼런스로 유닛/구조물 SO 바인딩.
@@ -169,6 +169,21 @@ ShipInput (슬링샷 드래그, 마우스 반대방향으로 발사)
 | `UI/StatusIconView` | `IStatusHost.ActiveStatuses` 관찰 → id별 아이콘 1개 렌더 |
 | `UI/StatusIconRegistry` + `[StatusIconId]` | 새 상태이상 아이콘 추가 = `[StatusIconId("x")] class XIconMeta : IStatusIconMeta` 파일 1개. `IStatusEffect.IconId`는 해당 키 반환 |
 | `SynergyDispatcher.OnSynergyFired` | 모든 trigger 타입의 effect 호출 직후 발화. UI/VFX/로깅이 DIP로 구독 |
+
+### Phase 7 VFX 레이어 규약
+SynergyToast(텍스트)와 독립된 **비주얼 이펙트 레이어**. `Dispatcher.OnSynergyFired`를 Toast와 Host가 **각각** 구독 (Observer 2명).
+
+| 위치 | 역할 |
+|---|---|
+| `VFX/ISynergyVisual` | `IEnumerator Play(SynergyVisualContext ctx)` 단일 메소드 |
+| `VFX/SynergyVisualRegistry` + `[SynergyVisualId]` | 리플렉션 자동 수집 (`VisualRegistry` 패턴 미러). `Get(id)` 없으면 null 폴백 |
+| `VFX/SynergyVisualHost` | `CombatSceneBoot`가 AddComponent + `.Bind(dispatcher)`. OnSynergyFired 수신 → anchor 계산 → `StartCoroutine(Visual.Play)` |
+| `VFX/SynergyVisualElementPalette` | `Element → Color` 공용 (Fire/Water/Wind/Earth/Darkness/None). Visual 클래스 모두가 이것만 참조 |
+| `VFX/Synergy/*Visual.cs` 6개 | `area_pulse` / `chain` / `sweep` / `spawn_burst` / `screen_flash` / `default` — 공용 템플릿. 37 시너지 대부분을 SO 데이터로 매핑 |
+| `SynergyRuleSO.visualId` | 문자열 키. 비어있으면 Host가 `"default"` 폴백 |
+| `CameraService.Shake(strength, duration)` | Perlin 기반 임팩트 흔들림. `screen_flash` Visual 등이 호출 |
+
+확장: 새 공용 Visual = `[SynergyVisualId("x")] class X : ISynergyVisual` 파일 1개. SO 에셋 `visualId`만 바꾸면 시너지 시각 표현이 즉시 교체됨. 개별 시너지마다 Visual 클래스를 만들 필요 없음.
 
 ---
 

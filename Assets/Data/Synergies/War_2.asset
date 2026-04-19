@@ -36,3 +36,6 @@ MonoBehaviour:
   element: 0
   displayName: "\uBD84\uB300"
   description: "War 2\uD68C \u2014 \uC544\uAD70 3\uBA85 \uC18C\uD658."
+  icon: {fileID: 0}
+  visualId: spawn_burst
+  visualIntensity: 1

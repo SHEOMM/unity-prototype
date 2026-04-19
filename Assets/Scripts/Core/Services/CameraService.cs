@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 /// <summary>
@@ -56,6 +57,36 @@ public class CameraService : MonoBehaviour
         Camera.orthographicSize = env.orthographicSize;
         Camera.backgroundColor = env.backgroundColor;
         Camera.clearFlags = CameraClearFlags.SolidColor;
+    }
+
+    private Coroutine _shakeCoroutine;
+
+    /// <summary>
+    /// 카메라를 짧은 시간 흔든다. Perlin 기반 랜덤 오프셋을 원본 위치에 더했다가 종료 시 복원.
+    /// Phase 7 screen_flash 시너지 등 강한 임팩트에서 사용.
+    /// </summary>
+    public void Shake(float strength, float duration)
+    {
+        if (Camera == null) return;
+        if (_shakeCoroutine != null) StopCoroutine(_shakeCoroutine);
+        _shakeCoroutine = StartCoroutine(ShakeRoutine(strength, duration));
+    }
+
+    IEnumerator ShakeRoutine(float strength, float duration)
+    {
+        Vector3 origin = Camera.transform.position;
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float remaining = Mathf.Max(0f, 1f - elapsed / duration);
+            float ox = (Mathf.PerlinNoise(Time.time * 40f, 0f) - 0.5f) * 2f * strength * remaining;
+            float oy = (Mathf.PerlinNoise(0f, Time.time * 40f) - 0.5f) * 2f * strength * remaining;
+            Camera.transform.position = origin + new Vector3(ox, oy, 0);
+            yield return null;
+        }
+        Camera.transform.position = origin;
+        _shakeCoroutine = null;
     }
 
     /// <summary>

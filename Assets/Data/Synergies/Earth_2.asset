@@ -36,3 +36,6 @@ MonoBehaviour:
   element: 4
   displayName: "\uC6B4\uC11D"
   description: "Earth 2\uD68C \u2014 \uD0C0\uAE43 \uC9C0\uC810 \uC911\uD615 AoE."
+  icon: {fileID: 0}
+  visualId: area_pulse
+  visualIntensity: 1

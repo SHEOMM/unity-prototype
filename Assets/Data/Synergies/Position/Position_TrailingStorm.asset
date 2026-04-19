@@ -37,3 +37,6 @@ MonoBehaviour:
   displayName: "\uB4A4\uB530\uB974\uB294 \uD3ED\uD48D"
   description: "\uB9E8 \uB4A4\uAC00 storm \uD0A4\uC6CC\uB4DC \uD589\uC131\uC774\uBA74
     4\uD68C ChainLightning."
+  icon: {fileID: 0}
+  visualId: chain
+  visualIntensity: 1

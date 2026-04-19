@@ -37,3 +37,6 @@ MonoBehaviour:
   displayName: "\uAD81\uC218\uC758 \uC77C\uC81C\uC0AC\uACA9"
   description: "marksman \uD130\uCE58 \uC2DC \uD130\uCE58 \uC9C0\uC810 \uC8FC\uBCC0
     \uC18C\uD615 AoE."
+  icon: {fileID: 0}
+  visualId: area_pulse
+  visualIntensity: 1

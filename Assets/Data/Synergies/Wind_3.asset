@@ -36,3 +36,6 @@ MonoBehaviour:
   element: 3
   displayName: "\uD0DC\uD48D"
   description: "Wind 3\uD68C \u2014 \uAC15\uB109\uBC31 + \uACF5\uC911 \uC801 \uCD94\uB380."
+  icon: {fileID: 0}
+  visualId: area_pulse
+  visualIntensity: 1

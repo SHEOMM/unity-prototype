@@ -36,3 +36,6 @@ MonoBehaviour:
   element: 1
   displayName: "\uD574\uC77C"
   description: "Water 3\uD68C \u2014 \uC9C1\uC120 \uAD00\uD1B5 + \uAC15\uB109\uBC31."
+  icon: {fileID: 0}
+  visualId: sweep
+  visualIntensity: 1

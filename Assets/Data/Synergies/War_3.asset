@@ -37,3 +37,6 @@ MonoBehaviour:
   displayName: "\uAD70\uB300"
   description: "War 3\uD68C \u2014 \uC544\uAD70 3\uBA85 \uC18C\uD658 + \uC804\uCCB4
     \uC544\uAD70 x1.5 \uBC84\uD504 5\uCD08."
+  icon: {fileID: 0}
+  visualId: spawn_burst
+  visualIntensity: 1
