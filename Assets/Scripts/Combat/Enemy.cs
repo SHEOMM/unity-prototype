@@ -114,6 +114,11 @@ public class Enemy : MonoBehaviour, IStatusHost, IMoveable
 
         dmg = ApplyElementResistance(dmg, element);
 
+        // 활성 status 중 IDamageModifier가 있으면 순서대로 적용 (Weakness 증폭 등)
+        for (int i = 0; i < _statuses.Count; i++)
+            if (_statuses[i].effect is IDamageModifier mod)
+                dmg = mod.ModifyIncoming(dmg, element);
+
         if (_behavior != null)
             dmg = _behavior.ModifyIncomingDamage(this, dmg, element);
 

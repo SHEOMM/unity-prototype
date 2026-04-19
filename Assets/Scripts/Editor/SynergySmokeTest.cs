@@ -125,6 +125,72 @@ public static class SynergySmokeTest
         Debug.Log($"[Smoke] Structure 피격: {s[0].name} HP={s[0].CurrentHP}/{s[0].MaxHP}");
     }
 
+    // ── Phase 2.5: Stun/Weakness/AllyBuff + concrete behaviors ───────────
+
+    [MenuItem("Tools/Synergy/Smoke — Stun first enemy (3s)")]
+    static void SmokeStun()
+    {
+        var e = GetFirstEnemy();
+        if (e == null) return;
+        StunApplicator.Apply(e, 3f);
+        Debug.Log($"[Smoke] Stun 부착: {e.name}, 3초간 moveSpeed=0");
+    }
+
+    [MenuItem("Tools/Synergy/Smoke — Weakness first enemy (x1.5, 5s)")]
+    static void SmokeWeakness()
+    {
+        var e = GetFirstEnemy();
+        if (e == null) return;
+        WeaknessApplicator.Apply(e, 1.5f, 5f);
+        Debug.Log($"[Smoke] Weakness 부착: {e.name}, 받는 피해 ×1.5");
+    }
+
+    [MenuItem("Tools/Synergy/Smoke — Ally buff all (dmg×1.5 spd×1.3 4s)")]
+    static void SmokeAllyBuff()
+    {
+        var allies = AllyRegistry.Instance?.GetAll();
+        if (allies == null || allies.Count == 0) { Debug.LogWarning("[Smoke] 아군 없음"); return; }
+        AllyBuff.ApplyToAll(allies, 1.5f, 1.3f, 4f);
+        Debug.Log($"[Smoke] AllyBuff: {allies.Count}마리에 dmg×1.5, spd×1.3, 4초");
+    }
+
+    [MenuItem("Tools/Synergy/Smoke — Spawn Defender Ally at (0,-2)")]
+    static void SmokeDefender()
+    {
+        var so = ScriptableObject.CreateInstance<AllySO>();
+        so.allyName = "DefenderTest";
+        so.baseHP = 60f; so.moveSpeed = 2f; so.attackDamage = 10f;
+        so.attackRange = 1.5f; so.attackInterval = 0.8f; so.scale = 0.4f;
+        so.behaviorId = "defender";
+        so.bodyColor = new Color(0.2f, 0.5f, 1f);
+        var ally = AllySpawner.SpawnAt(so, new Vector2(0, -2));
+        Debug.Log($"[Smoke] Defender 스폰: {ally?.name} (behavior=defender, patrolRadius=3)");
+    }
+
+    [MenuItem("Tools/Synergy/Smoke — Spawn Barrier at (0,-1)")]
+    static void SmokeBarrier()
+    {
+        var so = ScriptableObject.CreateInstance<StructureSO>();
+        so.structureName = "BarrierTest";
+        so.baseHP = 150f; so.scale = 0.6f;
+        so.behaviorId = "barrier";
+        so.bodyColor = new Color(0.6f, 0.8f, 0.3f);
+        var s = StructureSpawner.SpawnAt(so, new Vector2(0, -1));
+        Debug.Log($"[Smoke] Barrier 스폰: {s?.name} (behavior=barrier, pushRadius=1.5)");
+    }
+
+    [MenuItem("Tools/Synergy/Smoke — Spawn Watchtower at (-3,-2)")]
+    static void SmokeWatchtower()
+    {
+        var so = ScriptableObject.CreateInstance<StructureSO>();
+        so.structureName = "WatchtowerTest";
+        so.baseHP = 80f; so.scale = 0.5f;
+        so.behaviorId = "watchtower";
+        so.bodyColor = new Color(0.8f, 0.8f, 0.4f);
+        var s = StructureSpawner.SpawnAt(so, new Vector2(-3, -2));
+        Debug.Log($"[Smoke] Watchtower 스폰: {s?.name} (1.5s마다 가장 가까운 적 6dmg)");
+    }
+
     [MenuItem("Tools/Synergy/Smoke — Registry counts (Enemy/Ally/Structure)")]
     static void SmokeRegistryCounts()
     {
