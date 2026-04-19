@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 898127ef52aec624faa5f850bf43baec, type: 3}
+  m_Name: WatchtowerStructure
+  m_EditorClassIdentifier: Assembly-CSharp::StructureSO
+  structureName: Watchtower
+  description: "Civ \uC2DC\uB108\uC9C0 \uAC10\uC2DC\uD0D1. 1.5\uCD08\uB9C8\uB2E4
+    \uAC00\uC7A5 \uAC00\uAE4C\uC6B4 \uC801\uC5D0\uAC8C \uD53C\uD574."
+  baseHP: 80
+  scale: 0.5
+  behaviorId: watchtower
+  bodyColor: {r: 0.85, g: 0.75, b: 0.35, a: 1}
