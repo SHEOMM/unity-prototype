@@ -68,17 +68,17 @@ IMoveable   : BaseSpeed, ApplyKnockback
 
 ---
 
-## 시너지 시스템 (Phase 0-3 구현 완료 — 24 시너지)
+## 시너지 시스템 (Phase 0-4 구현 완료 — 30 시너지)
 
 ### 3층 구조
-- **`SynergyRuleSO`** (데이터) — 언제 발동할지 + 파라미터: `triggerType` + `family`+`threshold` / `positionKey` / `sequenceKeys`. `damage`/`radius`/`duration`/`secondary`/`count`/`element` 5+1개 공통 파라미터. `allyToSpawn`/`structureToSpawn` 레퍼런스로 유닛/구조물 SO 바인딩.
-- **`ISynergyEffect`** (로직) — `OnHit` / `OnFlightEnd` 훅. Stateless (Registry가 호출마다 new). `ctx.CurrentRule`에서 파라미터 읽어 primitive 조합.
-- **`SynergyDispatcher`** (조율자) — **Highest-only**: FamilyAccumulation은 end-of-flight에서 family별 최고 threshold 1개만 발동. SequencePosition/PlanetCombo는 기존 per-hit 흐름.
+- **`SynergyRuleSO`** (데이터) — 언제 발동할지 + 파라미터: `triggerType` + `family`+`threshold` / `positionKey`+`planetKey` / `sequenceKeys`. `damage`/`radius`/`duration`/`secondary`/`count`/`element` 5+1개 공통 파라미터. `allyToSpawn`/`structureToSpawn` 레퍼런스로 유닛/구조물 SO 바인딩.
+- **`ISynergyEffect`** (로직) — `OnFlightEnd` 훅만 사용 (OnHit은 인터페이스에 남아있되 현재 미호출). Stateless. `ctx.CurrentRule`에서 파라미터 읽어 primitive 조합.
+- **`SynergyDispatcher`** (조율자) — **모든 trigger는 end-of-flight에서 판정**. FamilyAccumulation은 family별 highest-only (최고 threshold 1개). SequencePosition/PlanetCombo는 매칭되는 모두 발동.
 
 ### Primitive 라이브러리 (`Assets/Scripts/Synergy/Primitives/`)
-`DotApplicator`, `SlowApplicator`, `KnockbackApplicator`, `StunApplicator`, `WeaknessApplicator`, `ExecuteApplicator`, `ChainLightning`, `AoeApplicator`, `SweepLine`, `AllySpawner`, `StructureSpawner`, `PlayerBuff`, `AllyBuff`, `EnemyFiltering`. 모두 인터페이스 타겟. 새 시너지는 조합만.
+`DotApplicator`, `SlowApplicator`, `KnockbackApplicator`, `StunApplicator`, `WeaknessApplicator`, `ExecuteApplicator`, `ChainLightning`, `AoeApplicator`, `SweepLine`, `AllySpawner`, `StructureSpawner`, `PlayerBuff`, `AllyBuff`, `AllyHealApplicator`, `EnemyFiltering`. 모두 인터페이스 타겟. 새 시너지는 조합만.
 
-### 구현된 24 시너지 (`Effects/{Family}/`)
+### 구현된 24 FamilyAccumulation 시너지 (`Effects/{Family}/`)
 | Family | T1 | T2 | T3 |
 |---|---|---|---|
 | Fire | Fireball | FlameBurst | Inferno (AoE+DoT) |
@@ -89,6 +89,18 @@ IMoveable   : BaseSpeed, ApplyKnockback
 | War | Recruit | Squad | Army (+AllyBuff) |
 | Dark | PoisonCloud | Curse (Execute) | Plague (DoT+Weakness) |
 | Civilization | Watchtower | Farm | Fortress |
+
+### Phase 4 SequencePosition 시너지 6개 (`Effects/Position/`)
+| ID | positionKey | planetKey | 효과 |
+|---|---|---|---|
+| pos_leading_warrior | Leading | valor | 전역 Fire AoE |
+| pos_leading_emperor | Leading | authority | 타깃 AoE + Stun |
+| pos_trailing_storm | Trailing | storm | ChainLightning 4회 |
+| pos_trailing_scorpion | Trailing | venom | 전체 적 DoT |
+| pos_trailing_assassin | Trailing | shadow | HP 30% 이하 전체 처형 |
+| pos_any_love | Any | heart | 전체 아군 Heal |
+
+`planetKey`는 `PlanetSO.bodyName` 또는 `keywords` 배열 중 하나와 일치하면 매칭.
 
 ### SynergyFamily enum
 `Fire / Water / Wind / Earth / Lightning / War / Dark / Civilization` — Element(데미지 속성)와 별개 축. `PlanetSO.synergyFamily`로 지정.

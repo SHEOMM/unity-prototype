@@ -213,6 +213,21 @@ public static class SynergySmokeTest
             $"Dark={f.Count(SynergyFamily.Dark)}, Civ={f.Count(SynergyFamily.Civilization)}");
     }
 
+    [MenuItem("Tools/Synergy/Smoke — Force FlightEnded (current seq)")]
+    static void SmokeForceFlightEnded()
+    {
+        var d = SynergyDispatcher.Instance;
+        if (d == null) { Debug.LogWarning("[Smoke] SynergyDispatcher.Instance == null"); return; }
+        if (d.Sequence.Count == 0) { Debug.LogWarning("[Smoke] 현재 시퀀스 비어있음 — 행성 한번 hit 시뮬 후 재시도"); return; }
+
+        // HandleFlightEnded는 private이므로 리플렉션으로 호출 (Position 시너지 매칭 수동 검증용).
+        var mi = typeof(SynergyDispatcher).GetMethod("HandleFlightEnded",
+            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        if (mi == null) { Debug.LogError("[Smoke] HandleFlightEnded 찾을 수 없음 — 리플렉션 실패"); return; }
+        mi.Invoke(d, new object[] { d.Sequence });
+        Debug.Log($"[Smoke] ForceFlightEnded 호출 (seq.Count={d.Sequence.Count})");
+    }
+
     static Enemy GetFirstEnemy()
     {
         if (EnemyRegistry.Instance == null)
