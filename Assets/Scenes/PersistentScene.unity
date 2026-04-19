@@ -148,10 +148,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1de71df3187765443ae2eba6628a6f95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  startingStars:
-  - {fileID: 11400000, guid: d74456f20b03baf41bd5ddd98416fd03, type: 2}
-  - {fileID: 11400000, guid: 5c4129c090264a943b91741e8fe6e69a, type: 2}
-  - {fileID: 11400000, guid: ffe4b8f6be590014391759e752795f8e, type: 2}
   startingPlanets:
   - {fileID: 11400000, guid: 5c5b474ef2dc055458ac6359d27be265, type: 2}
   - {fileID: 11400000, guid: 124af75a03613f04cbbdea1a64b8de47, type: 2}
@@ -161,6 +157,17 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 36520a051a02666449f11cc319fbc4ec, type: 2}
   - {fileID: 11400000, guid: cf1fb5640e68dab4e8771be271bbfb54, type: 2}
   - {fileID: 11400000, guid: a67863bf0d31ec54cadea3610f3667ff, type: 2}
+  startingOrbits:
+  - {fileID: 11400000, guid: 91a5b070c61875b4daeee4d1ce7a5f0e, type: 2}
+  - {fileID: 11400000, guid: 95d07b9c4f5f7954890fd0b3d3837934, type: 2}
+  - {fileID: 11400000, guid: 38496146750530c4c88907f6acc7e2a9, type: 2}
+  defaultAssignments:
+  - orbitName: Inner
+    planetName: "\uC804\uC0AC\uBCC4"
+  - orbitName: Middle
+    planetName: "\uD3ED\uD48D\uBCC4"
+  - orbitName: Outer
+    planetName: "\uBC14\uB2E4\uBCC4"
   synergies:
   - {fileID: 11400000, guid: f7dbafc61fe91654892e6d63f41ba9ea, type: 2}
   - {fileID: 11400000, guid: d1ea27d8be7d28944b23ff92bf74084b, type: 2}

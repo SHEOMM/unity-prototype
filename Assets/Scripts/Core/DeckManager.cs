@@ -5,23 +5,20 @@ using System.Reflection;
 public class DeckManager : MonoBehaviour
 {
     public static DeckManager Instance;
-    private List<StarSystem> _stars = new List<StarSystem>();
+    private readonly List<OrbitBody> _orbits = new List<OrbitBody>();
 
     void Awake()
     {
         Instance = this;
     }
 
-    public StarSystem CreateStar(StarSO data)
+    public OrbitBody CreateOrbit(OrbitSO data, Vector2 center)
     {
-        var sprite = CelestialSpriteGenerator.GenerateStarSprite(data.bodyColor);
-        var go = new GameObject(data.bodyName);
-        var sys = go.AddComponent<StarSystem>();
-        sys.Initialize(data, sprite);
-        go.AddComponent<StarLabelView>();
-        go.AddComponent<GravityRangeView>();
-        _stars.Add(sys);
-        return sys;
+        var go = new GameObject("Orbit_" + data.orbitName);
+        var body = go.AddComponent<OrbitBody>();
+        body.Initialize(data, center);
+        _orbits.Add(body);
+        return body;
     }
 
     public PlanetBody CreatePlanet(PlanetSO data)
@@ -34,11 +31,6 @@ public class DeckManager : MonoBehaviour
         go.AddComponent<GravityRangeView>();
         AttachHUDIfNeeded(go, data.effectId);
         return body;
-    }
-
-    public bool PlacePlanetOnStar(PlanetBody planet, StarSystem star, int idx)
-    {
-        return star.PlacePlanet(planet, idx);
     }
 
     public SatelliteBody CreateSatellite(SatelliteSO data)
@@ -54,16 +46,16 @@ public class DeckManager : MonoBehaviour
         planet.AttachSatellite(sat);
     }
 
-    public List<StarSystem> Stars => _stars;
+    public IReadOnlyList<OrbitBody> Orbits => _orbits;
 
-    /// <summary>현재 씬의 모든 천체 GameObject를 파괴하고 리스트를 초기화한다.</summary>
+    /// <summary>현재 씬의 모든 궤도·행성을 파괴하고 리스트를 초기화.</summary>
     public void ClearAll()
     {
-        foreach (var star in _stars)
-            if (star != null) Destroy(star.gameObject);
-        _stars.Clear();
+        foreach (var orbit in _orbits)
+            if (orbit != null) Destroy(orbit.gameObject);
+        _orbits.Clear();
 
-        // PlanetRegistry에 남은 행성들도 정리
+        // PlanetRegistry에 남은 행성들도 정리 (고아 행성 포함)
         var planets = PlanetRegistry.Instance?.GetAll();
         if (planets != null)
         {
