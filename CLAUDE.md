@@ -161,6 +161,25 @@ StartRun → [Map] → [Combat] → [Reward] → [Map] → … → [Boss] → [V
 
 ---
 
+## Cosmos 배치 패널 (Phase 9c)
+
+MapScene 오버레이 패널. 플레이어가 궤도↔행성 배치를 **수동 조정**. 보상 획득 시 자동 배치(Phase 9b `TryAutoAssign*`)는 폴백으로 유지.
+
+| 레이어 | 역할 |
+|---|---|
+| `Cosmos/CosmosPanelView` | 패널 루트 MV. Show/Hide/Refresh + 드롭 해석(ResolveDrop) |
+| `Cosmos/CosmosOrbitSlot` | 궤도 하나 슬롯. 미니 궤도(LineRenderer) + 이름 + 드롭 타겟 Collider |
+| `Cosmos/CosmosPlanetToken` | 드래그 가능 행성 토큰. 아이콘(PlanetSpriteResolver) + 이름 + Origin 기억 |
+| `Cosmos/CosmosInventoryArea` | 하단 인벤토리 영역. 드롭 타겟 + 토큰 정렬 (TokenRoot 자식) |
+| `Cosmos/CosmosDragController` | 드래그 상태 관리 (Mouse.current wasPressedThisFrame → isPressed → wasReleasedThisFrame). Panel에 드롭 통보 |
+| `UI/CosmosMapButton` | Map 좌상단 "Cosmos" 토글 버튼 (LateUpdate로 카메라 추적) |
+
+**RunState 헬퍼**: `AssignPlanetToOrbit` / `UnassignPlanet` / `SwapOrbitAssignments` / `GetAssignedPlanets` / `GetUnassignedPlanets` / `FindPlanetByName`.
+
+**드롭 규칙**: 궤도↔궤도 교환, 궤도→인벤토리 언바인딩, 인벤토리→점유궤도 시 기존 행성 밀어내기. 실패 시 원위치 스냅백.
+
+---
+
 ## 전투 루프 (Phase 9b)
 
 **Map → Combat → Reward → Map** 루프가 실제 동작.
