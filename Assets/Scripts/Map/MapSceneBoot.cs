@@ -9,6 +9,7 @@ public class MapSceneBoot : SceneBootBase
     protected override void OnBoot()
     {
         EnsureHud();
+        SpawnBackgroundView();
 
         var map = MapManager.Instance;
         if (map == null) { Debug.LogError("[MapScene] MapManager not found"); return; }
@@ -26,5 +27,19 @@ public class MapSceneBoot : SceneBootBase
         var btnGo = new GameObject("CosmosButton");
         var btn = btnGo.AddComponent<CosmosMapButton>();
         btn.Bind(panel);
+    }
+
+    static void SpawnBackgroundView()
+    {
+        var cam = CameraService.Instance?.Camera;
+        var spaceSet = BackgroundResolver.ResolveSpace(BackgroundKey.Map);
+        if (cam == null || spaceSet == null) return;
+
+        float camTop = cam.transform.position.y + cam.orthographicSize;
+        float camBottom = cam.transform.position.y - cam.orthographicSize;
+
+        var bgGo = new GameObject("BackgroundView");
+        bgGo.AddComponent<BackgroundView>()
+            .ApplySpace(spaceSet, cam, camBottom, camTop, GameConstants.SortingOrder.BackgroundSpace);
     }
 }

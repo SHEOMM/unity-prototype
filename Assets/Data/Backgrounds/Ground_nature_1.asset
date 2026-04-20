@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 576126e1623ff0c429ee6f7adb2ce98f, type: 3}
+  m_Name: Ground_nature_1
+  m_EditorClassIdentifier: Assembly-CSharp::GroundBackgroundSet
+  setName: nature_1
+  layers:
+  - {fileID: 21300000, guid: 19c6973f6a1836643a2f66ea8f228ee9, type: 3}
+  - {fileID: 21300000, guid: 2619bdc5cfa00584684173d647c2dc53, type: 3}
+  - {fileID: 21300000, guid: 24f81d96e79277f4e8f826cd54faf428, type: 3}
+  - {fileID: 21300000, guid: 8c2be91c67bd6a6419b17726564d54a1, type: 3}
+  - {fileID: 21300000, guid: 2bdf0ebc4f3521f47adcb788269023d2, type: 3}
+  - {fileID: 21300000, guid: 61e26c5139ffe144ab61134796becebd, type: 3}
+  - {fileID: 21300000, guid: d8a4e285931ac21428b0c8a32778e173, type: 3}
+  - {fileID: 21300000, guid: bc53b8d5e74aa6f4e8e653217896ed57, type: 3}
+  parallaxFactors:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  compositeFallback: {fileID: 21300000, guid: 3fbdecc7f79fb054e9d8bd2062689a7e, type: 3}

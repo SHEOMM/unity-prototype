@@ -13,6 +13,10 @@ public static class GameConstants
     // ── 정렬 순서 (낮을수록 뒤에 렌더링) ──
     public static class SortingOrder
     {
+        // 배경 (게임 요소보다 항상 뒤)
+        public const int BackgroundGroundBase = -10;  // 지상 layer 0 (가장 뒤). 최대 8레이어까지 ~ -3
+        public const int BackgroundSpace = -2;         // 천상 배경 (지상 위에 덮여 sky 부분 가림)
+
         public const int Background = 0;
         public const int OrbitPath = 1;
         public const int StarBody = 2;
