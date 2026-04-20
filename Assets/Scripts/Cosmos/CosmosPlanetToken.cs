@@ -27,7 +27,7 @@ public class CosmosPlanetToken : MonoBehaviour
         _bg = GetOrAdd<SpriteRenderer>(gameObject);
         _bg.sprite = UIFactory.MakePixel();
         _bg.color = new Color(0.2f, 0.22f, 0.28f, 0.9f);
-        _bg.sortingOrder = 42;
+        _bg.sortingOrder = GameConstants.SortingOrder.CosmosTokenBg;
         transform.localScale = Vector3.one * TokenSize;
 
         var iconGo = new GameObject("Icon");
@@ -36,7 +36,7 @@ public class CosmosPlanetToken : MonoBehaviour
         _icon = iconGo.AddComponent<SpriteRenderer>();
         _icon.sprite = PlanetSpriteResolver.Resolve(planet);
         _icon.color = Color.white;
-        _icon.sortingOrder = 43;
+        _icon.sortingOrder = GameConstants.SortingOrder.CosmosTokenIcon;
 
         var nameGo = new GameObject("Name");
         nameGo.transform.SetParent(transform, false);
@@ -50,7 +50,7 @@ public class CosmosPlanetToken : MonoBehaviour
         _nameTm.alignment = TextAlignment.Center;
         _nameTm.color = Color.white;
         var mr = nameGo.GetComponent<MeshRenderer>();
-        if (mr != null) mr.sortingOrder = 44;
+        if (mr != null) mr.sortingOrder = GameConstants.SortingOrder.CosmosLabel;
 
         _col = GetComponent<BoxCollider2D>();
         _col.size = Vector2.one;  // 부모 스케일 적용 후 월드 크기 = TokenSize

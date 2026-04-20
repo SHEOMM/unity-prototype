@@ -38,4 +38,11 @@ public abstract class SceneBootBase : MonoBehaviour
 
     /// <summary>씬별 초기화 로직. SceneBootBase가 활성 씬 설정 + 환경 적용을 먼저 처리한 뒤 호출된다.</summary>
     protected abstract void OnBoot();
+
+    /// <summary>씬에 PlayerHPBar HUD를 부착한다. 전투 외 씬에서도 HP 노출. 중복 부착 방지.</summary>
+    protected void EnsureHud()
+    {
+        if (GetComponent<PlayerHPBar>() == null)
+            gameObject.AddComponent<PlayerHPBar>();
+    }
 }

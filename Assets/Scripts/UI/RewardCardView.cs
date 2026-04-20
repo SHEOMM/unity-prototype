@@ -73,7 +73,7 @@ public class RewardCardView : MonoBehaviour
         _bg = go.AddComponent<SpriteRenderer>();
         _bg.sprite = UIFactory.MakePixel();
         _bg.color = new Color(0.12f, 0.14f, 0.2f, 0.95f);
-        _bg.sortingOrder = 20;
+        _bg.sortingOrder = GameConstants.SortingOrder.RewardCardBg;
     }
 
     void BuildBadge(Color color, string label)
@@ -85,7 +85,7 @@ public class RewardCardView : MonoBehaviour
         _badge = go.AddComponent<SpriteRenderer>();
         _badge.sprite = UIFactory.MakePixel();
         _badge.color = color;
-        _badge.sortingOrder = 21;
+        _badge.sortingOrder = GameConstants.SortingOrder.RewardCardMid;
 
         var labelGo = new GameObject("BadgeLabel");
         labelGo.transform.SetParent(transform, false);
@@ -99,7 +99,7 @@ public class RewardCardView : MonoBehaviour
         _typeTm.alignment = TextAlignment.Center;
         _typeTm.color = Color.black;
         var mr = labelGo.GetComponent<MeshRenderer>();
-        if (mr != null) mr.sortingOrder = 22;
+        if (mr != null) mr.sortingOrder = GameConstants.SortingOrder.RewardCardText;
     }
 
     void BuildIcon(RewardChoice choice)
@@ -112,7 +112,7 @@ public class RewardCardView : MonoBehaviour
             go.transform.localScale = new Vector3(IconSize, IconSize, 1f);
             _iconSr = go.AddComponent<SpriteRenderer>();
             _iconSr.sprite = choice.Icon;
-            _iconSr.sortingOrder = 21;
+            _iconSr.sortingOrder = GameConstants.SortingOrder.RewardCardMid;
         }
         else if (choice.Payload is OrbitSO orbit)
         {
@@ -134,7 +134,7 @@ public class RewardCardView : MonoBehaviour
         _orbitRing.material = GameConstants.SpriteMaterial;
         _orbitRing.startColor = orbit.orbitLineColor;
         _orbitRing.endColor = orbit.orbitLineColor;
-        _orbitRing.sortingOrder = 21;
+        _orbitRing.sortingOrder = GameConstants.SortingOrder.RewardCardMid;
 
         // 카드 안에 들어가도록 반경 정규화 (최대 0.6)
         float normR = Mathf.Min(orbit.radius, 1.8f) * 0.4f;
@@ -154,7 +154,7 @@ public class RewardCardView : MonoBehaviour
         var sr = dotGo.AddComponent<SpriteRenderer>();
         sr.sprite = UIFactory.MakePixel();
         sr.color = Color.white;
-        sr.sortingOrder = 22;
+        sr.sortingOrder = GameConstants.SortingOrder.RewardCardText;
     }
 
     void BuildName(string name)
@@ -170,6 +170,6 @@ public class RewardCardView : MonoBehaviour
         _nameTm.alignment = TextAlignment.Center;
         _nameTm.color = Color.white;
         var mr = go.GetComponent<MeshRenderer>();
-        if (mr != null) mr.sortingOrder = 22;
+        if (mr != null) mr.sortingOrder = GameConstants.SortingOrder.RewardCardText;
     }
 }

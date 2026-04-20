@@ -29,7 +29,7 @@ public class SynergyPopup : MonoBehaviour
         popup._text.characterSize = 0.1f;
 
         var mr = go.GetComponent<MeshRenderer>();
-        mr.sortingOrder = 25;
+        mr.sortingOrder = GameConstants.SortingOrder.SynergyPopup;
     }
 
     void Update()

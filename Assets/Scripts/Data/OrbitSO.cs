@@ -11,12 +11,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewOrbit", menuName = "Data/Orbit")]
 public class OrbitSO : ScriptableObject, IRewardApplicable
 {
-    /// <summary>보상 적용 시 궤도를 RunState에 추가하고 미배치 행성이 있으면 자동 부착.</summary>
+    /// <summary>보상 적용 시 궤도를 RunState에 추가. 자동 배치는 RewardManager가 TryAutoPlace로 후처리.</summary>
     public void ApplyAsReward(PlayerState player, RunState run)
     {
-        if (run == null) return;
-        run.UnlockOrbit(this);
-        run.TryAutoAssignPlanetToOrbit(this);
+        CosmosService.UnlockOrbit(run, this);
     }
 
     [Header("기본 정보")]

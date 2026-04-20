@@ -16,7 +16,7 @@ public class SatelliteBody : MonoBehaviour
         if (_sr == null) _sr = gameObject.AddComponent<SpriteRenderer>();
         if (sprite != null) _sr.sprite = sprite;
         _sr.color = data.bodyColor;
-        _sr.sortingOrder = 6;
+        _sr.sortingOrder = GameConstants.SortingOrder.SatelliteBody;
         transform.localScale = Vector3.one * data.visualScale;
     }
 

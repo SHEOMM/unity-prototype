@@ -19,7 +19,7 @@ public class SlashVisual : MonoBehaviour
         _lr = go.AddComponent<LineRenderer>();
         _lr.material = GameConstants.SpriteMaterial;
         _lr.positionCount = 0;
-        _lr.sortingOrder = 10;
+        _lr.sortingOrder = GameConstants.SortingOrder.Label;
         ApplyStyle(0);
     }
 

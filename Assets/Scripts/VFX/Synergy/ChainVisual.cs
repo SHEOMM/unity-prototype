@@ -18,7 +18,7 @@ public class ChainVisual : ISynergyVisual
         var fx = new GameObject("FX_Chain");
         var lr = fx.AddComponent<LineRenderer>();
         lr.material = GameConstants.SpriteMaterial;
-        lr.sortingOrder = 16;
+        lr.sortingOrder = GameConstants.SortingOrder.LightningEffect;
         lr.startWidth = 0.12f;
         lr.endWidth = 0.06f;
 

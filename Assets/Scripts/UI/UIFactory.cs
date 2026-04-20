@@ -89,6 +89,25 @@ public static class UIFactory
             handle.text.text = $"{Mathf.CeilToInt(currentHP)}/{Mathf.CeilToInt(maxHP)}";
     }
 
+    /// <summary>
+    /// 부모 transform의 localScale(2D)을 상쇄해 자식이 월드 1단위 기준으로 렌더되도록 하는 localScale 값.
+    /// 부모가 SpriteRenderer 배경 역할을 하며 transform.localScale=(w, h, 1)로 크기를 정할 때,
+    /// 자식(라벨/토큰 등)이 다시 1 스케일로 보이려면 이 값이 필요하다.
+    /// </summary>
+    public static Vector3 InverseScale(Vector2 parentSize)
+    {
+        float x = Mathf.Abs(parentSize.x) > 1e-5f ? 1f / parentSize.x : 1f;
+        float y = Mathf.Abs(parentSize.y) > 1e-5f ? 1f / parentSize.y : 1f;
+        return new Vector3(x, y, 1f);
+    }
+
+    /// <summary>균일(uniform) 스케일 부모용 역스케일 단축 오버로드.</summary>
+    public static Vector3 InverseScale(float parentScale)
+    {
+        float s = Mathf.Abs(parentScale) > 1e-5f ? 1f / parentScale : 1f;
+        return new Vector3(s, s, 1f);
+    }
+
     public static Sprite MakePixel()
     {
         var tex = new Texture2D(1, 1);

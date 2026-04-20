@@ -29,7 +29,7 @@ public class CosmosOrbitSlot : MonoBehaviour
         _bg = gameObject.AddComponent<SpriteRenderer>();
         _bg.sprite = UIFactory.MakePixel();
         _bg.color = new Color(0.15f, 0.17f, 0.22f, 0.95f);
-        _bg.sortingOrder = 30;
+        _bg.sortingOrder = GameConstants.SortingOrder.CosmosSlotBg;
         transform.localScale = new Vector3(SlotSize, SlotSize, 1f);
 
         // 이름 라벨 (슬롯 상단)
@@ -45,7 +45,7 @@ public class CosmosOrbitSlot : MonoBehaviour
         _nameTm.alignment = TextAlignment.Center;
         _nameTm.color = new Color(1f, 0.95f, 0.7f, 1f);
         var mr = nameGo.GetComponent<MeshRenderer>();
-        if (mr != null) mr.sortingOrder = 44;
+        if (mr != null) mr.sortingOrder = GameConstants.SortingOrder.CosmosLabel;
 
         // 궤도 프리뷰 (슬롯 중앙, LineRenderer 원)
         var previewGo = new GameObject("Preview");
@@ -60,7 +60,7 @@ public class CosmosOrbitSlot : MonoBehaviour
         _preview.material = GameConstants.SpriteMaterial;
         _preview.startColor = orbit.orbitLineColor;
         _preview.endColor = orbit.orbitLineColor;
-        _preview.sortingOrder = 31;
+        _preview.sortingOrder = GameConstants.SortingOrder.CosmosSlotPreview;
 
         float normR = Mathf.Min(orbit.radius, 3f) * 0.18f;  // 슬롯 안에 들어가도록 정규화
         const int segs = 40;
@@ -76,7 +76,7 @@ public class CosmosOrbitSlot : MonoBehaviour
         anchorGo.transform.SetParent(transform, false);
         anchorGo.transform.localPosition = Vector3.zero;
         // 부모(슬롯)의 스케일을 상쇄해 토큰이 원래 크기로 보이게
-        anchorGo.transform.localScale = new Vector3(1f / SlotSize, 1f / SlotSize, 1f);
+        anchorGo.transform.localScale = UIFactory.InverseScale(SlotSize);
         _anchor = anchorGo.transform;
 
         _col = GetComponent<BoxCollider2D>();

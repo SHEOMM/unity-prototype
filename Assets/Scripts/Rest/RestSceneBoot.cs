@@ -7,6 +7,7 @@ public class RestSceneBoot : SceneBootBase
 {
     protected override void OnBoot()
     {
+        EnsureHud();
         if (PlayerState.Instance == null) return;
 
         float healAmount = PlayerState.Instance.maxHP * 0.3f;

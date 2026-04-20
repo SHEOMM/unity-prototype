@@ -28,7 +28,31 @@ public static class GameConstants
         public const int SpellEffect = 15;
         public const int LightningEffect = 16;
         public const int DamagePopup = 20;
-        public const int SynergyPopup = 25;
+
+        // Reward 카드 (20-25 대역)
+        public const int RewardCardBg = 20;
+        public const int RewardCardMid = 21;        // Badge/Icon/OrbitRing
+        public const int RewardCardText = 22;
+        public const int RewardCardTitle = 25;      // RewardSceneBoot 타이틀
+
+        // Synergy / Toast (24-25 대역)
+        public const int SynergyScreenFlash = 24;   // Toast 바로 아래
+        public const int SynergyPopup = 25;         // SynergyPopup / SynergyToastView 공용
+
+        // Cosmos 패널 (28-46 대역)
+        public const int CosmosPanelBg = 28;
+        public const int CosmosSlotBg = 30;
+        public const int CosmosSlotPreview = 31;
+        public const int CosmosInventoryBg = 30;
+        public const int CosmosTokenBg = 42;
+        public const int CosmosTokenIcon = 43;
+        public const int CosmosLabel = 44;          // 패널 타이틀 + 슬롯/토큰/인벤토리 라벨 공용
+        public const int CosmosCloseBg = 45;
+        public const int CosmosCloseText = 46;
+
+        // Cosmos Map 버튼 (50-51 대역, MapView 노드보다 위)
+        public const int CosmosMapButtonBg = 50;
+        public const int CosmosMapButtonLabel = 51;
     }
 
     // ── 천체 라벨 ──

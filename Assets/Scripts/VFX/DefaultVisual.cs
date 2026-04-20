@@ -19,7 +19,7 @@ public class DefaultVisual : ISpellVisual
         lr.startWidth = 0.12f;
         lr.endWidth = 0.04f;
         lr.material = GameConstants.SpriteMaterial;
-        lr.sortingOrder = 15;
+        lr.sortingOrder = GameConstants.SortingOrder.SpellEffect;
         lr.startColor = ctx.elementColor;
         lr.endColor = Color.white;
         lr.positionCount = 2;

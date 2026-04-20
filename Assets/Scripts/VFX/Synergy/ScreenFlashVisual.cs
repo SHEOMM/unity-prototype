@@ -25,7 +25,7 @@ public class ScreenFlashVisual : ISynergyVisual
         sr.sprite = UIFactory.MakePixel();
         var c = ctx.ElementColor;
         sr.color = new Color(c.r, c.g, c.b, 0.6f);
-        sr.sortingOrder = 24; // Toast(25) 바로 아래
+        sr.sortingOrder = GameConstants.SortingOrder.SynergyScreenFlash;
 
         // Shake 병행 (있으면)
         CameraService.Instance?.Shake(0.25f, 0.25f);

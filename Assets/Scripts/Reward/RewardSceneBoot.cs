@@ -17,6 +17,7 @@ public class RewardSceneBoot : SceneBootBase
 
     protected override void OnBoot()
     {
+        EnsureHud();
         var gm = GameManager.Instance;
         _reward = gameObject.AddComponent<RewardManager>();
         _reward.OnRewardChosen += HandleRewardChosen;
@@ -52,7 +53,7 @@ public class RewardSceneBoot : SceneBootBase
         tm.alignment = TextAlignment.Center;
         tm.color = new Color(1f, 0.9f, 0.5f, 1f);
         var mr = go.GetComponent<MeshRenderer>();
-        if (mr != null) mr.sortingOrder = 25;
+        if (mr != null) mr.sortingOrder = GameConstants.SortingOrder.RewardCardTitle;
     }
 
     void SpawnCards(List<RewardChoice> choices)

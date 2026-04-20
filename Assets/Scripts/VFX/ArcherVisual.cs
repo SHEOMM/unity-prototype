@@ -20,7 +20,7 @@ public class ArcherVisual : ISpellVisual
         lr.startWidth = 0.08f;
         lr.endWidth = 0.03f;
         lr.material = GameConstants.SpriteMaterial;
-        lr.sortingOrder = 15;
+        lr.sortingOrder = GameConstants.SortingOrder.SpellEffect;
         lr.startColor = ctx.elementColor;
         lr.endColor = ctx.elementColor * 0.6f;
         lr.positionCount = 2;
