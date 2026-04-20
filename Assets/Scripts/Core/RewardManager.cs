@@ -92,8 +92,7 @@ public class RewardManager : MonoBehaviour
                     PlayerState.Instance.bonusDamageMultiplier += reward.value;
                 break;
             case CometRewardType.ExtraSlashWidth:
-                var detector = GetComponent<SlashDetector>();
-                if (detector != null) detector.slashWidth += reward.value;
+                // Ship 전환으로 무의미화 (SlashDetector 제거). TODO: Ship 반경 확장 보상으로 교체.
                 break;
             case CometRewardType.HealPlayer:
                 PlayerState.Instance?.Heal(reward.value);
