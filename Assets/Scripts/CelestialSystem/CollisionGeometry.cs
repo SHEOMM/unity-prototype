@@ -1,9 +1,9 @@
 using UnityEngine;
 
 /// <summary>
-/// 슬래시 충돌 판정 유틸리티. PlanetBody와 CometBody에서 공유.
+/// 선분-원 충돌 판정 유틸리티. PlanetBody/CometBody/EncounterDetector가 공유.
 /// </summary>
-public static class SlashGeometry
+public static class CollisionGeometry
 {
     public static bool IntersectsLine(Vector2 pos, float objectRadius, Vector2 a, Vector2 b, float lineWidth)
     {

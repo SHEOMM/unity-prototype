@@ -40,5 +40,5 @@ public class EffectContext
     public bool isPhaseActive;
 
     /// <summary>결과 누적용</summary>
-    public SlashResult result;
+    public SpellResult result;
 }

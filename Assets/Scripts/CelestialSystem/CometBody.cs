@@ -1,10 +1,10 @@
 using UnityEngine;
 
 /// <summary>
-/// 혜성 런타임. 하늘을 가로지르며 슬래시로 포착 가능.
+/// 혜성 런타임. 하늘을 가로지르며 우주선으로 포착 가능.
 /// 포착 시 보상 이벤트를 발행한다.
 /// </summary>
-public class CometBody : MonoBehaviour, ISlashTarget
+public class CometBody : MonoBehaviour
 {
     public static readonly System.Collections.Generic.List<CometBody> ActiveComets = new System.Collections.Generic.List<CometBody>();
 
@@ -73,8 +73,8 @@ public class CometBody : MonoBehaviour, ISlashTarget
     }
 
     public bool IntersectsLine(Vector2 a, Vector2 b, float width)
-        => SlashGeometry.IntersectsLine(transform.position, _baseScale * 0.5f, a, b, width);
+        => CollisionGeometry.IntersectsLine(transform.position, _baseScale * 0.5f, a, b, width);
 
     public float ProjectionT(Vector2 a, Vector2 b)
-        => SlashGeometry.ProjectionT(transform.position, a, b);
+        => CollisionGeometry.ProjectionT(transform.position, a, b);
 }

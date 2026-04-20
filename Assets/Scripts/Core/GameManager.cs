@@ -18,8 +18,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private OrbitAssignment[] defaultAssignments;
 
     [Header("시너지")]
-    [SerializeField] private SynergyDefinitionSO[] synergies;
-    [Tooltip("Phase 3+ 신규 시너지 규칙. SynergyDispatcher가 구독.")]
+    [Tooltip("SynergyDispatcher가 구독하는 규칙 에셋. Family/Position/Combo/PerHit 4가지 trigger.")]
     [SerializeField] private SynergyRuleSO[] synergyRules;
 
     [Header("혜성")]
@@ -50,7 +49,6 @@ public class GameManager : MonoBehaviour
     private MapNode _currentNode;
 
     // 외부에서 접근 가능한 설정/상태
-    public SynergyDefinitionSO[] Synergies => synergies;
     public SynergyRuleSO[] SynergyRules => synergyRules;
     public CometSO[] CometPool => cometPool;
     public MapNode CurrentNode => _currentNode;

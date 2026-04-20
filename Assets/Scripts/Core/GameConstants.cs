@@ -37,7 +37,7 @@ public static class GameConstants
 
         // Synergy / Toast (24-25 대역)
         public const int SynergyScreenFlash = 24;   // Toast 바로 아래
-        public const int SynergyPopup = 25;         // SynergyPopup / SynergyToastView 공용
+        public const int SynergyToast = 25;         // SynergyToastView 전용
 
         // Cosmos 패널 (28-46 대역)
         public const int CosmosPanelBg = 28;

@@ -4,7 +4,7 @@
 public abstract class RelicEffectBase : IRelicEffect
 {
     public virtual void OnAcquired(PlayerState player) { }
-    public virtual void OnSlashPerformed(SlashResult result, PlayerState player) { }
+    public virtual void OnSpellPerformed(SpellResult result, PlayerState player) { }
     public virtual void OnEnemyKilled(Enemy enemy, PlayerState player) { }
     public virtual void OnWaveStart(int waveIndex, PlayerState player) { }
     public virtual void OnWaveComplete(int waveIndex, PlayerState player) { }

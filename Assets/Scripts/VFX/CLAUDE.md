@@ -1,6 +1,6 @@
 # VFX 레이어 가이드
 
-**2계통 병존**: 레거시 `ISpellVisual`(행성 효과용) + Phase 7 `ISynergyVisual`(시너지용). Registry와 Attribute가 서로 **독립** — 네임 충돌 없음.
+**2계통 병존**: `ISpellVisual`(Ship 발사 결과의 개별 행성 이펙트) + `ISynergyVisual`(시너지 공용 이펙트). Registry와 Attribute가 서로 **독립** — 네임 충돌 없음.
 
 ---
 
@@ -12,12 +12,12 @@
 | Context | `SpellCommand + Enemy target + targetPosition + elementColor + vfxRoot` | `SynergyRuleSO Rule + SynergyContext + Anchor + ElementColor` |
 | Attribute | `[VisualId("x")]` | `[SynergyVisualId("x")]` |
 | Registry | `VisualRegistry` (폴백=DefaultVisual) | `SynergyVisualRegistry` (폴백=null, Host가 "default" 해석) |
-| 호출자 | `SpellEffectManager` (SlashResolver 경로) | `SynergyVisualHost` (Dispatcher.OnSynergyFired 구독) |
+| 호출자 | `SpellEffectManager` (SpellResolver 경로) | `SynergyVisualHost` (Dispatcher.OnSynergyFired 구독) |
 | 용도 | 개별 행성/마법마다 고유 이펙트 | 공용 6종 × rule 데이터 주입으로 37 시너지 표현 |
 
 ---
 
-## ISpellVisual (레거시, 행성용)
+## ISpellVisual (행성용)
 
 `PlanetSO.visualId` → `VisualRegistry.Get(id)` → `StartCoroutine(Play)`. 구현체 예: `DefaultVisual`, `ArcherVisual`, `AquariusVisual`, `EmperorVisual`. 추가 시 `[VisualId("new")]` + 파일 1개.
 
@@ -92,7 +92,7 @@ CameraService.Instance?.Shake(strength, duration);
 ## 레이어 독립성
 
 - Toast (Scripts/UI/SynergyToastView) 와 VisualHost 모두 `Dispatcher.OnSynergyFired`를 **독립 구독**. Observer 2명이 서로 무지.
-- SpellEffectManager(레거시) 와 SynergyVisualHost(신규) 는 서로 교체/통합 고려 가능하나 당장은 병존. 공통 VFX 스케줄러는 후속 Phase 후보.
+- SpellEffectManager(Ship 발사 결과의 행성별 이펙트) 와 SynergyVisualHost(시너지 이펙트)는 서로 다른 호출 경로. 공통 VFX 스케줄러는 후속 Phase 후보.
 
 ---
 

@@ -2,22 +2,20 @@ using UnityEngine;
 using System.Collections.Generic;
 
 /// <summary>
-/// 관통된 행성 목록을 해석하여 SlashResult를 생성한다.
-/// 파이프라인: PreProcess(히트리스트 변경) → Execute(효과 실행) → PostProcess(시저지/합산)
+/// Ship encounter 시퀀스를 해석해 SpellResult를 생성한다.
+/// 파이프라인: PreProcess(히트리스트 변경) → Execute(효과 실행) → PostProcess(합산)
 /// </summary>
-public class SlashResolver : MonoBehaviour
+public class SpellResolver : MonoBehaviour
 {
-    public SynergyDefinitionSO[] synergies;
-
-    public SlashResult Resolve(List<PlanetBody> hits)
+    public SpellResult Resolve(List<PlanetBody> hits)
     {
-        if (hits.Count == 0) return new SlashResult();
+        if (hits.Count == 0) return new SpellResult();
 
-        // Phase 1: PreProcess — ISlashModifier가 히트리스트를 변경할 수 있다
+        // Phase 1: PreProcess — ISpellModifier가 히트리스트를 변경할 수 있다
         hits = ApplyModifiers(hits);
 
         // Phase 2: Execute — 각 별의 IStarEffect를 순서대로 실행
-        var result = new SlashResult { hitPlanets = hits };
+        var result = new SpellResult { hitPlanets = hits };
         var enemies = EnemyRegistry.Instance != null ? EnemyRegistry.Instance.GetAll() : new List<Enemy>();
 
         for (int i = 0; i < hits.Count; i++)
@@ -50,8 +48,7 @@ public class SlashResolver : MonoBehaviour
             effect.Execute(ctx);
         }
 
-        // Phase 3: PostProcess — 키워드 시저지 보너스 + 합산
-        ApplySynergies(hits, result);
+        // Phase 3: PostProcess — 합산
         CalculateTotal(result);
         return result;
     }
@@ -62,38 +59,13 @@ public class SlashResolver : MonoBehaviour
         for (int i = 0; i < modified.Count; i++)
         {
             var effect = EffectRegistry.Get(modified[i].Planet.effectId);
-            if (effect is ISlashModifier modifier)
+            if (effect is ISpellModifier modifier)
                 modified = modifier.ModifyHitList(modified, i, modified[i]);
         }
         return modified;
     }
 
-    void ApplySynergies(List<PlanetBody> hits, SlashResult result)
-    {
-        if (synergies == null) return;
-        var kwCount = new Dictionary<string, int>();
-        foreach (var p in hits)
-        {
-            if (p.Planet.keywords == null) continue;
-            foreach (var kw in p.Planet.keywords)
-            {
-                if (!kwCount.ContainsKey(kw)) kwCount[kw] = 0;
-                kwCount[kw]++;
-            }
-        }
-
-        foreach (var syn in synergies)
-        {
-            if (kwCount.ContainsKey(syn.requiredKeyword) && kwCount[syn.requiredKeyword] >= syn.requiredCount)
-            {
-                result.activatedSynergies.Add(syn);
-                foreach (var cmd in result.commands)
-                    cmd.damage *= syn.damageMultiplier;
-            }
-        }
-    }
-
-    void CalculateTotal(SlashResult result)
+    void CalculateTotal(SpellResult result)
     {
         float total = 0;
         foreach (var cmd in result.commands)

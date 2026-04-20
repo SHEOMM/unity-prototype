@@ -60,8 +60,7 @@ Ally/Structure View는 EnemyView를 그대로 미러링. 공통 추상 베이스
 - 앞 토스트 종료 전까진 다음 펜딩. 여러 시너지 동시 발동해도 겹치지 않음.
 - 표시: `SynergyRuleSO.displayName` — 황금색, 1.5초 페이드.
 - CombatSceneBoot가 `AddComponent<SynergyToastView>().Bind(combat.SynergyDispatcher)`.
-
-레거시 `SynergyPopup.Show(string)` 정적 API는 그대로 유지 — SlashResolver 경로에서 여전히 사용.
+- sortingOrder는 `GameConstants.SortingOrder.SynergyToast`(=25). 구 `SynergyPopup`은 제거됨 — Dispatcher 기반 단일 경로.
 
 ---
 
@@ -90,7 +89,6 @@ Ally/Structure View는 EnemyView를 그대로 미러링. 공통 추상 베이스
 | `GravityRangeView` | IGravitySource 반경 원 표시 |
 | `CombatDividerView` | 천상/지상 구분선 (CombatManager.Initialize가 호출) |
 | `DamagePopup` | 정적 Spawn 메소드로 데미지 팝업 스폰 + 애니메이션 |
-| `SlashFeedbackView / ShipFeedbackView` | (레거시) SlashResult.activatedSynergies 순회 후 SynergyPopup 호출 |
 
 ---
 

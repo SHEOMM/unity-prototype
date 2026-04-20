@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 
 /// <summary>
-/// 우주선 발사 오케스트레이터. 입력→시뮬레이션→SlashResolver→효과 발동.
+/// 우주선 발사 오케스트레이터. 입력→시뮬레이션→SpellResolver→효과 발동.
 /// 조준 중에는 슬링샷 밴드와 궤적 프리뷰를 렌더.
 /// </summary>
 public class ShipController : MonoBehaviour
@@ -10,7 +10,7 @@ public class ShipController : MonoBehaviour
     public static ShipController Instance { get; private set; }
 
     private ShipInput _input;
-    private SlashResolver _resolver;
+    private SpellResolver _resolver;
     private SpellEffectManager _spellFx;
     private ShipVisual _visual;
 
@@ -18,7 +18,7 @@ public class ShipController : MonoBehaviour
     private bool _active;
     private bool _pendingFlightEnd; // 비행 종료를 Update 끝에서 안전하게 처리
 
-    public System.Action<SlashResult> OnShipComplete;
+    public System.Action<SpellResult> OnShipComplete;
 
     /// <summary>발사체가 천체에 접촉할 때마다 발행 (per-hit). SynergyDispatcher 등이 구독.</summary>
     public event System.Action<PlanetBody> OnPlanetHit;
@@ -35,7 +35,7 @@ public class ShipController : MonoBehaviour
         Instance = this;
     }
 
-    public void Initialize(ShipInput input, SlashResolver resolver,
+    public void Initialize(ShipInput input, SpellResolver resolver,
                           SpellEffectManager spellFx, ShipVisual visual)
     {
         _input = input;

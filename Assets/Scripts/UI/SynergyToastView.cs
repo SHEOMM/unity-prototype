@@ -3,7 +3,7 @@ using UnityEngine;
 
 /// <summary>
 /// 시너지 발동 알림 토스트. SynergyDispatcher.OnSynergyFired 이벤트 구독 →
-/// 큐에 쌓고 순차 재생 (중첩 방지). 기존 SynergyPopup 레거시 경로와 공존.
+/// 큐에 쌓고 순차 재생 (중첩 방지).
 ///
 /// Observer 패턴: Dispatcher는 UI를 모름. 구독자가 0개여도 Dispatcher 동작 무결성.
 /// </summary>
@@ -83,6 +83,6 @@ public class SynergyToastView : MonoBehaviour
         _currentText.characterSize = 0.1f;
 
         var mr = _currentGo.GetComponent<MeshRenderer>();
-        if (mr != null) mr.sortingOrder = GameConstants.SortingOrder.SynergyPopup;
+        if (mr != null) mr.sortingOrder = GameConstants.SortingOrder.SynergyToast;
     }
 }

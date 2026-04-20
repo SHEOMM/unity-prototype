@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 /// <summary>
 /// 우주선 이동 경로와 행성 간 연속 충돌 감지. 터널링 방지.
-/// SlashGeometry 재사용. 중복 트리거 방지 내장.
+/// CollisionGeometry 재사용. 중복 트리거 방지 내장.
 /// </summary>
 public class EncounterDetector
 {
@@ -30,7 +30,7 @@ public class EncounterDetector
             if (!(src is PlanetBody planet)) continue;
             if (_encounteredSet.Contains(planet)) continue;
 
-            if (SlashGeometry.IntersectsLine(
+            if (CollisionGeometry.IntersectsLine(
                     src.Position, src.EncounterRadius,
                     oldPos, newPos,
                     GameConstants.ShipPhysics.ShipCollisionRadius))

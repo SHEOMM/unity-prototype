@@ -17,7 +17,6 @@ public class CombatSceneBoot : SceneBootBase
 
         var combatGo = new GameObject("CombatManager");
         var combat = combatGo.AddComponent<CombatManager>();
-        combat.synergies = gm.Synergies;
         combat.synergyRules = gm.SynergyRules;
         combat.cometPool = gm.CometPool;
         combat.Initialize();
