@@ -12,33 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb4a67488c87d3c43a5717c6b2184db9, type: 3}
   m_Name: BackgroundBindingTable
   m_EditorClassIdentifier: Assembly-CSharp::BackgroundBindingTable
-  spaceEntries:
-  - key: 0
-    set: {fileID: 11400000, guid: 5e94db1bbdb16374c809ae8d53db041b, type: 2}
-  - key: 1
-    set: {fileID: 11400000, guid: 5e94db1bbdb16374c809ae8d53db041b, type: 2}
-  - key: 2
-    set: {fileID: 11400000, guid: 862c1329bd0bec245b0615c707ff79df, type: 2}
-  - key: 3
-    set: {fileID: 11400000, guid: edfd9bc5e1d264045baced6ee382269c, type: 2}
-  - key: 4
-    set: {fileID: 11400000, guid: 5e94db1bbdb16374c809ae8d53db041b, type: 2}
-  - key: 5
-    set: {fileID: 11400000, guid: 5e94db1bbdb16374c809ae8d53db041b, type: 2}
-  - key: 6
-    set: {fileID: 11400000, guid: 5e94db1bbdb16374c809ae8d53db041b, type: 2}
-  groundEntries:
-  - key: 1
-    set: {fileID: 11400000, guid: f945d1ac99138b44790f7665e47a78b1, type: 2}
-  - key: 2
-    set: {fileID: 11400000, guid: bcb3018c4ee30de4691bb28c6c117180, type: 2}
-  - key: 3
-    set: {fileID: 11400000, guid: b3c6f90dc7b525a40a6bcc754c7d56df, type: 2}
-  - key: 4
-    set: {fileID: 11400000, guid: 4a89c778c9faee846b5602434d211c55, type: 2}
-  - key: 5
-    set: {fileID: 11400000, guid: bf8420a4697184b4abf27c401224e64e, type: 2}
-  - key: 6
-    set: {fileID: 11400000, guid: e579b9ba21a988d41979a4967844406b, type: 2}
-  defaultSpace: {fileID: 11400000, guid: 5e94db1bbdb16374c809ae8d53db041b, type: 2}
-  defaultGround: {fileID: 11400000, guid: f945d1ac99138b44790f7665e47a78b1, type: 2}
+  spaceEntries: []
+  groundEntries: []
+  defaultSpace: {fileID: 0}
+  defaultGround: {fileID: 0}

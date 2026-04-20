@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SceneEnvironment
   cameraPosition: {x: 0, y: 6, z: -10}
   orthographicSize: 7
-  backgroundColor: {r: 0.05, g: 0.05, b: 0.1, a: 1}
+  backgroundColor: {r: 0, g: 0, b: 0, a: 1}
   lightIntensity: 1
   lightColor: {r: 1, g: 1, b: 1, a: 1}
