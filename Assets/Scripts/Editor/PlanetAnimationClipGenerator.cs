@@ -96,6 +96,9 @@ public static class PlanetAnimationClipGenerator
     /// <summary>Unity가 기본 maxTextureSize=2048로 큰 시트를 축소시키는 걸 방지하기 위해 8192로 상향.</summary>
     const int TargetMaxTextureSize = 8192;
 
+    /// <summary>중앙값 대비 이 배수를 초과하는 프레임은 "와이드 스트립"으로 간주해 제외.</summary>
+    const float OutlierSizeMultiplier = 1.5f;
+
     static Sprite[] LoadSortedFrames(string pngAssetPath)
     {
         // 먼저 TextureImporter의 maxTextureSize를 올려 원본 해상도 보존 (필수: 자동 축소 방지)
@@ -105,16 +108,43 @@ public static class PlanetAnimationClipGenerator
         AssetDatabase.ImportAsset(pngAssetPath, ImportAssetOptions.ForceSynchronousImport);
 
         var all = AssetDatabase.LoadAllAssetsAtPath(pngAssetPath);
-        var list = new List<Sprite>();
+        var candidates = new List<Sprite>();
         foreach (var a in all)
         {
             if (!(a is Sprite s)) continue;
             if (s.rect.width < MinFrameSize || s.rect.height < MinFrameSize) continue;
+            candidates.Add(s);
+        }
+        if (candidates.Count == 0) return System.Array.Empty<Sprite>();
+
+        // 이상치 필터: 중앙값 너비/높이의 OutlierSizeMultiplier 배 초과 프레임은 제외.
+        // → ice.png처럼 여러 프레임이 하나의 와이드 슬라이스로 합쳐진 오류를 자동 차단.
+        float medianW = Median(candidates, s => s.rect.width);
+        float medianH = Median(candidates, s => s.rect.height);
+        float maxW = medianW * OutlierSizeMultiplier;
+        float maxH = medianH * OutlierSizeMultiplier;
+
+        var list = new List<Sprite>();
+        int outliers = 0;
+        foreach (var s in candidates)
+        {
+            if (s.rect.width > maxW || s.rect.height > maxH) { outliers++; continue; }
             list.Add(s);
         }
+        if (outliers > 0)
+            Debug.Log($"[PlanetAnimGenerator] {pngAssetPath}: 이상치 {outliers}개 제외 (중앙값 {medianW:F0}×{medianH:F0}, 허용 최대 {maxW:F0}×{maxH:F0})");
+
         // "earth_0, earth_1, ..., earth_9, earth_10" 자연수 정렬
         list.Sort((x, y) => CompareTrailingNumber(x.name, y.name));
         return list.ToArray();
+    }
+
+    static float Median(List<Sprite> list, System.Func<Sprite, float> selector)
+    {
+        var values = new List<float>(list.Count);
+        foreach (var s in list) values.Add(selector(s));
+        values.Sort();
+        return values[values.Count / 2];
     }
 
     static void EnsureMaxTextureSize(string pngAssetPath)
