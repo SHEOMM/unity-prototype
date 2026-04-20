@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a05944c7f663fe04f8e02dcb0ba4e1d5, type: 3}
+  m_Name: Blue_witch
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterAnimationSet
+  characterName: Blue_witch
+  idle: {fileID: 11400000, guid: e50daf44328349e439b97ba1ab70a20d, type: 2}
+  run: {fileID: 11400000, guid: 69644206f0d251b41bc76d170cf15906, type: 2}
+  charge: {fileID: 11400000, guid: 7255058827a0e72478aed01fe3be4940, type: 2}
+  attack: {fileID: 11400000, guid: 4aef627b535de3b47a4a936d54e475c2, type: 2}
+  takeDamage: {fileID: 11400000, guid: 06dc8278a1b87724cbae99b742eaecf9, type: 2}
+  death: {fileID: 11400000, guid: cdc01ea25bdbd57468e5ac9484c6a9ed, type: 2}
