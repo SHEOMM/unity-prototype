@@ -29,6 +29,12 @@ public class GameManager : MonoBehaviour
     [Tooltip("씬·룸타입 ↔ 배경 매핑. BackgroundResolver가 런타임 조회.")]
     [SerializeField] private BackgroundBindingTable backgrounds;
 
+    [Header("플레이어 캐릭터")]
+    [Tooltip("Blue Witch 등 플레이어 본체의 상태별 애니메이션. CombatScene에서 지상 좌측에 소환됨.")]
+    [SerializeField] private CharacterAnimationSet playerCharacter;
+
+    public CharacterAnimationSet PlayerCharacter => playerCharacter;
+
     [Header("혜성")]
     [SerializeField] private CometSO[] cometPool;
 

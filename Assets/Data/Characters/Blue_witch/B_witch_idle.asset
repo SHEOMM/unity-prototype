@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 052102d8eeed87248a026b710f2e6157, type: 3}
+  m_Name: B_witch_idle
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterAnimationClip
+  clipName: B_witch_idle
+  frames:
+  - {fileID: 5296944262663640658, guid: 2064307972353254c8477b71a88dec69, type: 3}
+  - {fileID: 720233123983428293, guid: 2064307972353254c8477b71a88dec69, type: 3}
+  - {fileID: -3203956360032432428, guid: 2064307972353254c8477b71a88dec69, type: 3}
+  - {fileID: -628004459940409811, guid: 2064307972353254c8477b71a88dec69, type: 3}
+  - {fileID: -8720475610900935064, guid: 2064307972353254c8477b71a88dec69, type: 3}
+  - {fileID: 8741979505187066779, guid: 2064307972353254c8477b71a88dec69, type: 3}
+  fps: 10
+  loop: 1

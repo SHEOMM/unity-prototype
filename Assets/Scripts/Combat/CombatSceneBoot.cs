@@ -45,6 +45,16 @@ public class CombatSceneBoot : SceneBootBase
         combatGo.AddComponent<PlayerDamageView>();
         combatGo.AddComponent<SynergyToastView>().Bind(combat.SynergyDispatcher);
         combatGo.AddComponent<SynergyVisualHost>().Bind(combat.SynergyDispatcher);
+
+        SpawnPlayerCharacter(gm.PlayerCharacter);
+    }
+
+    static void SpawnPlayerCharacter(CharacterAnimationSet set)
+    {
+        if (set == null) return;
+        var go = new GameObject("PlayerCharacter");
+        var view = go.AddComponent<PlayerCharacterView>();
+        view.animations = set;
     }
 
     static void SpawnBackgroundView(CombatManager combat, RoomType? roomType)

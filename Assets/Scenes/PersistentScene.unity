@@ -208,6 +208,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a4d02f1e5d203e84986c3ceacf9070ea, type: 2}
   planetAnimations: {fileID: 11400000, guid: 0ddecb49e720d6e419ecf2be7a4a44c6, type: 2}
   backgrounds: {fileID: 11400000, guid: c2dce423fe2839d4da6fd77f25ff5bb9, type: 2}
+  playerCharacter: {fileID: 11400000, guid: 2ee5c1734954c984587e7de041c3e282, type: 2}
   cometPool:
   - {fileID: 11400000, guid: 150c92c1b2357b04fa4ab33c186bcf88, type: 2}
   - {fileID: 11400000, guid: 655cb8cb44a0272448cf01429d569a7d, type: 2}
