@@ -10,12 +10,12 @@ public class SpellEffectManager : MonoBehaviour
     public static SpellEffectManager Instance;
     void Awake() { Instance = this; }
 
-    public void ExecuteSpells(SlashResult result)
+    public void ExecuteSpells(SpellResult result)
     {
         StartCoroutine(RunSequence(result));
     }
 
-    IEnumerator RunSequence(SlashResult result)
+    IEnumerator RunSequence(SpellResult result)
     {
         foreach (var cmd in result.commands)
         {

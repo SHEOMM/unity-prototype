@@ -41,7 +41,7 @@ public class CombatManager : MonoBehaviour
         GetOrAdd<StructureRegistry>();
 
         var input = GetOrAdd<ShipInput>();
-        var resolver = GetOrAdd<SlashResolver>();
+        var resolver = GetOrAdd<SpellResolver>();
         var visual = GetOrAdd<ShipVisual>();
         var spellFx = GetOrAdd<SpellEffectManager>();
 
@@ -49,7 +49,7 @@ public class CombatManager : MonoBehaviour
 
         _shipController = GetOrAdd<ShipController>();
         _shipController.Initialize(input, resolver, spellFx, visual);
-        _shipController.OnShipComplete += result => PlayerState.Instance?.NotifySlashPerformed(result);
+        _shipController.OnShipComplete += result => PlayerState.Instance?.NotifySpellPerformed(result);
 
         _synergyDispatcher = GetOrAdd<SynergyDispatcher>();
         _synergyDispatcher.SetRules(synergyRules);

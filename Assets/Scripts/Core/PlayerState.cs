@@ -93,10 +93,10 @@ public class PlayerState : MonoBehaviour
         return _elementBonuses.TryGetValue(element, out float bonus) ? bonus : 0f;
     }
 
-    public void NotifySlashPerformed(SlashResult result)
+    public void NotifySpellPerformed(SpellResult result)
     {
         for (int i = 0; i < _relics.Count; i++)
-            _relics[i].effect.OnSlashPerformed(result, this);
+            _relics[i].effect.OnSpellPerformed(result, this);
     }
 
     public void NotifyEnemyKilled(Enemy enemy)

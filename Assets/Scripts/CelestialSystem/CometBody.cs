@@ -73,8 +73,8 @@ public class CometBody : MonoBehaviour
     }
 
     public bool IntersectsLine(Vector2 a, Vector2 b, float width)
-        => SlashGeometry.IntersectsLine(transform.position, _baseScale * 0.5f, a, b, width);
+        => CollisionGeometry.IntersectsLine(transform.position, _baseScale * 0.5f, a, b, width);
 
     public float ProjectionT(Vector2 a, Vector2 b)
-        => SlashGeometry.ProjectionT(transform.position, a, b);
+        => CollisionGeometry.ProjectionT(transform.position, a, b);
 }

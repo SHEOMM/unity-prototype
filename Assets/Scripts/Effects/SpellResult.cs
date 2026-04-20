@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// 비행 한 번의 결과. 마법 명령 목록과 히트 행성을 담는다. Ship 파이프라인이 소비.
 /// </summary>
-public class SlashResult
+public class SpellResult
 {
     public List<PlanetBody> hitPlanets = new List<PlanetBody>();
     public List<SpellCommand> commands = new List<SpellCommand>();

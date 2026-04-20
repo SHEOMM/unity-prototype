@@ -7,7 +7,7 @@ using System.Collections.Generic;
 /// 징집된 별들은 자신의 고유 효과를 정상 발동한다.
 /// </summary>
 [EffectId("general")]
-public class GeneralEffect : IStarEffect, ISlashModifier
+public class GeneralEffect : IStarEffect, ISpellModifier
 {
     public const float ConscriptRadius = 5f;
 

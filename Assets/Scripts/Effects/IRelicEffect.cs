@@ -5,7 +5,7 @@
 public interface IRelicEffect
 {
     void OnAcquired(PlayerState player);
-    void OnSlashPerformed(SlashResult result, PlayerState player);
+    void OnSpellPerformed(SpellResult result, PlayerState player);
     void OnEnemyKilled(Enemy enemy, PlayerState player);
     void OnWaveStart(int waveIndex, PlayerState player);
     void OnWaveComplete(int waveIndex, PlayerState player);
