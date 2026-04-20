@@ -2,18 +2,20 @@ using UnityEngine;
 
 /// <summary>
 /// 플레이어 본체 (Blue Witch 등) 시각 + 상태 머신.
-/// 지상 좌측에 고정 배치되어 상태별 애니메이션으로 반응.
+/// 지상 좌측에 배치되어 상태별 애니메이션으로 반응.
 ///
-/// 상태 전이 규칙 (우선순위 높은 순):
-///   TakeDamage  — HP 감소 감지 후 짧은 오버라이드 (takeDamage clip duration)
-///   Attack      — ShipController 비행 중 (OnFlightStarted ~ OnShipComplete)
-///   Charge      — ShipInput 조준 중 (OnAimStart ~ OnAimCancel/OnLaunch)
-///   Idle        — 그 외 모든 상황
+/// 위치·스케일은 **카메라와 divider Y 기준으로 동적 계산** (하드코딩 금지):
+///   x = Lerp(camera.left, camera.right, xAnchor)
+///   y = Lerp(camera.bottom, dividerY, yAnchor)  (지상 영역 내부)
+///   scale = targetWorldHeight / sprite.native_height
+///
+/// 상태 전이 우선순위:
+///   TakeDamage (타이머) > Attack (비행중) > Charge (조준중) > Idle
 ///
 /// 구독:
-///   ShipInput     — OnAimStart / OnAimCancel / OnLaunch
-///   ShipController — OnFlightStarted / OnShipComplete
-///   PlayerState    — OnHPChanged (감소 감지)
+///   ShipInput       — OnAimStart / OnAimCancel / OnLaunch
+///   ShipController  — OnFlightStarted / OnShipComplete
+///   PlayerState     — OnHPChanged (감소 감지)
 /// </summary>
 [RequireComponent(typeof(SpriteRenderer))]
 public class PlayerCharacterView : MonoBehaviour
@@ -21,13 +23,19 @@ public class PlayerCharacterView : MonoBehaviour
     [Tooltip("상태별 애니메이션 클립 묶음. 주입 필수.")]
     public CharacterAnimationSet animations;
 
-    [Tooltip("지상 좌측 배치 좌표.")]
-    public Vector2 spawnPosition = new Vector2(-9f, -3f);
+    [Header("배치 (카메라 뷰 상대 비율)")]
+    [Range(0f, 1f)]
+    [Tooltip("0=카메라 좌측 가장자리, 1=우측. 기본 0.08 = 좌측 8%.")]
+    public float xAnchor = 0.08f;
 
-    [Tooltip("시각 스케일 (22px 스프라이트 기준 5배 = 월드 ~1.1 유닛).")]
-    public float visualScale = 5f;
+    [Range(0f, 1f)]
+    [Tooltip("0=카메라 바닥, 1=divider(천상/지상 경계). 기본 0.5 = 지상 중앙.")]
+    public float yAnchor = 0.5f;
 
-    [Tooltip("지상 개체 수준 정렬 순서 (Enemy/Ally와 동일 레이어).")]
+    [Tooltip("월드 유닛 기준 원하는 캐릭터 높이. 스프라이트 native height로 스케일 계산.")]
+    public float targetWorldHeight = 2.5f;
+
+    [Tooltip("정렬 순서. 기본 EnemyBody 레벨.")]
     public int sortingOrder = GameConstants.SortingOrder.EnemyBody;
 
     CharacterAnimator _animator;
@@ -38,7 +46,8 @@ public class PlayerCharacterView : MonoBehaviour
     bool _flying;
     float _takeDamageTimer;
     float _prevHP;
-    CharacterAnimationState _currentState = CharacterAnimationState.Idle;
+    CharacterAnimationState _currentState;
+    bool _stateInitialized;  // 초기 1회 강제 적용 구분
 
     // 구독 해제용 캐시
     ShipInput _shipInput;
@@ -49,18 +58,54 @@ public class PlayerCharacterView : MonoBehaviour
     {
         _sr = GetComponent<SpriteRenderer>();
         _sr.sortingOrder = sortingOrder;
-        transform.position = new Vector3(spawnPosition.x, spawnPosition.y, 0f);
-        transform.localScale = Vector3.one * visualScale;
-
         _animator = gameObject.AddComponent<CharacterAnimator>();
+
+        PositionAndScale();
         Subscribe();
-        ApplyState(CharacterAnimationState.Idle);
+        ApplyState(ComputeState());  // 초기 sprite 강제 주입 (stateInitialized=false → 통과)
     }
 
     void Update()
     {
         if (_takeDamageTimer > 0f) _takeDamageTimer -= Time.deltaTime;
         ApplyState(ComputeState());
+    }
+
+    void PositionAndScale()
+    {
+        var cam = CameraService.Instance?.Camera;
+        if (cam == null)
+        {
+            Debug.LogWarning("[PlayerCharacterView] CameraService.Camera 없음 — 기본 위치(0,0) 사용");
+            return;
+        }
+
+        float camLeft = cam.transform.position.x - cam.orthographicSize * cam.aspect;
+        float camRight = cam.transform.position.x + cam.orthographicSize * cam.aspect;
+        float camBottom = cam.transform.position.y - cam.orthographicSize;
+        float groundTopY = GetGroundTopY(cam);
+
+        float x = Mathf.Lerp(camLeft, camRight, xAnchor);
+        float y = Mathf.Lerp(camBottom, groundTopY, yAnchor);
+        transform.position = new Vector3(x, y, 0f);
+
+        // 스프라이트 native 높이 기반 스케일 — targetWorldHeight에 맞춤
+        var idleClip = animations != null ? animations.Get(CharacterAnimationState.Idle) : null;
+        var icon = idleClip != null ? idleClip.Icon : null;
+        if (icon != null)
+        {
+            float nativeH = icon.bounds.size.y;  // PPU 반영된 월드 단위
+            if (nativeH > 0.0001f)
+                transform.localScale = Vector3.one * (targetWorldHeight / nativeH);
+        }
+    }
+
+    /// <summary>지상 영역의 상단 Y = divider 라인. CombatManager에서 계산, 없으면 카메라 중심.</summary>
+    static float GetGroundTopY(Camera cam)
+    {
+        var cm = CombatManager.Instance;
+        if (cm != null) return cm.celestialYCenter - cm.celestialRadius;
+        return cam.transform.position.y;
     }
 
     CharacterAnimationState ComputeState()
@@ -73,8 +118,10 @@ public class PlayerCharacterView : MonoBehaviour
 
     void ApplyState(CharacterAnimationState state)
     {
-        if (_currentState == state) return;
+        if (_stateInitialized && _currentState == state) return;
+        _stateInitialized = true;
         _currentState = state;
+
         var clip = animations != null ? animations.Get(state) : null;
         if (clip == null && state != CharacterAnimationState.Idle)
             clip = animations != null ? animations.Get(CharacterAnimationState.Idle) : null;  // fallback
