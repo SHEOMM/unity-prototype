@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlanetSO
   bodyName: "\uC804\uAC08\uBCC4"
   description: "\uB3C5 DoT \uBD80\uC5EC. trailing \uC218\uB9CC\uD07C \uC911\uCCA9."
-  icon: {fileID: 5730912024713303442, guid: 9a7c569a4720e774a8edf4015e6ff6ff, type: 3}
+  icon: {fileID: 8149009158662877648, guid: ab7a5865ec157fc4fb0aceb25db6b45b, type: 3}
   bodyColor: {r: 0.4, g: 0.6, b: 0.1, a: 1}
   element: 4
   keywords:

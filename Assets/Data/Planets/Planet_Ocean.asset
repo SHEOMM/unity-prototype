@@ -15,7 +15,7 @@ MonoBehaviour:
   bodyName: "\uBC14\uB2E4\uBCC4"
   description: "\uC218\uD30C\uB85C \uC804\uCCB4 \uC801\uC5D0\uAC8C \uAC10\uC18C \uB370\uBBF8\uC9C0.
     \uC704\uC0C1: \uD574\uC77C."
-  icon: {fileID: -7021643374476442644, guid: fc4a625240291f34ca96840e078cee4e, type: 3}
+  icon: {fileID: -856085545168688419, guid: 289ef0570b821e8488c41e32f96bb460, type: 3}
   bodyColor: {r: 0.3, g: 0.5, b: 1, a: 1}
   element: 1
   keywords:

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlanetSO
   bodyName: "\uBB3C\uBCD1\uBCC4"
   description: "\uC815\uD654 + \uC911\uAC04 AoE. \uC704\uC0C1: \uB300\uD64D\uC218."
-  icon: {fileID: -6143254616739627551, guid: 40561cfc38081a94e9e83956cbec7cb0, type: 3}
+  icon: {fileID: -2615874204119335, guid: e4e208c17c1cb024bb546587ae18bc41, type: 3}
   bodyColor: {r: 0.3, g: 0.7, b: 1, a: 1}
   element: 1
   keywords:
