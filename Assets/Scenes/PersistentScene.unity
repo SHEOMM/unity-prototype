@@ -168,11 +168,6 @@ MonoBehaviour:
     planetName: "\uD3ED\uD48D\uBCC4"
   - orbitName: Outer
     planetName: "\uBC14\uB2E4\uBCC4"
-  synergies:
-  - {fileID: 11400000, guid: f7dbafc61fe91654892e6d63f41ba9ea, type: 2}
-  - {fileID: 11400000, guid: d1ea27d8be7d28944b23ff92bf74084b, type: 2}
-  - {fileID: 11400000, guid: 8f806f15addb60e4ebb7821ae280e71c, type: 2}
-  - {fileID: 11400000, guid: 2e8b247fbb784f8419c86c2d58d2c025, type: 2}
   synergyRules:
   - {fileID: 11400000, guid: 70aac774cabf3624592772102cb8cdfe, type: 2}
   - {fileID: 11400000, guid: 601f56c4c2a70484482c0cc88e256071, type: 2}
@@ -211,6 +206,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 91a766f432a2e044f8e0a10f1a87055c, type: 2}
   - {fileID: 11400000, guid: 7835967321b25144f9c2fcddebe1f7cb, type: 2}
   - {fileID: 11400000, guid: a4d02f1e5d203e84986c3ceacf9070ea, type: 2}
+  planetAnimations: {fileID: 11400000, guid: 0ddecb49e720d6e419ecf2be7a4a44c6, type: 2}
   cometPool:
   - {fileID: 11400000, guid: 150c92c1b2357b04fa4ab33c186bcf88, type: 2}
   - {fileID: 11400000, guid: 655cb8cb44a0272448cf01429d569a7d, type: 2}

@@ -1,0 +1,1859 @@
+fileFormatVersion: 2
+guid: d6946e0da382c2949ba1cb7bf6cc7471
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1413163155605188201
+    second: blue_star_0
+  - first:
+      213: 3148355989140139755
+    second: blue_star_1
+  - first:
+      213: -8242611147879878729
+    second: blue_star_2
+  - first:
+      213: 5571451976367204887
+    second: blue_star_3
+  - first:
+      213: -8955995758347239750
+    second: blue_star_4
+  - first:
+      213: -1923113116326592554
+    second: blue_star_5
+  - first:
+      213: -7990155167861952539
+    second: blue_star_6
+  - first:
+      213: -6529617668466312534
+    second: blue_star_7
+  - first:
+      213: -1119726070153373707
+    second: blue_star_8
+  - first:
+      213: -6034330455613317572
+    second: blue_star_9
+  - first:
+      213: -1218384548021965259
+    second: blue_star_10
+  - first:
+      213: 8260943218006970935
+    second: blue_star_11
+  - first:
+      213: 5829592903026504547
+    second: blue_star_12
+  - first:
+      213: -6049210075778646193
+    second: blue_star_13
+  - first:
+      213: 4849210203579894061
+    second: blue_star_14
+  - first:
+      213: 2838456293540297010
+    second: blue_star_15
+  - first:
+      213: -702550179099134418
+    second: blue_star_16
+  - first:
+      213: -7970405055420445418
+    second: blue_star_17
+  - first:
+      213: -3014434618519899432
+    second: blue_star_18
+  - first:
+      213: -8530756397745375286
+    second: blue_star_19
+  - first:
+      213: 6279472641396189144
+    second: blue_star_20
+  - first:
+      213: 3755319685594080629
+    second: blue_star_21
+  - first:
+      213: -6977717817448518721
+    second: blue_star_22
+  - first:
+      213: 2993625983038749590
+    second: blue_star_23
+  - first:
+      213: 7448115259607443748
+    second: blue_star_24
+  - first:
+      213: 6657063149104544444
+    second: blue_star_25
+  - first:
+      213: 2394057950050704598
+    second: blue_star_26
+  - first:
+      213: 4348494769917100554
+    second: blue_star_27
+  - first:
+      213: -9018661090805472078
+    second: blue_star_28
+  - first:
+      213: 840330237217012532
+    second: blue_star_29
+  - first:
+      213: -3721697316646045296
+    second: blue_star_30
+  - first:
+      213: 793385927332561352
+    second: blue_star_31
+  - first:
+      213: -9142003598357354101
+    second: blue_star_32
+  - first:
+      213: 7518150228745119696
+    second: blue_star_33
+  - first:
+      213: 5666678911108074912
+    second: blue_star_34
+  - first:
+      213: -6731123828541540786
+    second: blue_star_35
+  - first:
+      213: -6709014700178511447
+    second: blue_star_36
+  - first:
+      213: 5420418181892745893
+    second: blue_star_37
+  - first:
+      213: 1540313873766741192
+    second: blue_star_38
+  - first:
+      213: 6579386013303048284
+    second: blue_star_39
+  - first:
+      213: 3954358610147646223
+    second: blue_star_40
+  - first:
+      213: -7843689728473697663
+    second: blue_star_41
+  - first:
+      213: 609378869450795894
+    second: blue_star_42
+  - first:
+      213: 4965903641106645019
+    second: blue_star_43
+  - first:
+      213: 1058845466069078827
+    second: blue_star_44
+  - first:
+      213: 2192270720751273431
+    second: blue_star_45
+  - first:
+      213: -180927377398310792
+    second: blue_star_46
+  - first:
+      213: 8865466021719363333
+    second: blue_star_47
+  - first:
+      213: -8147500069292289778
+    second: blue_star_48
+  - first:
+      213: 334272512525652267
+    second: blue_star_49
+  - first:
+      213: 4819490186402203043
+    second: blue_star_50
+  - first:
+      213: 8961822937259982259
+    second: blue_star_51
+  - first:
+      213: 2773110844425421957
+    second: blue_star_52
+  - first:
+      213: 1280689402097544121
+    second: blue_star_53
+  - first:
+      213: -6027443982411349712
+    second: blue_star_54
+  - first:
+      213: -4586289703776395764
+    second: blue_star_55
+  - first:
+      213: -3480661427855894822
+    second: blue_star_56
+  - first:
+      213: -2047579764739283996
+    second: blue_star_57
+  - first:
+      213: 1958180542168527746
+    second: blue_star_58
+  - first:
+      213: 195747835515958427
+    second: blue_star_59
+  - first:
+      213: -3976927948892090569
+    second: blue_star_60
+  - first:
+      213: 1986212574203353062
+    second: blue_star_61
+  - first:
+      213: 9005520102102319105
+    second: blue_star_62
+  - first:
+      213: -2272948314627151925
+    second: blue_star_63
+  - first:
+      213: -7841223793839035218
+    second: blue_star_64
+  - first:
+      213: 4260670190245939665
+    second: blue_star_65
+  - first:
+      213: -6435741363647911793
+    second: blue_star_66
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: blue_star_0
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 45
+        width: 105
+        height: 124
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7919b74e89f636ce0800000000000000
+      internalID: -1413163155605188201
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_1
+      rect:
+        serializedVersion: 2
+        x: 245
+        y: 45
+        width: 109
+        height: 124
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: beeeb27671531bb20800000000000000
+      internalID: 3148355989140139755
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_2
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 41
+        width: 118
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7bfe1fc05dc5c9d80800000000000000
+      internalID: -8242611147879878729
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_3
+      rect:
+        serializedVersion: 2
+        x: 496
+        y: 159
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 71ae38ebd06c15d40800000000000000
+      internalID: 5571451976367204887
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_4
+      rect:
+        serializedVersion: 2
+        x: 643
+        y: 45
+        width: 117
+        height: 124
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: abebec50f49e5b380800000000000000
+      internalID: -8955995758347239750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_5
+      rect:
+        serializedVersion: 2
+        x: 849
+        y: 45
+        width: 107
+        height: 121
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6df757e4fcabf45e0800000000000000
+      internalID: -1923113116326592554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_6
+      rect:
+        serializedVersion: 2
+        x: 894
+        y: 155
+        width: 8
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5ef265f55344d1190800000000000000
+      internalID: -7990155167861952539
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_7
+      rect:
+        serializedVersion: 2
+        x: 1082
+        y: 150
+        width: 17
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aaa73ff63532265a0800000000000000
+      internalID: -6529617668466312534
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_8
+      rect:
+        serializedVersion: 2
+        x: 1114
+        y: 151
+        width: 16
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5f793ce521fe570f0800000000000000
+      internalID: -1119726070153373707
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_9
+      rect:
+        serializedVersion: 2
+        x: 4715
+        y: 158
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c3ed8dffb60c14ca0800000000000000
+      internalID: -6034330455613317572
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_10
+      rect:
+        serializedVersion: 2
+        x: 5315
+        y: 158
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 53e635775bd671fe0800000000000000
+      internalID: -1218384548021965259
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_11
+      rect:
+        serializedVersion: 2
+        x: 5450
+        y: 43
+        width: 108
+        height: 125
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7325af2a614c4a270800000000000000
+      internalID: 8260943218006970935
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_12
+      rect:
+        serializedVersion: 2
+        x: 5649
+        y: 44
+        width: 108
+        height: 119
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 363780adbdfd6e050800000000000000
+      internalID: 5829592903026504547
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_13
+      rect:
+        serializedVersion: 2
+        x: 5846
+        y: 47
+        width: 110
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f4fff757c73ec0ca0800000000000000
+      internalID: -6049210075778646193
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_14
+      rect:
+        serializedVersion: 2
+        x: 8065
+        y: 147
+        width: 9
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d294499ecfadb4340800000000000000
+      internalID: 4849210203579894061
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_15
+      rect:
+        serializedVersion: 2
+        x: 8646
+        y: 32
+        width: 107
+        height: 133
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 239f0fec5f8346720800000000000000
+      internalID: 2838456293540297010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_16
+      rect:
+        serializedVersion: 2
+        x: 8841
+        y: 44
+        width: 111
+        height: 122
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e26b8e9955a0046f0800000000000000
+      internalID: -702550179099134418
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_17
+      rect:
+        serializedVersion: 2
+        x: 9060
+        y: 152
+        width: 21
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 61dcfa3c4de636190800000000000000
+      internalID: -7970405055420445418
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_18
+      rect:
+        serializedVersion: 2
+        x: 9444
+        y: 42
+        width: 112
+        height: 120
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d23b748fa39a26d0800000000000000
+      internalID: -3014434618519899432
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_19
+      rect:
+        serializedVersion: 2
+        x: 9643
+        y: 30
+        width: 110
+        height: 136
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac7fefe014aac9980800000000000000
+      internalID: -8530756397745375286
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_20
+      rect:
+        serializedVersion: 2
+        x: 9842
+        y: 34
+        width: 112
+        height: 132
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d72437e81b252750800000000000000
+      internalID: 6279472641396189144
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_21
+      rect:
+        serializedVersion: 2
+        x: 1046
+        y: 43
+        width: 114
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 575edd58b539d1430800000000000000
+      internalID: 3755319685594080629
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_22
+      rect:
+        serializedVersion: 2
+        x: 1243
+        y: 39
+        width: 126
+        height: 114
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fbb21145d9a2a2f90800000000000000
+      internalID: -6977717817448518721
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_23
+      rect:
+        serializedVersion: 2
+        x: 1435
+        y: 35
+        width: 117
+        height: 116
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 69b776d78fe7b8920800000000000000
+      internalID: 2993625983038749590
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_24
+      rect:
+        serializedVersion: 2
+        x: 1542
+        y: 120
+        width: 21
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4296117ed550d5760800000000000000
+      internalID: 7448115259607443748
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_25
+      rect:
+        serializedVersion: 2
+        x: 1633
+        y: 45
+        width: 125
+        height: 110
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cba38b9d9a3a26c50800000000000000
+      internalID: 6657063149104544444
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_26
+      rect:
+        serializedVersion: 2
+        x: 1833
+        y: 47
+        width: 118
+        height: 103
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6dcd8747507693120800000000000000
+      internalID: 2394057950050704598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_27
+      rect:
+        serializedVersion: 2
+        x: 2044
+        y: 43
+        width: 111
+        height: 107
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a028d8434f4f85c30800000000000000
+      internalID: 4348494769917100554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_28
+      rect:
+        serializedVersion: 2
+        x: 2240
+        y: 40
+        width: 111
+        height: 110
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b427e4558747d280800000000000000
+      internalID: -9018661090805472078
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_29
+      rect:
+        serializedVersion: 2
+        x: 2443
+        y: 43
+        width: 108
+        height: 107
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 43bf65306e379ab00800000000000000
+      internalID: 840330237217012532
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_30
+      rect:
+        serializedVersion: 2
+        x: 2644
+        y: 34
+        width: 107
+        height: 116
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 099b9c74200e95cc0800000000000000
+      internalID: -3721697316646045296
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_31
+      rect:
+        serializedVersion: 2
+        x: 2846
+        y: 33
+        width: 109
+        height: 121
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c183702c4ca20b00800000000000000
+      internalID: 793385927332561352
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_32
+      rect:
+        serializedVersion: 2
+        x: 3040
+        y: 29
+        width: 115
+        height: 124
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b892198e924112180800000000000000
+      internalID: -9142003598357354101
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_33
+      rect:
+        serializedVersion: 2
+        x: 3242
+        y: 31
+        width: 118
+        height: 119
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d7ef58dcc5d55860800000000000000
+      internalID: 7518150228745119696
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_34
+      rect:
+        serializedVersion: 2
+        x: 3440
+        y: 31
+        width: 114
+        height: 121
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0ad4bc0427614ae40800000000000000
+      internalID: 5666678911108074912
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_35
+      rect:
+        serializedVersion: 2
+        x: 3638
+        y: 49
+        width: 118
+        height: 102
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e463d9c7a8e3692a0800000000000000
+      internalID: -6731123828541540786
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_36
+      rect:
+        serializedVersion: 2
+        x: 3839
+        y: 49
+        width: 116
+        height: 103
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a96cf21daac4e2a0800000000000000
+      internalID: -6709014700178511447
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_37
+      rect:
+        serializedVersion: 2
+        x: 4034
+        y: 49
+        width: 120
+        height: 108
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5aa29c92e91393b40800000000000000
+      internalID: 5420418181892745893
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_38
+      rect:
+        serializedVersion: 2
+        x: 4242
+        y: 47
+        width: 117
+        height: 111
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c4f878ae4b406510800000000000000
+      internalID: 1540313873766741192
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_39
+      rect:
+        serializedVersion: 2
+        x: 4433
+        y: 42
+        width: 125
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c580a1358bcae4b50800000000000000
+      internalID: 6579386013303048284
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_40
+      rect:
+        serializedVersion: 2
+        x: 4632
+        y: 45
+        width: 124
+        height: 109
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f0b9b507434b0e630800000000000000
+      internalID: 3954358610147646223
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_41
+      rect:
+        serializedVersion: 2
+        x: 4835
+        y: 47
+        width: 120
+        height: 105
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 182f1f5efbd952390800000000000000
+      internalID: -7843689728473697663
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_42
+      rect:
+        serializedVersion: 2
+        x: 5036
+        y: 42
+        width: 123
+        height: 114
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 67b6e376ad2f47800800000000000000
+      internalID: 609378869450795894
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_43
+      rect:
+        serializedVersion: 2
+        x: 5233
+        y: 47
+        width: 127
+        height: 111
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b100bf41d0f6ae440800000000000000
+      internalID: 4965903641106645019
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_44
+      rect:
+        serializedVersion: 2
+        x: 6044
+        y: 42
+        width: 116
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b2394156756c1be00800000000000000
+      internalID: 1058845466069078827
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_45
+      rect:
+        serializedVersion: 2
+        x: 6244
+        y: 43
+        width: 109
+        height: 109
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d58ed9fa928c6e10800000000000000
+      internalID: 2192270720751273431
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_46
+      rect:
+        serializedVersion: 2
+        x: 6440
+        y: 40
+        width: 126
+        height: 115
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 878d70442873d7df0800000000000000
+      internalID: -180927377398310792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_47
+      rect:
+        serializedVersion: 2
+        x: 6633
+        y: 44
+        width: 136
+        height: 110
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 50fc0e02066780b70800000000000000
+      internalID: 8865466021719363333
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_48
+      rect:
+        serializedVersion: 2
+        x: 6831
+        y: 44
+        width: 128
+        height: 107
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e01dc52bad34eee80800000000000000
+      internalID: -8147500069292289778
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_49
+      rect:
+        serializedVersion: 2
+        x: 7035
+        y: 40
+        width: 124
+        height: 111
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b21d44f341393a400800000000000000
+      internalID: 334272512525652267
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_50
+      rect:
+        serializedVersion: 2
+        x: 7244
+        y: 42
+        width: 113
+        height: 111
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a50cfe2ac442e240800000000000000
+      internalID: 4819490186402203043
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_51
+      rect:
+        serializedVersion: 2
+        x: 7444
+        y: 43
+        width: 110
+        height: 107
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3bd345bca7ace5c70800000000000000
+      internalID: 8961822937259982259
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_52
+      rect:
+        serializedVersion: 2
+        x: 7646
+        y: 44
+        width: 106
+        height: 109
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 584c2c4de911c7620800000000000000
+      internalID: 2773110844425421957
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_53
+      rect:
+        serializedVersion: 2
+        x: 7840
+        y: 46
+        width: 114
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9bba1afc93ce5c110800000000000000
+      internalID: 1280689402097544121
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_54
+      rect:
+        serializedVersion: 2
+        x: 8037
+        y: 44
+        width: 121
+        height: 106
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0314eccf1a73a5ca0800000000000000
+      internalID: -6027443982411349712
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_55
+      rect:
+        serializedVersion: 2
+        x: 8235
+        y: 43
+        width: 122
+        height: 110
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c0e506940d93a50c0800000000000000
+      internalID: -4586289703776395764
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_56
+      rect:
+        serializedVersion: 2
+        x: 8436
+        y: 121
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ad6de396fd432bfc0800000000000000
+      internalID: -3480661427855894822
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_57
+      rect:
+        serializedVersion: 2
+        x: 8448
+        y: 37
+        width: 107
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e3ef617d098593e0800000000000000
+      internalID: -2047579764739283996
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_58
+      rect:
+        serializedVersion: 2
+        x: 9043
+        y: 41
+        width: 109
+        height: 109
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 283790604dadc2b10800000000000000
+      internalID: 1958180542168527746
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_59
+      rect:
+        serializedVersion: 2
+        x: 9245
+        y: 43
+        width: 110
+        height: 110
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b94fa798e9f67b200800000000000000
+      internalID: 195747835515958427
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_60
+      rect:
+        serializedVersion: 2
+        x: 2030
+        y: 84
+        width: 10
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 73fc6f4e91d1fc8c0800000000000000
+      internalID: -3976927948892090569
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_61
+      rect:
+        serializedVersion: 2
+        x: 7233
+        y: 79
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6e71ec510d1709b10800000000000000
+      internalID: 1986212574203353062
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_62
+      rect:
+        serializedVersion: 2
+        x: 7550
+        y: 57
+        width: 10
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 100c27fc1d80afc70800000000000000
+      internalID: 9005520102102319105
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_63
+      rect:
+        serializedVersion: 2
+        x: 121
+        y: 34
+        width: 13
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bc763d9ec8dd470e0800000000000000
+      internalID: -2272948314627151925
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_64
+      rect:
+        serializedVersion: 2
+        x: 1266
+        y: 44
+        width: 11
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eac22eb01806e2390800000000000000
+      internalID: -7841223793839035218
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_65
+      rect:
+        serializedVersion: 2
+        x: 3680
+        y: 31
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1d984bac6f0f02b30800000000000000
+      internalID: 4260670190245939665
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_star_66
+      rect:
+        serializedVersion: 2
+        x: 8885
+        y: 29
+        width: 13
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f886a79e357afa6a0800000000000000
+      internalID: -6435741363647911793
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      blue_star_0: -1413163155605188201
+      blue_star_1: 3148355989140139755
+      blue_star_10: -1218384548021965259
+      blue_star_11: 8260943218006970935
+      blue_star_12: 5829592903026504547
+      blue_star_13: -6049210075778646193
+      blue_star_14: 4849210203579894061
+      blue_star_15: 2838456293540297010
+      blue_star_16: -702550179099134418
+      blue_star_17: -7970405055420445418
+      blue_star_18: -3014434618519899432
+      blue_star_19: -8530756397745375286
+      blue_star_2: -8242611147879878729
+      blue_star_20: 6279472641396189144
+      blue_star_21: 3755319685594080629
+      blue_star_22: -6977717817448518721
+      blue_star_23: 2993625983038749590
+      blue_star_24: 7448115259607443748
+      blue_star_25: 6657063149104544444
+      blue_star_26: 2394057950050704598
+      blue_star_27: 4348494769917100554
+      blue_star_28: -9018661090805472078
+      blue_star_29: 840330237217012532
+      blue_star_3: 5571451976367204887
+      blue_star_30: -3721697316646045296
+      blue_star_31: 793385927332561352
+      blue_star_32: -9142003598357354101
+      blue_star_33: 7518150228745119696
+      blue_star_34: 5666678911108074912
+      blue_star_35: -6731123828541540786
+      blue_star_36: -6709014700178511447
+      blue_star_37: 5420418181892745893
+      blue_star_38: 1540313873766741192
+      blue_star_39: 6579386013303048284
+      blue_star_4: -8955995758347239750
+      blue_star_40: 3954358610147646223
+      blue_star_41: -7843689728473697663
+      blue_star_42: 609378869450795894
+      blue_star_43: 4965903641106645019
+      blue_star_44: 1058845466069078827
+      blue_star_45: 2192270720751273431
+      blue_star_46: -180927377398310792
+      blue_star_47: 8865466021719363333
+      blue_star_48: -8147500069292289778
+      blue_star_49: 334272512525652267
+      blue_star_5: -1923113116326592554
+      blue_star_50: 4819490186402203043
+      blue_star_51: 8961822937259982259
+      blue_star_52: 2773110844425421957
+      blue_star_53: 1280689402097544121
+      blue_star_54: -6027443982411349712
+      blue_star_55: -4586289703776395764
+      blue_star_56: -3480661427855894822
+      blue_star_57: -2047579764739283996
+      blue_star_58: 1958180542168527746
+      blue_star_59: 195747835515958427
+      blue_star_6: -7990155167861952539
+      blue_star_60: -3976927948892090569
+      blue_star_61: 1986212574203353062
+      blue_star_62: 9005520102102319105
+      blue_star_63: -2272948314627151925
+      blue_star_64: -7841223793839035218
+      blue_star_65: 4260670190245939665
+      blue_star_66: -6435741363647911793
+      blue_star_7: -6529617668466312534
+      blue_star_8: -1119726070153373707
+      blue_star_9: -6034330455613317572
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

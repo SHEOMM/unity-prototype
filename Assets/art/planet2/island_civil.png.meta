@@ -1,0 +1,1417 @@
+fileFormatVersion: 2
+guid: 680aae354e637a84fa343ce4e2b228fc
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 8010888009915344330
+    second: island_civil_0
+  - first:
+      213: -9182574855688579846
+    second: island_civil_1
+  - first:
+      213: 177554156420148015
+    second: island_civil_2
+  - first:
+      213: -710853919597828282
+    second: island_civil_3
+  - first:
+      213: -2422493282922672054
+    second: island_civil_4
+  - first:
+      213: 1549168783266645687
+    second: island_civil_5
+  - first:
+      213: 4042565365242784046
+    second: island_civil_6
+  - first:
+      213: -944861585641828506
+    second: island_civil_7
+  - first:
+      213: 7217277818970871908
+    second: island_civil_8
+  - first:
+      213: 3609142028347975371
+    second: island_civil_9
+  - first:
+      213: -961250872220322160
+    second: island_civil_10
+  - first:
+      213: 5901373343169545525
+    second: island_civil_11
+  - first:
+      213: -923612819995723638
+    second: island_civil_12
+  - first:
+      213: 5013639918860108860
+    second: island_civil_13
+  - first:
+      213: 8812000749741144869
+    second: island_civil_14
+  - first:
+      213: 2219859920404057818
+    second: island_civil_15
+  - first:
+      213: 5096526694336243358
+    second: island_civil_16
+  - first:
+      213: 6756181649470254684
+    second: island_civil_17
+  - first:
+      213: -3397635130826845125
+    second: island_civil_18
+  - first:
+      213: -8304932347292974332
+    second: island_civil_19
+  - first:
+      213: -4883529404226713217
+    second: island_civil_20
+  - first:
+      213: -4001339780794597231
+    second: island_civil_21
+  - first:
+      213: -2430792960972550335
+    second: island_civil_22
+  - first:
+      213: -3253083530148315287
+    second: island_civil_23
+  - first:
+      213: -2061514211012168385
+    second: island_civil_24
+  - first:
+      213: -3454195517849415902
+    second: island_civil_25
+  - first:
+      213: 917489883828491215
+    second: island_civil_26
+  - first:
+      213: -2310163979543628778
+    second: island_civil_27
+  - first:
+      213: 7747724001274992919
+    second: island_civil_28
+  - first:
+      213: 1181676039965497330
+    second: island_civil_29
+  - first:
+      213: 9032118723247634299
+    second: island_civil_30
+  - first:
+      213: -3151314374279954709
+    second: island_civil_31
+  - first:
+      213: -1886102983963268159
+    second: island_civil_32
+  - first:
+      213: 6220137363143606434
+    second: island_civil_33
+  - first:
+      213: 2552187341289342624
+    second: island_civil_34
+  - first:
+      213: -8888275860033423528
+    second: island_civil_35
+  - first:
+      213: -3390290977284627534
+    second: island_civil_36
+  - first:
+      213: -7290919517289393852
+    second: island_civil_37
+  - first:
+      213: 1735720554183635436
+    second: island_civil_38
+  - first:
+      213: -2451818935885926764
+    second: island_civil_39
+  - first:
+      213: 5603628798800219315
+    second: island_civil_40
+  - first:
+      213: 1955097368390515326
+    second: island_civil_41
+  - first:
+      213: -4049467544238816910
+    second: island_civil_42
+  - first:
+      213: 1625896330594346035
+    second: island_civil_43
+  - first:
+      213: 824628009082226147
+    second: island_civil_44
+  - first:
+      213: 5878853741915154857
+    second: island_civil_45
+  - first:
+      213: -5676563512817634620
+    second: island_civil_46
+  - first:
+      213: -3682013792301646300
+    second: island_civil_47
+  - first:
+      213: 6906784035226846176
+    second: island_civil_48
+  - first:
+      213: -5974809268866936535
+    second: island_civil_49
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: island_civil_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac5a07693346c2f60800000000000000
+      internalID: 8010888009915344330
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_1
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af49f33f1d0f09080800000000000000
+      internalID: -9182574855688579846
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_2
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f2b21d5809cc67200800000000000000
+      internalID: 177554156420148015
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_3
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6476d2b502a8226f0800000000000000
+      internalID: -710853919597828282
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_4
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a40df90b133916ed0800000000000000
+      internalID: -2422493282922672054
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_5
+      rect:
+        serializedVersion: 2
+        x: 500
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b68bbfecc0cf7510800000000000000
+      internalID: 1549168783266645687
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_6
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e29e79008c31a1830800000000000000
+      internalID: 4042565365242784046
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_7
+      rect:
+        serializedVersion: 2
+        x: 700
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 66f08e9d46d23e2f0800000000000000
+      internalID: -944861585641828506
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_8
+      rect:
+        serializedVersion: 2
+        x: 800
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 468901500fbe82460800000000000000
+      internalID: 7217277818970871908
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_9
+      rect:
+        serializedVersion: 2
+        x: 900
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bc62d9f7d8f361230800000000000000
+      internalID: 3609142028347975371
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_10
+      rect:
+        serializedVersion: 2
+        x: 1000
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 096f545bc63f8a2f0800000000000000
+      internalID: -961250872220322160
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_11
+      rect:
+        serializedVersion: 2
+        x: 1100
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 535849ee9c3e5e150800000000000000
+      internalID: 5901373343169545525
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_12
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a887822a80bae23f0800000000000000
+      internalID: -923612819995723638
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_13
+      rect:
+        serializedVersion: 2
+        x: 1300
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c34006b51f6049540800000000000000
+      internalID: 5013639918860108860
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_14
+      rect:
+        serializedVersion: 2
+        x: 1400
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 52bfbc07ef38a4a70800000000000000
+      internalID: 8812000749741144869
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_15
+      rect:
+        serializedVersion: 2
+        x: 1500
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ade8fc616d68ece10800000000000000
+      internalID: 2219859920404057818
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_16
+      rect:
+        serializedVersion: 2
+        x: 1600
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e962534a6008ab640800000000000000
+      internalID: 5096526694336243358
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_17
+      rect:
+        serializedVersion: 2
+        x: 1700
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c5eefa61a67c2cd50800000000000000
+      internalID: 6756181649470254684
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_18
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b349da699dc29d0d0800000000000000
+      internalID: -3397635130826845125
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_19
+      rect:
+        serializedVersion: 2
+        x: 1900
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 40383f31804febc80800000000000000
+      internalID: -8304932347292974332
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_20
+      rect:
+        serializedVersion: 2
+        x: 2000
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f7944e281e73a3cb0800000000000000
+      internalID: -4883529404226713217
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_21
+      rect:
+        serializedVersion: 2
+        x: 2100
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 190491c5ba26878c0800000000000000
+      internalID: -4001339780794597231
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_22
+      rect:
+        serializedVersion: 2
+        x: 2200
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 14f06be4ea6144ed0800000000000000
+      internalID: -2430792960972550335
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_23
+      rect:
+        serializedVersion: 2
+        x: 2300
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 96ff5d0d3c9bad2d0800000000000000
+      internalID: -3253083530148315287
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_24
+      rect:
+        serializedVersion: 2
+        x: 2400
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f3533395fb70463e0800000000000000
+      internalID: -2061514211012168385
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_25
+      rect:
+        serializedVersion: 2
+        x: 2500
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22fc6d54a7b3010d0800000000000000
+      internalID: -3454195517849415902
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_26
+      rect:
+        serializedVersion: 2
+        x: 2600
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fc39c9230349bbc00800000000000000
+      internalID: 917489883828491215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_27
+      rect:
+        serializedVersion: 2
+        x: 2700
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6143662b916a0ffd0800000000000000
+      internalID: -2310163979543628778
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_28
+      rect:
+        serializedVersion: 2
+        x: 2800
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 71993c11ee1758b60800000000000000
+      internalID: 7747724001274992919
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_29
+      rect:
+        serializedVersion: 2
+        x: 2900
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2f7dbb9f818266010800000000000000
+      internalID: 1181676039965497330
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_30
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b777454ef18885d70800000000000000
+      internalID: 9032118723247634299
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_31
+      rect:
+        serializedVersion: 2
+        x: 3100
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: beef571e5484444d0800000000000000
+      internalID: -3151314374279954709
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_32
+      rect:
+        serializedVersion: 2
+        x: 3200
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1cba01f345733d5e0800000000000000
+      internalID: -1886102983963268159
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_33
+      rect:
+        serializedVersion: 2
+        x: 3300
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2a04f40e9fd525650800000000000000
+      internalID: 6220137363143606434
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_34
+      rect:
+        serializedVersion: 2
+        x: 3400
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a6ccc56dd03b6320800000000000000
+      internalID: 2552187341289342624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_35
+      rect:
+        serializedVersion: 2
+        x: 3500
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8573709823086a480800000000000000
+      internalID: -8888275860033423528
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_36
+      rect:
+        serializedVersion: 2
+        x: 3600
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b3ecb5915443f0d0800000000000000
+      internalID: -3390290977284627534
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_37
+      rect:
+        serializedVersion: 2
+        x: 3700
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 441d006f35371da90800000000000000
+      internalID: -7290919517289393852
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_38
+      rect:
+        serializedVersion: 2
+        x: 3800
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce1b575d5a4861810800000000000000
+      internalID: 1735720554183635436
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_39
+      rect:
+        serializedVersion: 2
+        x: 3900
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 49e61f80ba369fdd0800000000000000
+      internalID: -2451818935885926764
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_40
+      rect:
+        serializedVersion: 2
+        x: 4000
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3bcc2a504b614cd40800000000000000
+      internalID: 5603628798800219315
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_41
+      rect:
+        serializedVersion: 2
+        x: 4100
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7ab730b2b6e12b10800000000000000
+      internalID: 1955097368390515326
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_42
+      rect:
+        serializedVersion: 2
+        x: 4200
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2710c2839b66dc7c0800000000000000
+      internalID: -4049467544238816910
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_43
+      rect:
+        serializedVersion: 2
+        x: 4300
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 334efaa2918509610800000000000000
+      internalID: 1625896330594346035
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_44
+      rect:
+        serializedVersion: 2
+        x: 4400
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e50f212ecaa17b00800000000000000
+      internalID: 824628009082226147
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_45
+      rect:
+        serializedVersion: 2
+        x: 4500
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a9245da452e59150800000000000000
+      internalID: 5878853741915154857
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_46
+      rect:
+        serializedVersion: 2
+        x: 4600
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c2bf819f8bc831b0800000000000000
+      internalID: -5676563512817634620
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_47
+      rect:
+        serializedVersion: 2
+        x: 4700
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42e75cbc6fbd6ecc0800000000000000
+      internalID: -3682013792301646300
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_48
+      rect:
+        serializedVersion: 2
+        x: 4800
+        y: 0
+        width: 101
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0e309008c73d9df50800000000000000
+      internalID: 6906784035226846176
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: island_civil_49
+      rect:
+        serializedVersion: 2
+        x: 4900
+        y: 0
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 921997830a6351da0800000000000000
+      internalID: -5974809268866936535
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      island_civil_0: 8010888009915344330
+      island_civil_1: -9182574855688579846
+      island_civil_10: -961250872220322160
+      island_civil_11: 5901373343169545525
+      island_civil_12: -923612819995723638
+      island_civil_13: 5013639918860108860
+      island_civil_14: 8812000749741144869
+      island_civil_15: 2219859920404057818
+      island_civil_16: 5096526694336243358
+      island_civil_17: 6756181649470254684
+      island_civil_18: -3397635130826845125
+      island_civil_19: -8304932347292974332
+      island_civil_2: 177554156420148015
+      island_civil_20: -4883529404226713217
+      island_civil_21: -4001339780794597231
+      island_civil_22: -2430792960972550335
+      island_civil_23: -3253083530148315287
+      island_civil_24: -2061514211012168385
+      island_civil_25: -3454195517849415902
+      island_civil_26: 917489883828491215
+      island_civil_27: -2310163979543628778
+      island_civil_28: 7747724001274992919
+      island_civil_29: 1181676039965497330
+      island_civil_3: -710853919597828282
+      island_civil_30: 9032118723247634299
+      island_civil_31: -3151314374279954709
+      island_civil_32: -1886102983963268159
+      island_civil_33: 6220137363143606434
+      island_civil_34: 2552187341289342624
+      island_civil_35: -8888275860033423528
+      island_civil_36: -3390290977284627534
+      island_civil_37: -7290919517289393852
+      island_civil_38: 1735720554183635436
+      island_civil_39: -2451818935885926764
+      island_civil_4: -2422493282922672054
+      island_civil_40: 5603628798800219315
+      island_civil_41: 1955097368390515326
+      island_civil_42: -4049467544238816910
+      island_civil_43: 1625896330594346035
+      island_civil_44: 824628009082226147
+      island_civil_45: 5878853741915154857
+      island_civil_46: -5676563512817634620
+      island_civil_47: -3682013792301646300
+      island_civil_48: 6906784035226846176
+      island_civil_49: -5974809268866936535
+      island_civil_5: 1549168783266645687
+      island_civil_6: 4042565365242784046
+      island_civil_7: -944861585641828506
+      island_civil_8: 7217277818970871908
+      island_civil_9: 3609142028347975371
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

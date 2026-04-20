@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 963a556a8a766384eb6cf883b980eff2, type: 3}
+  m_Name: PlanetAnimationBindingTable
+  m_EditorClassIdentifier: Assembly-CSharp::PlanetAnimationBindingTable
+  entries:
+  - planet: {fileID: 11400000, guid: 31e3d5b464b388842abdbcb974774684, type: 2}
+    clip: {fileID: 11400000, guid: 1f19e1fa961e5f24d8cc642829d10703, type: 2}
+  - planet: {fileID: 11400000, guid: 5c5b474ef2dc055458ac6359d27be265, type: 2}
+    clip: {fileID: 11400000, guid: 740cb3427ba2d094789289aefca41a58, type: 2}
+  - planet: {fileID: 11400000, guid: cf1fb5640e68dab4e8771be271bbfb54, type: 2}
+    clip: {fileID: 11400000, guid: fca2132584fef8c498fc08ece70ea2ac, type: 2}
+  - planet: {fileID: 11400000, guid: c018cbbacf6695a4a89cda74202b7231, type: 2}
+    clip: {fileID: 11400000, guid: 7902e06e0799e444c92c2a82457509be, type: 2}
+  - planet: {fileID: 11400000, guid: bfb7d58b557b9fe468d01f7e0194d63e, type: 2}
+    clip: {fileID: 11400000, guid: 6621268681be996439f2a6d06eb45adf, type: 2}
+  - planet: {fileID: 11400000, guid: 42f310924e1d73944aba0a7c0dc8f8ee, type: 2}
+    clip: {fileID: 11400000, guid: b1dc764aa65974441bb1ea20fa00ddcb, type: 2}
+  - planet: {fileID: 11400000, guid: d288875c24cec8a48b0f00ba5e857070, type: 2}
+    clip: {fileID: 11400000, guid: 66dad01b6c8da654197fe611417b9e4a, type: 2}
+  - planet: {fileID: 11400000, guid: 9af01fe1ff01b884aa5eb78ef6327732, type: 2}
+    clip: {fileID: 11400000, guid: 5b1f22eb3d1de1d46b4f4f005ad13611, type: 2}
+  - planet: {fileID: 11400000, guid: a67863bf0d31ec54cadea3610f3667ff, type: 2}
+    clip: {fileID: 11400000, guid: c706dce9c6d6d09468d07c92a766f9af, type: 2}
+  - planet: {fileID: 11400000, guid: 36520a051a02666449f11cc319fbc4ec, type: 2}
+    clip: {fileID: 11400000, guid: 6560e8d83041f1b4ab49fa42c0def5d6, type: 2}
+  - planet: {fileID: 11400000, guid: 124af75a03613f04cbbdea1a64b8de47, type: 2}
+    clip: {fileID: 11400000, guid: dbe24d5c257d7784ca702624afce2517, type: 2}
+  - planet: {fileID: 11400000, guid: f6f894ebbc543be45916444a175ec42e, type: 2}
+    clip: {fileID: 11400000, guid: 0b11ab431977ea6468e0089cdba4b6ed, type: 2}

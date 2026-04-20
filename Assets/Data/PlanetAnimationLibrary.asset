@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6181519088ad9c448cee5151b53e3e9, type: 3}
+  m_Name: PlanetAnimationLibrary
+  m_EditorClassIdentifier: Assembly-CSharp::PlanetAnimationLibrary
+  clips:
+  - {fileID: 11400000, guid: 5b1f22eb3d1de1d46b4f4f005ad13611, type: 2}
+  - {fileID: 11400000, guid: fca2132584fef8c498fc08ece70ea2ac, type: 2}
+  - {fileID: 11400000, guid: 1f19e1fa961e5f24d8cc642829d10703, type: 2}
+  - {fileID: 11400000, guid: 740cb3427ba2d094789289aefca41a58, type: 2}
+  - {fileID: 11400000, guid: 0b11ab431977ea6468e0089cdba4b6ed, type: 2}
+  - {fileID: 11400000, guid: c706dce9c6d6d09468d07c92a766f9af, type: 2}
+  - {fileID: 11400000, guid: 66dad01b6c8da654197fe611417b9e4a, type: 2}
+  - {fileID: 11400000, guid: dbe24d5c257d7784ca702624afce2517, type: 2}
+  - {fileID: 11400000, guid: 6560e8d83041f1b4ab49fa42c0def5d6, type: 2}
+  - {fileID: 11400000, guid: b1dc764aa65974441bb1ea20fa00ddcb, type: 2}
+  - {fileID: 11400000, guid: 47a5cc52d393e924983a7988916a2465, type: 2}
+  - {fileID: 11400000, guid: 7902e06e0799e444c92c2a82457509be, type: 2}
+  - {fileID: 11400000, guid: 6621268681be996439f2a6d06eb45adf, type: 2}

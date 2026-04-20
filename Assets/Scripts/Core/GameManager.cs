@@ -21,6 +21,10 @@ public class GameManager : MonoBehaviour
     [Tooltip("SynergyDispatcher가 구독하는 규칙 에셋. Family/Position/Combo/PerHit 4가지 trigger.")]
     [SerializeField] private SynergyRuleSO[] synergyRules;
 
+    [Header("행성 아트")]
+    [Tooltip("행성 ↔ 애니메이션 클립 매핑. PlanetSpriteResolver가 런타임 조회.")]
+    [SerializeField] private PlanetAnimationBindingTable planetAnimations;
+
     [Header("혜성")]
     [SerializeField] private CometSO[] cometPool;
 
@@ -68,6 +72,9 @@ public class GameManager : MonoBehaviour
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        // 정적 서비스 주입 (씬 전환 동안 영속)
+        PlanetSpriteResolver.BindingTable = planetAnimations;
 
         // 영속 싱글턴들
         GetOrAdd<PlayerState>();

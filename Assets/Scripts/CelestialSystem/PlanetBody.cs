@@ -48,11 +48,22 @@ public class PlanetBody : MonoBehaviour, IGravitySource
         Planet = data;
         _sr = GetComponent<SpriteRenderer>();
         if (_sr == null) _sr = gameObject.AddComponent<SpriteRenderer>();
-        if (sprite != null) _sr.sprite = sprite;
         _sr.color = Color.white;
         _sr.sortingOrder = GameConstants.SortingOrder.PlanetBody;
         transform.localScale = Vector3.one * data.visualScale;
         _baseScale = data.visualScale;
+
+        // 애니메이션 클립이 있으면 PlanetAnimator가 frames 루프 재생, 없으면 정적 sprite 폴백.
+        var clip = PlanetSpriteResolver.ResolveClip(data);
+        if (clip != null && clip.frames != null && clip.frames.Length >= 2)
+        {
+            _sr.sprite = clip.Icon;  // 즉시 첫 프레임 (Animator가 다음 Update에 덮어씀)
+            gameObject.AddComponent<PlanetAnimator>().Play(clip);
+        }
+        else if (sprite != null)
+        {
+            _sr.sprite = sprite;
+        }
 
         var col = gameObject.AddComponent<CircleCollider2D>();
         col.isTrigger = true;
