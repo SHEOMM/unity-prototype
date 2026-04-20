@@ -93,8 +93,8 @@ ShipInput (슬링샷 드래그, 마우스 반대방향 발사)
   → ShipController (이벤트 3종: OnFlightStarted/OnPlanetHit/OnFlightEnded)
     → ShipModel (FixedTimestepSimulator + GravityAccumulator + ShipIntegrator)
     → ShipVisual (밴드 + 궤적 프리뷰 + 트레일)
-    → SlashResolver (히트 시퀀스 → SpellResult)            [레거시]
-    → SpellEffectManager → VisualRegistry → ISpellVisual    [레거시]
+    → SpellResolver (히트 시퀀스 → SpellResult)
+    → SpellEffectManager → VisualRegistry → ISpellVisual
   → SynergyDispatcher 이벤트 구독 → 시너지 발동 → OnSynergyFired → Toast/Visual
 ```
 
@@ -120,9 +120,8 @@ Assets/Scripts/
 │   └── Services/       CameraService(+Shake), LightingService, SceneEnvironment, SceneBootBase
 ├── Data/               ScriptableObject 정의 (Planet/Orbit/Enemy/Ally/Structure/Relic/Wave/Synergy/Comet/Satellite)
 ├── CelestialSystem/    천체 런타임 (OrbitBody, PlanetBody, CometBody, SatelliteBody, GravitySourceRegistry, PlanetRegistry)
-├── Ship/               슬링샷 발사체 (ShipController/Model/Input/Visual/Integrator, GravityTypes/)
-├── Slash/              (레거시) 슬래시 시스템
-├── Effects/            행성 효과 전략 (IStarEffect + 각 행성), IRelicEffect, ISpellModifier
+├── Ship/               슬링샷 발사체 (ShipController/Model/Input/Visual/Integrator, EncounterDetector, GravityTypes/)
+├── Effects/            행성 효과 전략 (IStarEffect + 각 행성), SpellResolver, SpellResult, IRelicEffect, ISpellModifier
 ├── Combat/             Enemy/AllyUnit/Structure + Behaviors/ + StatusEffects/ + 인터페이스 (IDamageable/IStatusHost/IMoveable)
 ├── Synergy/            시너지 시스템 — 상세는 Synergy/CLAUDE.md
 │   ├── ISynergyEffect, SynergyRuleSO, SynergyDispatcher, SynergyRegistry, Matcher, TriggerType
@@ -131,7 +130,7 @@ Assets/Scripts/
 ├── VFX/                행성 VFX (ISpellVisual + VisualRegistry) + 시너지 VFX (ISynergyVisual + SynergyVisualRegistry + Synergy/ 6 공용) — 상세는 VFX/CLAUDE.md
 ├── UI/                 View 계층 — 상세는 UI/CLAUDE.md
 │   ├── EnemyView/AllyView/StructureView, PlanetLabelView, PlayerHPBar, PlayerDamageView
-│   ├── SynergyPopup (레거시), SynergyToastView, MapView, CombatDividerView
+│   ├── SynergyToastView, MapView, CombatDividerView
 │   ├── StatusIconView + StatusIconRegistry + StatusIconMeta/
 │   └── UIFactory (CreateLabel / CreateHPBar / UpdateHPBar / MakePixel)
 ├── Map/                MapManager, MapSceneBoot, MapGenerator, MapData/Node
@@ -154,7 +153,7 @@ StartRun → [Map] → [Combat] → [Reward] → [Map] → … → [Boss] → [V
 
 - `Camera.main` 직접 접근 금지 — `CameraService` 경유
 - Primitive에 Enemy/Ally/Structure 구체 타입 넘기지 않기 — `IDamageable`/`IStatusHost`/`IMoveable` 사용
-- `SynergyDefinitionSO`는 `[Obsolete]` — 레거시 SlashResolver 경유만. 신규 기능은 `SynergyRuleSO` + `[SynergyId]`
+- 시너지는 `SynergyRuleSO` + `[SynergyId]` 기반. 구 `SynergyDefinitionSO`는 제거됨 (SynergyDispatcher가 단일 진입점)
 - Boot 스크립트는 항상 `SceneBootBase` 상속 (씬마다 `SceneEnvironment` 에셋 바인딩 필수)
 - 전투 종료 시 `AllyRegistry.DestroyAll()` + `StructureRegistry.DestroyAll()` (combat-scoped)
 - 새 `IStatusEffect` 구현 시 `IconId` 오버라이드 고려 (기본 null = 아이콘 표시 안 함)
