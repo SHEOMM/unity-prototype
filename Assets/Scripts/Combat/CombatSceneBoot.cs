@@ -28,6 +28,9 @@ public class CombatSceneBoot : SceneBootBase
         float difficulty = ComputeDifficulty(floor, roomType);
         WaveDefinitionSO[] waves = BuildWaveSet(gm.DefaultWaves, floor, roomType);
 
+        // 배경: 천상(space) + 지상(ground). 씬 divider y 기준으로 영역 분할.
+        SpawnBackgroundView(combat, roomType);
+
         combat.StartCombat(
             waves,
             RunState.Instance?.unlockedOrbits,
@@ -42,6 +45,35 @@ public class CombatSceneBoot : SceneBootBase
         combatGo.AddComponent<PlayerDamageView>();
         combatGo.AddComponent<SynergyToastView>().Bind(combat.SynergyDispatcher);
         combatGo.AddComponent<SynergyVisualHost>().Bind(combat.SynergyDispatcher);
+    }
+
+    static void SpawnBackgroundView(CombatManager combat, RoomType? roomType)
+    {
+        var cam = CameraService.Instance?.Camera;
+        if (cam == null) return;
+
+        var key = MapRoomTypeToKey(roomType);
+        var spaceSet = BackgroundResolver.ResolveSpace(key);
+        var groundSet = BackgroundResolver.ResolveGround(key);
+        if (spaceSet == null && groundSet == null) return;
+
+        float dividerY = combat.celestialYCenter - combat.celestialRadius;
+        float camTop = cam.transform.position.y + cam.orthographicSize;
+        float camBottom = cam.transform.position.y - cam.orthographicSize;
+
+        var bgGo = new GameObject("BackgroundView");
+        var bgView = bgGo.AddComponent<BackgroundView>();
+        if (groundSet != null)
+            bgView.ApplyGround(groundSet, cam, camBottom, dividerY, GameConstants.SortingOrder.BackgroundGroundBase);
+        if (spaceSet != null)
+            bgView.ApplySpace(spaceSet, cam, dividerY, camTop, GameConstants.SortingOrder.BackgroundSpace);
+    }
+
+    static BackgroundKey MapRoomTypeToKey(RoomType? roomType)
+    {
+        if (roomType == RoomType.Elite) return BackgroundKey.CombatElite;
+        if (roomType == RoomType.Boss) return BackgroundKey.CombatBoss;
+        return BackgroundKey.Combat;
     }
 
     static float ComputeDifficulty(int floor, RoomType? roomType)

@@ -25,6 +25,10 @@ public class GameManager : MonoBehaviour
     [Tooltip("행성 ↔ 애니메이션 클립 매핑. PlanetSpriteResolver가 런타임 조회.")]
     [SerializeField] private PlanetAnimationBindingTable planetAnimations;
 
+    [Header("배경 아트")]
+    [Tooltip("씬·룸타입 ↔ 배경 매핑. BackgroundResolver가 런타임 조회.")]
+    [SerializeField] private BackgroundBindingTable backgrounds;
+
     [Header("혜성")]
     [SerializeField] private CometSO[] cometPool;
 
@@ -75,6 +79,7 @@ public class GameManager : MonoBehaviour
 
         // 정적 서비스 주입 (씬 전환 동안 영속)
         PlanetSpriteResolver.BindingTable = planetAnimations;
+        BackgroundResolver.BindingTable = backgrounds;
 
         // 영속 싱글턴들
         GetOrAdd<PlayerState>();
