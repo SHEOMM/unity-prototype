@@ -14,7 +14,7 @@ public class DefaultSynergyVisual : ISynergyVisual
         fx.transform.position = ctx.Anchor;
         var lr = fx.AddComponent<LineRenderer>();
         lr.material = GameConstants.SpriteMaterial;
-        lr.sortingOrder = 15;
+        lr.sortingOrder = GameConstants.SortingOrder.SpellEffect;
         lr.loop = true;
         lr.useWorldSpace = false;
 

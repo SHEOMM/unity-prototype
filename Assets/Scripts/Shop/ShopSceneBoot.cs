@@ -7,6 +7,7 @@ public class ShopSceneBoot : SceneBootBase
 {
     protected override void OnBoot()
     {
+        EnsureHud();
         Debug.Log("[상점] 상점 오픈 — TODO: 상품 UI");
         Invoke(nameof(ReturnToMap), 1f);
     }

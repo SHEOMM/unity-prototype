@@ -33,12 +33,12 @@ public class CosmosMapButton : MonoBehaviour
         _bg = gameObject.AddComponent<SpriteRenderer>();
         _bg.sprite = UIFactory.MakePixel();
         _bg.color = new Color(0.2f, 0.5f, 0.8f, 0.95f);
-        _bg.sortingOrder = 50;  // MapView 노드보다 위
+        _bg.sortingOrder = GameConstants.SortingOrder.CosmosMapButtonBg;
         transform.localScale = new Vector3(Width, Height, 1f);
 
         var labelGo = new GameObject("Label");
         labelGo.transform.SetParent(transform, false);
-        labelGo.transform.localScale = new Vector3(1f / Width, 1f / Height, 1f);
+        labelGo.transform.localScale = UIFactory.InverseScale(new Vector2(Width, Height));
         _tm = labelGo.AddComponent<TextMesh>();
         _tm.text = "Cosmos";
         _tm.fontSize = 40;
@@ -47,7 +47,7 @@ public class CosmosMapButton : MonoBehaviour
         _tm.alignment = TextAlignment.Center;
         _tm.color = Color.white;
         var mr = labelGo.GetComponent<MeshRenderer>();
-        if (mr != null) mr.sortingOrder = 51;
+        if (mr != null) mr.sortingOrder = GameConstants.SortingOrder.CosmosMapButtonLabel;
 
         _col = GetComponent<BoxCollider2D>();
         _col.size = Vector2.one;

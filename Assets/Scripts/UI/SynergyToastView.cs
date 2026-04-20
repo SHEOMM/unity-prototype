@@ -83,6 +83,6 @@ public class SynergyToastView : MonoBehaviour
         _currentText.characterSize = 0.1f;
 
         var mr = _currentGo.GetComponent<MeshRenderer>();
-        if (mr != null) mr.sortingOrder = 25;
+        if (mr != null) mr.sortingOrder = GameConstants.SortingOrder.SynergyPopup;
     }
 }

@@ -10,8 +10,6 @@ public abstract class CelestialBodySO : ScriptableObject, IRewardApplicable
     {
         if (run == null) return;
         run.AddToDeck(this);
-        // Phase 9b: 행성 획득 시 빈 궤도가 있으면 즉시 배치 (Cosmos 씬 대체).
-        if (this is PlanetSO planet) run.TryAutoAssignOrbitToPlanet(planet);
     }
 
     [Header("기본 정보")]

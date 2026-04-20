@@ -8,6 +8,8 @@ public class MapSceneBoot : SceneBootBase
 {
     protected override void OnBoot()
     {
+        EnsureHud();
+
         var map = MapManager.Instance;
         if (map == null) { Debug.LogError("[MapScene] MapManager not found"); return; }
 

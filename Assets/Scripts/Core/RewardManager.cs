@@ -63,7 +63,9 @@ public class RewardManager : MonoBehaviour
     {
         if (choice?.Payload != null)
         {
-            choice.Payload.ApplyAsReward(PlayerState.Instance, RunState.Instance);
+            var run = RunState.Instance;
+            choice.Payload.ApplyAsReward(PlayerState.Instance, run);
+            CosmosService.TryAutoPlace(run, choice.Payload);
             Debug.Log($"[보상] '{choice.DisplayName}' ({choice.TypeLabel}) 획득");
         }
         else

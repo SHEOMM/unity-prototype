@@ -23,7 +23,7 @@ public class SpawnBurstVisual : ISynergyVisual
             fx.transform.position = pos;
             var lr = fx.AddComponent<LineRenderer>();
             lr.material = GameConstants.SpriteMaterial;
-            lr.sortingOrder = 15;
+            lr.sortingOrder = GameConstants.SortingOrder.SpellEffect;
             lr.loop = true;
             lr.useWorldSpace = false;
             const int segs = 20;

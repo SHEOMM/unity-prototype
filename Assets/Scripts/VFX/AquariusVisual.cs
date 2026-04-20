@@ -18,7 +18,7 @@ public class AquariusVisual : ISpellVisual
         var fx = new GameObject("FX_Wave");
         var lr = fx.AddComponent<LineRenderer>();
         lr.material = GameConstants.SpriteMaterial;
-        lr.sortingOrder = 15;
+        lr.sortingOrder = GameConstants.SortingOrder.SpellEffect;
         lr.startColor = ctx.elementColor;
         lr.endColor = new Color(ctx.elementColor.r, ctx.elementColor.g, ctx.elementColor.b, 0.3f);
         lr.startWidth = 0.4f;

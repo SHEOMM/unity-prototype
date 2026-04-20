@@ -24,14 +24,14 @@ public class CosmosInventoryArea : MonoBehaviour
         _bg = gameObject.AddComponent<SpriteRenderer>();
         _bg.sprite = UIFactory.MakePixel();
         _bg.color = new Color(0.1f, 0.12f, 0.16f, 0.85f);
-        _bg.sortingOrder = 30;
+        _bg.sortingOrder = GameConstants.SortingOrder.CosmosInventoryBg;
         transform.localScale = new Vector3(size.x, size.y, 1f);
 
         // 토큰 앵커 — 부모(area) 스케일을 상쇄해 월드 좌표 기준 배치 가능
         var rootGo = new GameObject("TokenRoot");
         rootGo.transform.SetParent(transform, false);
         rootGo.transform.localPosition = Vector3.zero;
-        rootGo.transform.localScale = new Vector3(1f / size.x, 1f / size.y, 1f);
+        rootGo.transform.localScale = UIFactory.InverseScale(size);
         _tokenRoot = rootGo.transform;
 
         // 라벨 (좌상단)
@@ -39,7 +39,7 @@ public class CosmosInventoryArea : MonoBehaviour
         labelGo.transform.SetParent(transform, false);
         labelGo.transform.localPosition = new Vector3(-0.43f, 0.4f, 0);
         // 부모 스케일 상쇄
-        labelGo.transform.localScale = new Vector3(1f / size.x, 1f / size.y, 1f);
+        labelGo.transform.localScale = UIFactory.InverseScale(size);
         _labelTm = labelGo.AddComponent<TextMesh>();
         _labelTm.text = "인벤토리";
         _labelTm.fontSize = 32;
@@ -48,7 +48,7 @@ public class CosmosInventoryArea : MonoBehaviour
         _labelTm.alignment = TextAlignment.Left;
         _labelTm.color = new Color(0.85f, 0.85f, 0.9f, 1f);
         var mr = labelGo.GetComponent<MeshRenderer>();
-        if (mr != null) mr.sortingOrder = 44;
+        if (mr != null) mr.sortingOrder = GameConstants.SortingOrder.CosmosLabel;
 
         _col = GetComponent<BoxCollider2D>();
         _col.size = Vector2.one;

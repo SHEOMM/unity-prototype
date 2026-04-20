@@ -19,7 +19,7 @@ public class SweepVisual : ISynergyVisual
         var fx = new GameObject("FX_Sweep");
         var lr = fx.AddComponent<LineRenderer>();
         lr.material = GameConstants.SpriteMaterial;
-        lr.sortingOrder = 15;
+        lr.sortingOrder = GameConstants.SortingOrder.SpellEffect;
         lr.startWidth = 0.4f;
         lr.endWidth = 0.12f;
 

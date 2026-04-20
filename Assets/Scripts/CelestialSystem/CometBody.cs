@@ -37,7 +37,7 @@ public class CometBody : MonoBehaviour, ISlashTarget
         if (_sr == null) _sr = gameObject.AddComponent<SpriteRenderer>();
         if (sprite != null) _sr.sprite = sprite;
         _sr.color = data.bodyColor;
-        _sr.sortingOrder = 8;
+        _sr.sortingOrder = GameConstants.SortingOrder.CometBody;
         transform.localScale = Vector3.one * _baseScale;
         transform.position = (Vector3)start;
 
