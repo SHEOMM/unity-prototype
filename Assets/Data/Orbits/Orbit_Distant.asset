@@ -1,4 +1,4 @@
-%YAML 1.1
+﻿%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OrbitSO
   orbitName: Distant
   description: "\uBA3C \uC678\uACFD \uADA4\uB3C4."
-  radius: 3.2
-  angularSpeed: 20
+  radius: 6.4
+  angularSpeed: 7
   startAngle: 180
   eccentricity: 1
   orbitLineColor: {r: 0.6, g: 0.9, b: 0.6, a: 0.25}

@@ -24,7 +24,10 @@ public class ShipModel
     private int _sourceCount;
 
     public event System.Action<PlanetBody> OnPlanetEncountered;
+    public event System.Action<PlanetBody> OnLanding;
     public event System.Action OnFlightEnded;
+
+    private bool _landed;
 
     public void Launch(Vector2 origin, Vector2 velocity, float energy,
                        float drag = GameConstants.ShipPhysics.DefaultDrag,
@@ -35,6 +38,7 @@ public class ShipModel
         Energy = energy;
         _drag = drag;
         _energyDrain = energyDrain;
+        _landed = false;
         _timestep.Reset();
         _encounters.Reset();
 
@@ -44,17 +48,17 @@ public class ShipModel
 
     public void Tick(float deltaTime)
     {
-        if (!IsAlive) return;
+        if (_landed || !IsAlive) return;
 
         _timestep.Accumulate(deltaTime);
         while (_timestep.ConsumeStep())
         {
             SimulateStep(GameConstants.ShipPhysics.FixedDt);
-            // 서브스텝 중 바운드/에너지 초과 시 즉시 중단
-            if (Energy <= 0f || IsOutOfBounds()) break;
+            if (_landed || Energy <= 0f || IsOutOfBounds()) break;
         }
 
-        if (Energy <= 0f || IsOutOfBounds())
+        // 착지 없이 에너지/바운드 초과 시만 라운드 종료 신호
+        if (!_landed && (Energy <= 0f || IsOutOfBounds()))
         {
             Energy = 0f;
             OnFlightEnded?.Invoke();
@@ -76,7 +80,17 @@ public class ShipModel
         Energy -= _energyDrain * dt;
 
         _encounters.DetectEncounters(oldPos, Position, _sources, _sourceCount,
-            planet => OnPlanetEncountered?.Invoke(planet));
+            HandlePlanetEncounter);
+    }
+
+    private void HandlePlanetEncounter(PlanetBody planet)
+    {
+        float cost = planet.Planet.gravityStrength * planet.Planet.gravityEnergyRatio;
+        Energy = Mathf.Max(0f, Energy - cost);
+        planet.DeactivateGravity();
+        OnPlanetEncountered?.Invoke(planet);
+        _landed = true;
+        OnLanding?.Invoke(planet);
     }
 
     private bool IsOutOfBounds()

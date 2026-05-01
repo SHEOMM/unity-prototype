@@ -22,9 +22,9 @@ public class OrbitSO : ScriptableObject, IRewardApplicable
     [TextArea] public string description;
 
     [Header("공전 파라미터")]
-    [Range(0.5f, 5f)]
+    [Range(0.5f, 10f)]
     [Tooltip("궤도 반경 (월드 유닛).")]
-    public float radius = 1.5f;
+    public float radius = 3f;
 
     [Range(-180f, 180f)]
     [Tooltip("초당 각속도 (도/초). 음수=시계, 양수=반시계.")]

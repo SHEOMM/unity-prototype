@@ -116,7 +116,7 @@ public static class GameConstants
     {
         public const float PulseFrequency = 3f;
         public const float PulseAmplitude = 0.1f;
-        public const float ColliderRadius = 0.5f;
+        public const float ColliderRadius = 0.34f;
     }
 
     // ── VFX ──
@@ -171,14 +171,15 @@ public static class GameConstants
         public const float DefaultEnergyDrain = 15f;
         public const float DefaultDrag = 0.05f;
         public const float LaunchPowerMultiplier = 5f;
+        public const float RelaunchPower = 20f;              // 행성 착지 후 재발사 고정 속도
         public const float BoundsMargin = 0.5f;
 
         // 슬링샷 (앵그리버드 스타일)
         public const float MaxPullDistance = 4f;
         public const float MinPullDistance = 0.3f;
         public const float PullGateRadius = 1.5f;            // 조준 시작 히트 반경 (슬링샷 잡기)
-        public const int TrajectoryPreviewSteps = 60;        // 0.5초 @ FixedDt
-        public const int TrajectoryPreviewDotCount = 20;
+        public const int TrajectoryPreviewSteps = 300;       // 2.5초 @ FixedDt
+        public const int TrajectoryPreviewDotCount = 40;
     }
 
     // ── 캐싱된 공유 리소스 ──

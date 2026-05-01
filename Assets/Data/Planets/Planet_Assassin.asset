@@ -1,4 +1,4 @@
-%YAML 1.1
+﻿%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
@@ -21,13 +21,13 @@ MonoBehaviour:
   keywords:
   - shadow
   - blade
-  gravityStrength: 5
-  gravityTypeId: repulsive
-  encounterRadius: 0.8
+  gravityStrength: 15
+  gravityTypeId: standard
+  encounterRadius: 0.54
   gravityRange: 3
   effectId: assassin
   baseDamage: 20
-  visualScale: 0.96
+  visualScale: 0.64
   synergyFamily: 0
   phaseThreshold: 2
   phaseEffectId: assassin

@@ -85,15 +85,16 @@ public class ShipVisual : MonoBehaviour
 
     /// <summary>
     /// 초기 속도로 TrajectorySimulator를 돌려 궤적 점을 재배치.
-    /// 에너지 소진 / 화면 밖으로 조기 종료된 구간의 점은 비활성화.
+    /// 에너지 소진 / 화면 밖 / 행성 착지로 조기 종료된 구간의 점은 비활성화.
     /// </summary>
-    public void ShowTrajectoryPreview(Vector2 origin, Vector2 launchVelocity)
+    public void ShowTrajectoryPreview(Vector2 origin, Vector2 launchVelocity,
+        float energy = GameConstants.ShipPhysics.DefaultEnergy)
     {
         int steps = GameConstants.ShipPhysics.TrajectoryPreviewSteps;
         int dotCount = _trajectoryDots.Length;
         int samples = TrajectorySimulator.Simulate(
             origin, launchVelocity,
-            GameConstants.ShipPhysics.DefaultEnergy,
+            energy,
             GameConstants.ShipPhysics.DefaultDrag,
             GameConstants.ShipPhysics.DefaultEnergyDrain,
             _trajectoryBuffer, steps,

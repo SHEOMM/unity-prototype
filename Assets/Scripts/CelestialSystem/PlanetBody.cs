@@ -15,12 +15,18 @@ public class PlanetBody : MonoBehaviour, IGravitySource
     private IGravityType _cachedGravityType;
     private readonly System.Collections.Generic.List<SatelliteBody> _satellites = new System.Collections.Generic.List<SatelliteBody>();
 
+    private bool _gravityActive = true;
+    private float _spinAngle;        // 자전 누적 각도 (도)
+    private float _dockAngleOffset;  // 도킹 접촉 각도 오프셋 (도, 스핀 독립)
+    private bool _isDocked;
+
     // IGravitySource 구현
     public Vector2 Position => transform.position;
     public float GravityStrength => Planet?.gravityStrength ?? 0f;
     public float EncounterRadius => Planet?.encounterRadius ?? GameConstants.PlanetAnim.ColliderRadius;
-    public float GravityRange => Planet?.gravityRange ?? 5f;
-    public bool IsActive => gameObject.activeInHierarchy;
+    public float GravityRange => (Planet?.encounterRadius ?? GameConstants.PlanetAnim.ColliderRadius)
+                                 * (Planet?.gravityFieldRangeRatio ?? 6f);
+    public bool IsActive => gameObject.activeInHierarchy && _gravityActive;
     public IGravityType CachedGravityType => _cachedGravityType;
 
     public T GetState<T>() where T : Component => GetComponent<T>();
@@ -84,13 +90,48 @@ public class PlanetBody : MonoBehaviour, IGravitySource
 
     void Update()
     {
+        _spinAngle += (Planet?.spinSpeed ?? 0f) * Time.deltaTime;
+        transform.rotation = Quaternion.Euler(0f, 0f, _spinAngle);
+
         _state?.Tick(Time.deltaTime);
         float pulse = 1f + Mathf.Sin(Time.time * GameConstants.PlanetAnim.PulseFrequency) * GameConstants.PlanetAnim.PulseAmplitude;
         transform.localScale = Vector3.one * _baseScale * pulse;
-        _sr.color = _highlighted ? GameConstants.Colors.PlanetHighlight : Color.white;
+
+        if (!_gravityActive)
+            _sr.color = new Color(0.35f, 0.35f, 0.35f, 1f);
+        else if (_highlighted)
+            _sr.color = GameConstants.Colors.PlanetHighlight;
+        else
+            _sr.color = Color.white;
     }
 
     public void Highlight(bool on) { _highlighted = on; }
+
+    public void DeactivateGravity() { _gravityActive = false; }
+    public void ReactivateGravity() { _gravityActive = true; }
+
+    /// <summary>투사체가 행성 표면에 착지. 접촉 월드 위치를 기준으로 도킹 각도 계산.</summary>
+    public void Dock(Vector2 shipWorldPos)
+    {
+        _isDocked = true;
+        Vector2 local = shipWorldPos - (Vector2)transform.position;
+        float contactDeg = Mathf.Atan2(local.y, local.x) * Mathf.Rad2Deg;
+        _dockAngleOffset = contactDeg - _spinAngle;
+    }
+
+    /// <summary>현재 자전 각도 기준 도킹된 투사체의 월드 위치.</summary>
+    public Vector2 GetDockedShipPosition()
+    {
+        float rad = (_dockAngleOffset + _spinAngle) * Mathf.Deg2Rad;
+        return (Vector2)transform.position
+             + new Vector2(Mathf.Cos(rad), Mathf.Sin(rad)) * EncounterRadius;
+    }
+
+    /// <summary>도킹 위치에서 행성 중심 반대 방향 (재발사 방향).</summary>
+    public Vector2 GetDockedLaunchDirection()
+        => (GetDockedShipPosition() - (Vector2)transform.position).normalized;
+
+    public void Undock() { _isDocked = false; }
 
     public bool IntersectsLine(Vector2 a, Vector2 b, float width)
         => CollisionGeometry.IntersectsLine(transform.position, _baseScale * 0.5f, a, b, width);

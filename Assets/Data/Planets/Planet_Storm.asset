@@ -1,4 +1,4 @@
-%YAML 1.1
+﻿%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
@@ -21,13 +21,13 @@ MonoBehaviour:
   keywords:
   - storm
   - swift
-  gravityStrength: 10
-  gravityTypeId: repulsive
-  encounterRadius: 0.8
+  gravityStrength: 30
+  gravityTypeId: standard
+  encounterRadius: 0.54
   gravityRange: 4
   effectId: storm
   baseDamage: 11
-  visualScale: 1.05
+  visualScale: 0.7
   synergyFamily: 0
   phaseThreshold: 3
   phaseEffectId: storm

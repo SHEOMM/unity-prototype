@@ -7,23 +7,24 @@ using UnityEngine;
 /// </summary>
 public static class TrajectorySimulator
 {
-    // GravityAccumulator는 Calculate 호출마다 내부 _force를 리셋하므로 재사용 안전.
     private static readonly GravityAccumulator _gravity = new GravityAccumulator();
 
-    // 화면 밖 체크 — ShipModel.IsOutOfBounds와 동일
     private const float BoundsX = 9f;
     private const float BoundsY = 7f;
 
     /// <summary>
     /// stepCount만큼 순방향 시뮬레이션. 매 스텝 위치를 outBuffer에 채운다.
-    /// 에너지 소진 / 화면 밖 도달 시 조기 종료.
+    /// 행성 착지 / 에너지 소진 / 화면 밖 도달 시 조기 종료.
     /// </summary>
+    /// <param name="hitPlanet">조기 종료 원인이 행성 충돌이면 해당 행성, 아니면 null.</param>
     /// <returns>기록된 샘플 개수 (≤ stepCount)</returns>
     public static int Simulate(
         Vector2 origin, Vector2 initialVelocity, float energy,
         float drag, float energyDrain,
-        Vector2[] outBuffer, int stepCount, float dt)
+        Vector2[] outBuffer, int stepCount, float dt,
+        out PlanetBody hitPlanet)
     {
+        hitPlanet = null;
         if (outBuffer == null || outBuffer.Length == 0) return 0;
 
         var reg = GravitySourceRegistry.Instance;
@@ -41,6 +42,7 @@ public static class TrajectorySimulator
         {
             if (e <= 0f) break;
 
+            Vector2 prevPos = pos;
             Vector2 force = sources != null
                 ? _gravity.Calculate(pos, sources, srcCount)
                 : Vector2.zero;
@@ -49,10 +51,34 @@ public static class TrajectorySimulator
 
             outBuffer[count++] = pos;
 
+            if (sources != null)
+            {
+                for (int j = 0; j < srcCount; j++)
+                {
+                    var src = sources[j];
+                    if (!src.IsActive) continue;
+                    if (!(src is PlanetBody planet)) continue;
+                    if (CollisionGeometry.IntersectsLine(src.Position, src.EncounterRadius,
+                            prevPos, pos, GameConstants.ShipPhysics.ShipCollisionRadius))
+                    {
+                        hitPlanet = planet;
+                        return count;
+                    }
+                }
+            }
+
             if (pos.x < -BoundsX - margin || pos.x > BoundsX + margin
                 || pos.y < -BoundsY - margin || pos.y > BoundsY + margin)
                 break;
         }
         return count;
     }
+
+    /// <summary>hitPlanet이 필요 없을 때 사용하는 오버로드.</summary>
+    public static int Simulate(
+        Vector2 origin, Vector2 initialVelocity, float energy,
+        float drag, float energyDrain,
+        Vector2[] outBuffer, int stepCount, float dt)
+        => Simulate(origin, initialVelocity, energy, drag, energyDrain,
+                    outBuffer, stepCount, dt, out _);
 }

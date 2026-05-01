@@ -2,8 +2,9 @@ using UnityEngine;
 using System.Collections.Generic;
 
 /// <summary>
-/// 우주선 발사 오케스트레이터. 입력→시뮬레이션→SpellResolver→효과 발동.
-/// 조준 중에는 슬링샷 밴드와 궤적 프리뷰를 렌더.
+/// 우주선 발사 오케스트레이터. 상태 머신: Ready → InFlight → Docked → InFlight → … → Ready.
+/// Ready: 지면 슬링샷 대기 / InFlight: 자유 비행 / Docked: 행성 자전 중 클릭 재발사.
+/// 라운드 전체 조우 시퀀스를 누적하여 SpellResolver에 전달.
 /// </summary>
 public class ShipController : MonoBehaviour
 {
@@ -16,18 +17,24 @@ public class ShipController : MonoBehaviour
 
     private ShipModel _activeShip;
     private bool _active;
-    private bool _pendingFlightEnd; // 비행 종료를 Update 끝에서 안전하게 처리
+
+    // Landing+relaunch state
+    private readonly List<PlanetBody> _roundEncounters = new List<PlanetBody>();
+    private PlanetBody _dockedPlanet;
+    private float _remainingEnergy;
+    private bool _pendingLanding;
+    private bool _pendingFlightEnd;
 
     public System.Action<SpellResult> OnShipComplete;
 
     /// <summary>발사체가 천체에 접촉할 때마다 발행 (per-hit). SynergyDispatcher 등이 구독.</summary>
     public event System.Action<PlanetBody> OnPlanetHit;
 
-    /// <summary>비행 시작 시 발행. 시너지 누적기 초기화용.</summary>
+    /// <summary>라운드 첫 발사(지면) 시 발행. 시너지 누적기 초기화용.</summary>
     public event System.Action OnFlightStarted;
 
-    /// <summary>비행 종료 시 최종 조우 시퀀스와 함께 발행.</summary>
-    public event System.Action<System.Collections.Generic.IReadOnlyList<PlanetBody>> OnFlightEnded;
+    /// <summary>라운드 종료 시 전체 조우 시퀀스와 함께 발행.</summary>
+    public event System.Action<IReadOnlyList<PlanetBody>> OnFlightEnded;
 
     void Awake()
     {
@@ -64,6 +71,18 @@ public class ShipController : MonoBehaviour
         _input.OnAimUpdate -= OnAimUpdate;
         _input.OnLaunch -= OnLaunch;
         _input.OnAimCancel -= OnAimCancel;
+        if (_input.IsDockedMode)
+        {
+            _input.IsDockedMode = false;
+            _input.OnDockedClick -= OnDockedClick;
+        }
+        _dockedPlanet?.Undock();
+        _dockedPlanet = null;
+        foreach (var p in _roundEncounters) { p.ReactivateGravity(); p.Highlight(false); }
+        _roundEncounters.Clear();
+        _activeShip = null;
+        _pendingLanding = false;
+        _pendingFlightEnd = false;
         _visual.HideSlingshotBand();
         _visual.HideTrajectoryPreview();
         _visual.HideOriginIndicator();
@@ -71,6 +90,13 @@ public class ShipController : MonoBehaviour
 
     void Update()
     {
+        if (_pendingLanding)
+        {
+            _pendingLanding = false;
+            ProcessLanding();
+            return;
+        }
+
         if (_pendingFlightEnd)
         {
             _pendingFlightEnd = false;
@@ -78,30 +104,29 @@ public class ShipController : MonoBehaviour
             return;
         }
 
-        if (_visual == null || _activeShip == null || !_activeShip.IsAlive) return;
-
-        _activeShip.Tick(Time.deltaTime);
-
-        if (_activeShip != null && !_activeShip.IsAlive)
+        // Docked: 행성 자전에 맞춰 선박 위치 갱신 + 실시간 궤적 미리보기
+        if (_dockedPlanet != null)
         {
-            _pendingFlightEnd = true;
+            Vector2 shipPos = _dockedPlanet.GetDockedShipPosition();
+            Vector2 launchDir = _dockedPlanet.GetDockedLaunchDirection();
+            _visual.UpdateShipPosition(shipPos, launchDir);
+            _visual.ShowTrajectoryPreview(shipPos, launchDir * GameConstants.ShipPhysics.RelaunchPower, _remainingEnergy);
             return;
         }
+
+        if (_activeShip == null || _visual == null) return;
+
+        _activeShip.Tick(Time.deltaTime);
 
         if (_activeShip != null)
             _visual.UpdateShipPosition(_activeShip.Position, _activeShip.Velocity);
     }
 
-    bool IsReadyToLaunch => _activeShip == null;
+    bool IsReadyToLaunch => _activeShip == null && _dockedPlanet == null;
 
     void OnAimStart(Vector2 pos)
     {
-        if (!IsReadyToLaunch)
-        {
-            Debug.Log($"[Ship] 조준 시작 차단: 비행 중 (IsAlive={_activeShip?.IsAlive})");
-            return;
-        }
-        // 지속 표시 중인 OriginIndicator가 이미 있으므로 별도 처리 불필요
+        if (!IsReadyToLaunch) return;
     }
 
     void OnAimUpdate(Vector2 origin, Vector2 clampedPullPos, float pullRatio)
@@ -110,7 +135,6 @@ public class ShipController : MonoBehaviour
 
         _visual.ShowSlingshotBand(origin, clampedPullPos, pullRatio);
 
-        // 발사 방향/속도 = 당김의 반대 × LaunchPowerMultiplier
         Vector2 pullVec = origin - clampedPullPos;
         Vector2 launchVelocity = pullVec * GameConstants.ShipPhysics.LaunchPowerMultiplier;
         _visual.ShowTrajectoryPreview(origin, launchVelocity);
@@ -120,25 +144,26 @@ public class ShipController : MonoBehaviour
     {
         _visual.HideSlingshotBand();
         _visual.HideTrajectoryPreview();
-        // OriginIndicator는 다음 조준을 위해 그대로 유지
     }
 
     void OnLaunch(Vector2 origin, Vector2 direction, float power)
     {
         if (!IsReadyToLaunch)
         {
-            Debug.Log($"[Ship] 발사 차단: 비행 중 (IsAlive={_activeShip?.IsAlive})");
+            Debug.Log($"[Ship] 발사 차단: 비행/도킹 중");
             return;
         }
 
         _visual.HideSlingshotBand();
         _visual.HideTrajectoryPreview();
-        // SpawnShip이 내부에서 HideOriginIndicator 호출
+
+        _roundEncounters.Clear();
 
         Debug.Log($"[Ship] 발사! origin={origin}, dir={direction}, power={power:F1}");
 
         _activeShip = new ShipModel();
         _activeShip.OnFlightEnded += () => _pendingFlightEnd = true;
+        _activeShip.OnLanding += planet => { _dockedPlanet = planet; _pendingLanding = true; };
         _activeShip.OnPlanetEncountered += OnPlanetEncountered;
         _activeShip.Launch(origin, direction * power, GameConstants.ShipPhysics.DefaultEnergy);
 
@@ -153,30 +178,82 @@ public class ShipController : MonoBehaviour
         OnPlanetHit?.Invoke(planet);
     }
 
+    void ProcessLanding()
+    {
+        if (_activeShip == null || _dockedPlanet == null) return;
+
+        _remainingEnergy = _activeShip.Energy;
+        _roundEncounters.AddRange(_activeShip.Encounters);
+
+        Vector2 contactPos = _activeShip.Position;
+        _activeShip = null;
+
+        _dockedPlanet.Dock(contactPos);
+        _visual.UpdateShipPosition(contactPos, Vector2.zero);
+
+        _input.IsDockedMode = true;
+        _input.OnDockedClick += OnDockedClick;
+
+        Debug.Log($"[Ship] 착지: {_dockedPlanet.Planet.bodyName}, 잔여 에너지={_remainingEnergy:F1}");
+    }
+
+    void OnDockedClick()
+    {
+        if (_dockedPlanet == null) return;
+
+        Vector2 origin = _dockedPlanet.GetDockedShipPosition();
+        Vector2 launchDir = _dockedPlanet.GetDockedLaunchDirection();
+
+        _input.IsDockedMode = false;
+        _input.OnDockedClick -= OnDockedClick;
+        _visual.HideTrajectoryPreview();
+
+        _dockedPlanet.Undock();
+        _dockedPlanet = null;
+
+        _visual.DestroyShip();
+        _visual.SpawnShip(origin);
+
+        _activeShip = new ShipModel();
+        _activeShip.OnFlightEnded += () => _pendingFlightEnd = true;
+        _activeShip.OnLanding += planet => { _dockedPlanet = planet; _pendingLanding = true; };
+        _activeShip.OnPlanetEncountered += OnPlanetEncountered;
+        _activeShip.Launch(origin, launchDir * GameConstants.ShipPhysics.RelaunchPower, _remainingEnergy);
+
+        Debug.Log($"[Ship] 재발사: origin={origin}, dir={launchDir}, energy={_remainingEnergy:F1}");
+    }
+
     /// <summary>외부에서 현재 비행 중인 ShipModel을 조회 (SynergyContext 등 구성용).</summary>
     public ShipModel ActiveShip => _activeShip;
 
     void ProcessFlightEnd()
     {
-        if (_activeShip == null) return;
-
-        Debug.Log($"[Ship] 비행 종료. 조우 행성 {_activeShip.Encounters.Count}개");
+        if (_activeShip != null)
+            _roundEncounters.AddRange(_activeShip.Encounters);
 
         _visual.DestroyShip();
+
+        _input.LaunchOrigin = new Vector2(0f, _input.celestialYMin);
         _visual.ShowOriginIndicator(_input.LaunchOrigin, GameConstants.ShipPhysics.PullGateRadius);
 
-        var encounters = new List<PlanetBody>(_activeShip.Encounters);
         _activeShip = null;
 
-        foreach (var p in encounters)
+        var allEncounters = new List<PlanetBody>(_roundEncounters);
+        _roundEncounters.Clear();
+
+        Debug.Log($"[Ship] 라운드 종료. 총 조우 {allEncounters.Count}개");
+
+        foreach (var p in allEncounters)
+        {
+            p.ReactivateGravity();
             p.Highlight(false);
+        }
 
-        // 시너지 구독자에게 최종 시퀀스 전달 (빈 시퀀스도 포함)
-        OnFlightEnded?.Invoke(encounters);
+        OnFlightEnded?.Invoke(allEncounters);
 
-        if (encounters.Count == 0) return;
+        if (allEncounters.Count == 0) return;
 
-        var result = _resolver.Resolve(encounters);
+        var result = _resolver.Resolve(allEncounters);
         _spellFx.ExecuteSpells(result);
         OnShipComplete?.Invoke(result);
     }

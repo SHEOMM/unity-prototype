@@ -9,9 +9,19 @@ using UnityEngine.InputSystem;
 /// </summary>
 public class ShipInput : MonoBehaviour
 {
-    public float celestialYMin = 0f;
+    private float _celestialYMin = 0f;
+    public float celestialYMin
+    {
+        get => _celestialYMin;
+        set { _celestialYMin = value; LaunchOrigin = new Vector2(0f, value); }
+    }
 
-    public Vector2 LaunchOrigin => new Vector2(0f, celestialYMin);
+    /// <summary>발사 원점. 초기값은 지면 원점(0, celestialYMin). 착지 시 ShipController가 갱신.</summary>
+    public Vector2 LaunchOrigin { get; set; }
+
+    /// <summary>도킹 모드일 때 슬링샷 대신 단순 클릭으로 재발사.</summary>
+    public bool IsDockedMode { get; set; }
+    public event System.Action OnDockedClick;
 
     public System.Action<Vector2> OnAimStart;
     /// <summary>origin, clampedPullPos, pullRatio(0~1) — pullPos는 MaxPullDistance로 클램프됨.</summary>
@@ -26,12 +36,21 @@ public class ShipInput : MonoBehaviour
     void Start()
     {
         _mouse = Mouse.current;
+        LaunchOrigin = new Vector2(0f, celestialYMin);
     }
 
     void Update()
     {
         if (_mouse == null) _mouse = Mouse.current;
         if (_mouse == null || CameraService.Instance == null) return;
+
+        // 도킹 모드: 클릭만 감지
+        if (IsDockedMode)
+        {
+            if (_mouse.leftButton.wasPressedThisFrame)
+                OnDockedClick?.Invoke();
+            return;
+        }
 
         Vector2 mp = CameraService.Instance.ScreenToWorld2D(_mouse.position.ReadValue());
 

@@ -1,4 +1,4 @@
-%YAML 1.1
+﻿%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
@@ -21,13 +21,13 @@ MonoBehaviour:
   keywords:
   - forge
   - valor
-  gravityStrength: 12
+  gravityStrength: 36
   gravityTypeId: standard
-  encounterRadius: 0.8
+  encounterRadius: 0.54
   gravityRange: 4
   effectId: smith
   baseDamage: 5
-  visualScale: 1.14
+  visualScale: 0.76
   synergyFamily: 0
   phaseThreshold: 3
   phaseEffectId: smith
