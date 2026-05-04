@@ -2,16 +2,22 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 /// <summary>
-/// 보상 카드 1개 렌더 + 클릭 감지. RewardSceneBoot이 3개 인스턴스화.
-/// New Input System 기반 클릭 판정 (MapView와 동일 패턴):
-///   Mouse.current.leftButton.wasPressedThisFrame → CameraService 월드좌표 변환 → BoxCollider2D.OverlapPoint
-/// (레거시 OnMouseDown은 New Input System 환경에서 비활성화될 수 있어 미사용.)
+/// 보상 카드 1개 렌더 + 클릭 감지. Prefab 기반 — 구조는 Prefab이 제공하고
+/// 본 컴포넌트는 데이터를 자식 SpriteRenderer/TextMesh에 바인딩한다.
 ///
-/// 레이아웃:
-///   [TypeBadge] (카드 상단에 얇은 띠 — 타입 색상)
-///   [Icon]      (중앙 — 스프라이트 또는 궤도 미니 원)
-///   [Name]      (아이콘 아래, TextMesh)
-///   [TypeLabel] (뱃지 중앙, TextMesh)
+/// <para>Prefab 자식 구조 (RewardCard.prefab):
+/// <list type="bullet">
+/// <item>Bg — SpriteRenderer (카드 배경)</item>
+/// <item>Badge — SpriteRenderer (상단 타입 띠)</item>
+/// <item>BadgeLabel — TextMesh (타입 텍스트, 예: "행성")</item>
+/// <item>Icon — SpriteRenderer (행성/유물 아이콘, 또는 비활성)</item>
+/// <item>OrbitPreview/Ring + Dot — LineRenderer + 작은 점 (궤도 전용, 또는 비활성)</item>
+/// <item>Name — TextMesh (보상 이름)</item>
+/// </list>
+/// 데이터 바인딩은 <see cref="Bind"/>가 단일 진입점.</para>
+///
+/// <para>클릭 감지: New Input System 기반. <c>Mouse.current.leftButton.wasPressedThisFrame</c>
+/// → CameraService 월드좌표 변환 → BoxCollider2D.OverlapPoint.</para>
 /// </summary>
 [RequireComponent(typeof(BoxCollider2D))]
 public class RewardCardView : MonoBehaviour
@@ -19,37 +25,89 @@ public class RewardCardView : MonoBehaviour
     public System.Action<RewardCardView> OnClicked;
     public RewardChoice Choice { get; private set; }
 
-    const float CardWidth = 2.6f;
-    const float CardHeight = 3.6f;
-    const float IconSize = 1.4f;
+    // ── Prefab 자식 참조 (Inspector 할당) ──
+    [Header("Prefab 자식 참조")]
+    [SerializeField] SpriteRenderer bg;
+    [SerializeField] SpriteRenderer badge;
+    [SerializeField] TextMesh badgeLabel;
+    [SerializeField] SpriteRenderer iconSr;
+    [SerializeField] GameObject orbitPreviewGo;
+    [SerializeField] LineRenderer orbitRing;
+    [SerializeField] Transform orbitDot;
+    [SerializeField] TextMesh nameTm;
+    [SerializeField] BoxCollider2D col;
 
-    SpriteRenderer _bg;
-    SpriteRenderer _badge;
-    SpriteRenderer _iconSr;
-    TextMesh _nameTm;
-    TextMesh _typeTm;
-    LineRenderer _orbitRing;
-    BoxCollider2D _col;
     bool _clickable = true;
 
-    public void Initialize(RewardChoice choice)
+    void Awake()
+    {
+        if (col == null) col = GetComponent<BoxCollider2D>();
+        EnsureSprites();
+    }
+
+    /// <summary>
+    /// Prefab의 SpriteRenderer.sprite가 null인 경우 UIFactory.MakePixel()로 채움.
+    /// Bg/Badge/OrbitDot은 색상만 사용하는 사각형이라 1x1 흰 픽셀이면 충분.
+    /// (Prefab에 sprite asset을 직접 박지 않은 이유: 아직 Pixel.png 자산이 없음. 추후 폴리싱)
+    /// </summary>
+    void EnsureSprites()
+    {
+        var pixel = UIFactory.MakePixel();
+        if (bg != null && bg.sprite == null) bg.sprite = pixel;
+        if (badge != null && badge.sprite == null) badge.sprite = pixel;
+        if (orbitDot != null)
+        {
+            var dotSr = orbitDot.GetComponent<SpriteRenderer>();
+            if (dotSr != null && dotSr.sprite == null) dotSr.sprite = pixel;
+        }
+    }
+
+    /// <summary>
+    /// 카드 데이터 주입. Prefab 자식들의 색·텍스트·아이콘을 갱신.
+    /// 궤도 보상은 OrbitPreview 활성화 + 반경 정규화, 그 외는 Icon 활성화.
+    /// </summary>
+    public void Bind(RewardChoice choice)
     {
         Choice = choice;
-        BuildBackground();
-        BuildBadge(choice.TypeColor, choice.TypeLabel);
-        BuildIcon(choice);
-        BuildName(choice.DisplayName);
+        if (badge != null) badge.color = choice.TypeColor;
+        if (badgeLabel != null) badgeLabel.text = choice.TypeLabel;
+        if (nameTm != null) nameTm.text = choice.DisplayName;
 
-        _col = GetComponent<BoxCollider2D>();
-        _col.size = new Vector2(CardWidth, CardHeight);
-        _col.offset = Vector2.zero;
+        bool isOrbit = choice.Icon == null && choice.Payload is OrbitSO;
+        if (iconSr != null) iconSr.gameObject.SetActive(!isOrbit && choice.Icon != null);
+        if (orbitPreviewGo != null) orbitPreviewGo.SetActive(isOrbit);
+
+        if (choice.Icon != null && iconSr != null)
+            iconSr.sprite = choice.Icon;
+
+        if (isOrbit && choice.Payload is OrbitSO orbit)
+            BindOrbitPreview(orbit);
+    }
+
+    void BindOrbitPreview(OrbitSO orbit)
+    {
+        if (orbitRing == null) return;
+        orbitRing.startColor = orbit.orbitLineColor;
+        orbitRing.endColor = orbit.orbitLineColor;
+
+        // 카드 안에 들어가도록 반경 정규화 (최대 0.6)
+        float normR = Mathf.Min(orbit.radius, 1.8f) * 0.4f;
+        const int segs = 40;
+        orbitRing.positionCount = segs;
+        for (int i = 0; i < segs; i++)
+        {
+            float t = (float)i / segs * Mathf.PI * 2f;
+            orbitRing.SetPosition(i, new Vector3(Mathf.Cos(t) * normR, Mathf.Sin(t) * normR, 0));
+        }
+
+        if (orbitDot != null) orbitDot.localPosition = new Vector3(normR, 0, 0);
     }
 
     public void SetClickable(bool clickable) { _clickable = clickable; }
 
     void Update()
     {
-        if (!_clickable || _col == null) return;
+        if (!_clickable || col == null) return;
         var mouse = Mouse.current;
         if (mouse == null || CameraService.Instance == null) return;
         if (!mouse.leftButton.wasPressedThisFrame) return;
@@ -59,117 +117,13 @@ public class RewardCardView : MonoBehaviour
         if (screenPos.x > Screen.width - 1 || screenPos.y > Screen.height - 1) return;
 
         Vector2 mp = CameraService.Instance.ScreenToWorld2D(screenPos);
-        if (_col.OverlapPoint(mp))
-        {
+        if (col.OverlapPoint(mp))
             OnClicked?.Invoke(this);
-        }
     }
 
-    void BuildBackground()
+    void OnValidate()
     {
-        var go = new GameObject("Bg");
-        go.transform.SetParent(transform, false);
-        go.transform.localScale = new Vector3(CardWidth, CardHeight, 1f);
-        _bg = go.AddComponent<SpriteRenderer>();
-        _bg.sprite = UIFactory.MakePixel();
-        _bg.color = new Color(0.12f, 0.14f, 0.2f, 0.95f);
-        _bg.sortingOrder = GameConstants.SortingOrder.RewardCardBg;
-    }
-
-    void BuildBadge(Color color, string label)
-    {
-        var go = new GameObject("Badge");
-        go.transform.SetParent(transform, false);
-        go.transform.localPosition = new Vector3(0, CardHeight * 0.5f - 0.22f, 0);
-        go.transform.localScale = new Vector3(CardWidth * 0.95f, 0.4f, 1f);
-        _badge = go.AddComponent<SpriteRenderer>();
-        _badge.sprite = UIFactory.MakePixel();
-        _badge.color = color;
-        _badge.sortingOrder = GameConstants.SortingOrder.RewardCardMid;
-
-        var labelGo = new GameObject("BadgeLabel");
-        labelGo.transform.SetParent(transform, false);
-        labelGo.transform.localPosition = new Vector3(0, CardHeight * 0.5f - 0.22f, 0);
-        labelGo.transform.localScale = Vector3.one;
-        _typeTm = labelGo.AddComponent<TextMesh>();
-        _typeTm.text = label;
-        _typeTm.fontSize = 42;
-        _typeTm.characterSize = 0.08f;
-        _typeTm.anchor = TextAnchor.MiddleCenter;
-        _typeTm.alignment = TextAlignment.Center;
-        _typeTm.color = Color.black;
-        var mr = labelGo.GetComponent<MeshRenderer>();
-        if (mr != null) mr.sortingOrder = GameConstants.SortingOrder.RewardCardText;
-    }
-
-    void BuildIcon(RewardChoice choice)
-    {
-        if (choice.Icon != null)
-        {
-            var go = new GameObject("Icon");
-            go.transform.SetParent(transform, false);
-            go.transform.localPosition = new Vector3(0, 0.25f, 0);
-            go.transform.localScale = new Vector3(IconSize, IconSize, 1f);
-            _iconSr = go.AddComponent<SpriteRenderer>();
-            _iconSr.sprite = choice.Icon;
-            _iconSr.sortingOrder = GameConstants.SortingOrder.RewardCardMid;
-        }
-        else if (choice.Payload is OrbitSO orbit)
-        {
-            BuildOrbitPreview(orbit);
-        }
-    }
-
-    void BuildOrbitPreview(OrbitSO orbit)
-    {
-        var go = new GameObject("OrbitPreview");
-        go.transform.SetParent(transform, false);
-        go.transform.localPosition = new Vector3(0, 0.25f, 0);
-        go.transform.localScale = Vector3.one;
-        _orbitRing = go.AddComponent<LineRenderer>();
-        _orbitRing.useWorldSpace = false;
-        _orbitRing.loop = true;
-        _orbitRing.startWidth = 0.04f;
-        _orbitRing.endWidth = 0.04f;
-        _orbitRing.material = GameConstants.SpriteMaterial;
-        _orbitRing.startColor = orbit.orbitLineColor;
-        _orbitRing.endColor = orbit.orbitLineColor;
-        _orbitRing.sortingOrder = GameConstants.SortingOrder.RewardCardMid;
-
-        // 카드 안에 들어가도록 반경 정규화 (최대 0.6)
-        float normR = Mathf.Min(orbit.radius, 1.8f) * 0.4f;
-        const int segs = 40;
-        _orbitRing.positionCount = segs;
-        for (int i = 0; i < segs; i++)
-        {
-            float t = (float)i / segs * Mathf.PI * 2f;
-            _orbitRing.SetPosition(i, new Vector3(Mathf.Cos(t) * normR, Mathf.Sin(t) * normR, 0));
-        }
-
-        // 궤도 중앙에 작은 원 (행성 위치 표시)
-        var dotGo = new GameObject("OrbitDot");
-        dotGo.transform.SetParent(go.transform, false);
-        dotGo.transform.localPosition = new Vector3(normR, 0, 0);
-        dotGo.transform.localScale = Vector3.one * 0.14f;
-        var sr = dotGo.AddComponent<SpriteRenderer>();
-        sr.sprite = UIFactory.MakePixel();
-        sr.color = Color.white;
-        sr.sortingOrder = GameConstants.SortingOrder.RewardCardText;
-    }
-
-    void BuildName(string name)
-    {
-        var go = new GameObject("Name");
-        go.transform.SetParent(transform, false);
-        go.transform.localPosition = new Vector3(0, -1.1f, 0);
-        _nameTm = go.AddComponent<TextMesh>();
-        _nameTm.text = name;
-        _nameTm.fontSize = 44;
-        _nameTm.characterSize = 0.08f;
-        _nameTm.anchor = TextAnchor.MiddleCenter;
-        _nameTm.alignment = TextAlignment.Center;
-        _nameTm.color = Color.white;
-        var mr = go.GetComponent<MeshRenderer>();
-        if (mr != null) mr.sortingOrder = GameConstants.SortingOrder.RewardCardText;
+        if (bg == null || badge == null || badgeLabel == null || iconSr == null || nameTm == null)
+            Debug.LogWarning($"[RewardCardView] Prefab 자식 참조 누락 — Inspector에서 할당 필요: {name}", this);
     }
 }

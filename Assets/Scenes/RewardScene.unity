@@ -149,6 +149,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RewardSceneBoot
   environment: {fileID: 11400000, guid: b539c1053a2f47d4a851b128366479a0, type: 2}
+  rewardCardPrefab: {fileID: 5495310238193207170, guid: 8da5b7ccd296620429b6cb8176abc709, type: 3}
+  config: {fileID: 11400000, guid: b499aba0f41cce54d9ca7cc6e5b4870f, type: 2}
 --- !u!4 &1081020415
 Transform:
   m_ObjectHideFlags: 0
