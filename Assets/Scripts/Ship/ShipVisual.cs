@@ -58,9 +58,10 @@ public class ShipVisual : MonoBehaviour
 
         if (pullRatio >= 1f)
         {
-            float nx = Mathf.PerlinNoise(Time.time * 15f, 0f) - 0.5f;
-            float ny = Mathf.PerlinNoise(0f, Time.time * 15f) - 0.5f;
-            endPoint += new Vector2(nx, ny) * 0.05f;
+            float jitterFreq = GameConstants.VFXAnimation.SlingshotJitterFrequency;
+            float nx = Mathf.PerlinNoise(Time.time * jitterFreq, 0f) - 0.5f;
+            float ny = Mathf.PerlinNoise(0f, Time.time * jitterFreq) - 0.5f;
+            endPoint += new Vector2(nx, ny) * GameConstants.VFXAnimation.SlingshotJitterAmplitude;
             width = 0.12f;
             startCol = GameConstants.Colors.SlingshotBandMaxStart;
             endCol = GameConstants.Colors.SlingshotBandMaxEnd;

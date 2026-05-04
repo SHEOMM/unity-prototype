@@ -200,6 +200,9 @@ public static class GameConstants
         public static readonly Color RewardPlanet = Hex("#FFD966");  // 금빛 — 행성
         public static readonly Color RewardRelic  = Hex("#E68CFF");  // 보라 — 유물
 
+        // ── 시너지 토스트 (SynergyToastView) ──
+        public static readonly Color SynergyToastText = Hex("#FFE64D");
+
         // ── 시너지 원소 (SynergyVisualElementPalette가 위임) ──
         public static readonly Color ElementFire     = Hex("#FF732E");
         public static readonly Color ElementWater    = Hex("#4DA6FF");
@@ -207,6 +210,94 @@ public static class GameConstants
         public static readonly Color ElementEarth    = Hex("#A67338");
         public static readonly Color ElementDarkness = Hex("#994DD9");
         public static readonly Color ElementDefault  = Hex("#FFD94D");  // None=gold 폴백
+    }
+
+    // ── VFX 애니메이션 (Perlin·Sin 노이즈) ──
+    public static class VFXAnimation
+    {
+        // 슬링샷 최대 충전 시 미세 떨림 (ShipVisual.ShowSlingshotBand)
+        public const float SlingshotJitterFrequency = 15f;     // Hz
+        public const float SlingshotJitterAmplitude = 0.05f;   // 월드 단위
+
+        // 혜성 박동 — Sin 기반 스케일 펄스 (CometBody.Update)
+        public const float CometPulseFrequency = 8f;     // Hz
+        public const float CometPulseAmplitude = 0.15f;  // 스케일 배수 (1 ± 0.15)
+        public const float CometColliderRadius = 0.5f;   // CircleCollider2D 반지름
+    }
+
+    // ── 시너지 비주얼 (공용 6 visual 공유 상수) ──
+    public static class SynergyVisuals
+    {
+        // 공통: 펄스 시작 반경 (모든 visual이 0.1f부터 maxR로 확장)
+        public const float PulseInitialRadius = 0.1f;
+
+        // AreaPulseVisual — Rule.radius로 스케일링
+        public const float AreaPulseRadiusFallback   = 2f;
+        public const float AreaPulseRadiusMin        = 0.5f;
+        public const float AreaPulseDurationPerRadius = 0.12f;  // 반경 1 = 0.12초
+        public const float AreaPulseDurationMin      = 0.25f;
+        public const float AreaPulseDurationMax      = 0.6f;
+        public const float AreaPulseStartWidth       = 0.22f;
+        public const float AreaPulseEndWidth         = 0.04f;
+        public const int   AreaPulseSegments         = 40;
+
+        // DefaultSynergyVisual — 폴백 펄스
+        public const float DefaultDuration   = 0.3f;
+        public const float DefaultMaxRadius  = 1.2f;
+        public const float DefaultStartWidth = 0.1f;
+        public const float DefaultEndWidth   = 0.02f;
+        public const int   DefaultSegments   = 24;
+
+        // SpawnBurstVisual — 다중 펄스
+        public const float SpawnBurstDuration       = 0.35f;
+        public const float SpawnBurstDelayBetween   = 0.08f;
+        public const float SpawnBurstMaxRadius      = 0.9f;
+        public const float SpawnBurstStartWidth     = 0.18f;
+        public const float SpawnBurstEndWidth       = 0.03f;
+        public const int   SpawnBurstSegments       = 20;
+        public const int   SpawnBurstCountMax       = 5;
+        public const float SpawnBurstSpanMin        = 1.5f;     // 가로 분산 최소 폭
+        public const float SpawnBurstSpawnAreaScale = 0.5f;     // rule.spawnArea.width × 이 비율
+        public const float SpawnBurstSpawnAreaFallback = 2f;
+    }
+
+    // ── 맵 생성 (방 타입 누적 분포 / 레이아웃) ──
+    public static class MapGeneration
+    {
+        // 방 타입 누적 확률 (CDF). 0~1 난수가 어느 구간에 속하는지로 결정.
+        // Combat 55% | Elite 10% | Rest 12% | Shop 8% | Event 15%
+        public const float CombatRoomCdf = 0.55f;
+        public const float EliteRoomCdf  = 0.65f;
+        public const float RestRoomCdf   = 0.77f;
+        public const float ShopRoomCdf   = 0.85f;
+
+        // 방 타입 재시도 (연속 규칙 위반 회피)
+        public const int RoomTypeMaxAttempts = 10;
+
+        // 맵 좌표 배치
+        public const float NodeColSpacing   = 2f;
+        public const float NodeFloorSpacing = 1.2f;
+    }
+
+    // ── 시너지 토스트 (SynergyToastView) ──
+    public static class SynergyToast
+    {
+        public const float Lifetime         = 1.5f;   // 초
+        public const float RiseSpeed        = 0.3f;   // 월드 단위/초
+
+        // t = elapsed/Lifetime ∈ [0, 1] 기준 정규화 타이밍
+        public const float ScaleUpEnd       = 0.2f;   // t<0.2: 스케일 업
+        public const float FadeOutStart     = 0.7f;   // t>0.7: 페이드 아웃 시작
+        public const float FadeOutWindow    = 0.3f;   // 페이드 지속 (1 - FadeOutStart)
+
+        // 스케일 값
+        public const float ScaleStart       = 0.1f;
+        public const float ScaleEnd         = 0.22f;
+
+        // 텍스트
+        public const int   FontSize         = 48;
+        public const float CharacterSize    = 0.1f;
+        public const float CameraYRatio     = 0.7f;   // 카메라 ortho 위쪽 70% 위치에 배치
     }
 
     // ── 적 스포너 기본값 ──

@@ -43,7 +43,7 @@ public class CometBody : MonoBehaviour
 
         var col = gameObject.AddComponent<CircleCollider2D>();
         col.isTrigger = true;
-        col.radius = 0.5f;
+        col.radius = GameConstants.VFXAnimation.CometColliderRadius;
     }
 
     void Update()
@@ -59,8 +59,9 @@ public class CometBody : MonoBehaviour
 
         transform.position = Vector2.Lerp(_startPos, _endPos, _t);
 
-        // 반짝이는 효과
-        float pulse = 1f + Mathf.Sin(Time.time * 8f) * 0.15f;
+        // 반짝이는 효과 (Sin 기반 스케일 펄스)
+        float pulse = 1f + Mathf.Sin(Time.time * GameConstants.VFXAnimation.CometPulseFrequency)
+                          * GameConstants.VFXAnimation.CometPulseAmplitude;
         transform.localScale = Vector3.one * _baseScale * pulse;
     }
 

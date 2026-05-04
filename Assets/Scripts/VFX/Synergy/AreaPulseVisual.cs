@@ -10,8 +10,12 @@ public class AreaPulseVisual : ISynergyVisual
 {
     public IEnumerator Play(SynergyVisualContext ctx)
     {
-        float maxR = Mathf.Max(0.5f, ctx.Rule?.radius ?? 2f);
-        float duration = Mathf.Clamp(maxR * 0.12f, 0.25f, 0.6f);
+        float maxR = Mathf.Max(GameConstants.SynergyVisuals.AreaPulseRadiusMin,
+                               ctx.Rule?.radius ?? GameConstants.SynergyVisuals.AreaPulseRadiusFallback);
+        float duration = Mathf.Clamp(
+            maxR * GameConstants.SynergyVisuals.AreaPulseDurationPerRadius,
+            GameConstants.SynergyVisuals.AreaPulseDurationMin,
+            GameConstants.SynergyVisuals.AreaPulseDurationMax);
 
         var fx = new GameObject("FX_AreaPulse");
         fx.transform.position = ctx.Anchor;
@@ -21,7 +25,7 @@ public class AreaPulseVisual : ISynergyVisual
         lr.loop = true;
         lr.useWorldSpace = false;
 
-        const int segs = 40;
+        int segs = GameConstants.SynergyVisuals.AreaPulseSegments;
         lr.positionCount = segs;
 
         float elapsed = 0f;
@@ -29,8 +33,9 @@ public class AreaPulseVisual : ISynergyVisual
         {
             elapsed += Time.deltaTime;
             float t = elapsed / duration;
-            float r = Mathf.Lerp(0.1f, maxR, t);
-            float width = Mathf.Lerp(0.22f, 0.04f, t);
+            float r = Mathf.Lerp(GameConstants.SynergyVisuals.PulseInitialRadius, maxR, t);
+            float width = Mathf.Lerp(GameConstants.SynergyVisuals.AreaPulseStartWidth,
+                                     GameConstants.SynergyVisuals.AreaPulseEndWidth, t);
             float alpha = 1f - t;
 
             for (int i = 0; i < segs; i++)
