@@ -2,13 +2,29 @@ using UnityEngine;
 using System.Collections.Generic;
 
 /// <summary>
-/// 우주선 발사 오케스트레이터. 상태 머신: Ready → InFlight → Docked → InFlight → … → Ready.
-/// Ready: 지면 슬링샷 대기 / InFlight: 자유 비행 / Docked: 행성 자전 중 클릭 재발사.
+/// 우주선 발사 오케스트레이터. 상태 전이는 <see cref="ShipPhase"/>가 단일 진입점.
+///
+/// 흐름: Disabled → (Activate) → Ready → (OnLaunch) → InFlight
+///       → ShipModel 이벤트로 PendingLanding/PendingFlightEnd → 다음 Update에서 처리
+///       → Docked → (OnDockedClick) → InFlight … → (에너지 0 또는 OOB) → Ready.
+///
 /// 라운드 전체 조우 시퀀스를 누적하여 SpellResolver에 전달.
 /// </summary>
 public class ShipController : MonoBehaviour
 {
     public static ShipController Instance { get; private set; }
+
+    enum ShipPhase
+    {
+        Disabled,         // 전투 외 또는 Deactivate 후. 입력 미구독.
+        Ready,            // 슬링샷 입력 대기.
+        InFlight,         // 비행 중 (_activeShip != null).
+        PendingLanding,   // ShipModel.OnLanding 발생 → 다음 Update에서 ProcessLanding.
+        Docked,           // 행성 표면 도킹 중 (_dockedPlanet != null).
+        PendingFlightEnd, // 에너지 0 또는 OOB → 다음 Update에서 ProcessFlightEnd.
+    }
+
+    private ShipPhase _phase = ShipPhase.Disabled;
 
     private ShipInput _input;
     private SpellResolver _resolver;
@@ -16,14 +32,9 @@ public class ShipController : MonoBehaviour
     private ShipVisual _visual;
 
     private ShipModel _activeShip;
-    private bool _active;
-
-    // Landing+relaunch state
-    private readonly List<PlanetBody> _roundEncounters = new List<PlanetBody>();
     private PlanetBody _dockedPlanet;
     private float _remainingEnergy;
-    private bool _pendingLanding;
-    private bool _pendingFlightEnd;
+    private readonly List<PlanetBody> _roundEncounters = new List<PlanetBody>();
 
     public System.Action<SpellResult> OnShipComplete;
 
@@ -35,6 +46,9 @@ public class ShipController : MonoBehaviour
 
     /// <summary>라운드 종료 시 전체 조우 시퀀스와 함께 발행.</summary>
     public event System.Action<IReadOnlyList<PlanetBody>> OnFlightEnded;
+
+    /// <summary>외부에서 현재 비행 중인 ShipModel을 조회 (SynergyContext 등 구성용).</summary>
+    public ShipModel ActiveShip => _activeShip;
 
     void Awake()
     {
@@ -54,23 +68,16 @@ public class ShipController : MonoBehaviour
 
     public void Activate()
     {
-        if (_active || _input == null) return;
-        _active = true;
-        _input.OnAimStart += OnAimStart;
-        _input.OnAimUpdate += OnAimUpdate;
-        _input.OnLaunch += OnLaunch;
-        _input.OnAimCancel += OnAimCancel;
+        if (_phase != ShipPhase.Disabled || _input == null) return;
+        SubscribeInput();
+        _phase = ShipPhase.Ready;
         _visual.ShowOriginIndicator(_input.LaunchOrigin, GameConstants.ShipPhysics.PullGateRadius);
     }
 
     public void Deactivate()
     {
-        if (!_active || _input == null) return;
-        _active = false;
-        _input.OnAimStart -= OnAimStart;
-        _input.OnAimUpdate -= OnAimUpdate;
-        _input.OnLaunch -= OnLaunch;
-        _input.OnAimCancel -= OnAimCancel;
+        if (_phase == ShipPhase.Disabled || _input == null) return;
+        UnsubscribeInput();
         if (_input.IsDockedMode)
         {
             _input.IsDockedMode = false;
@@ -81,8 +88,7 @@ public class ShipController : MonoBehaviour
         foreach (var p in _roundEncounters) { p.ReactivateGravity(); p.Highlight(false); }
         _roundEncounters.Clear();
         _activeShip = null;
-        _pendingLanding = false;
-        _pendingFlightEnd = false;
+        _phase = ShipPhase.Disabled;
         _visual.HideSlingshotBand();
         _visual.HideTrajectoryPreview();
         _visual.HideOriginIndicator();
@@ -90,49 +96,86 @@ public class ShipController : MonoBehaviour
 
     void Update()
     {
-        if (_pendingLanding)
+        switch (_phase)
         {
-            _pendingLanding = false;
-            ProcessLanding();
-            return;
-        }
-
-        if (_pendingFlightEnd)
-        {
-            _pendingFlightEnd = false;
-            ProcessFlightEnd();
-            return;
-        }
-
-        // Docked: 행성 자전에 맞춰 선박 위치 갱신 + 실시간 궤적 미리보기
-        if (_dockedPlanet != null)
-        {
-            _remainingEnergy = Mathf.Max(0f, _remainingEnergy - GameConstants.ShipPhysics.DefaultEnergyDrain * Time.deltaTime);
-
-            Vector2 shipPos = _dockedPlanet.GetDockedShipPosition();
-            Vector2 launchDir = _dockedPlanet.GetDockedLaunchDirection();
-            _visual.UpdateShipPosition(shipPos, launchDir);
-            _visual.UpdateEnergyGauge(shipPos, _remainingEnergy / GameConstants.ShipPhysics.DefaultEnergy);
-            _visual.ShowTrajectoryPreview(shipPos, launchDir * GameConstants.ShipPhysics.RelaunchPower, _remainingEnergy);
-
-            if (_remainingEnergy <= 0f)
-                _pendingFlightEnd = true;
-
-            return;
-        }
-
-        if (_activeShip == null || _visual == null) return;
-
-        _activeShip.Tick(Time.deltaTime);
-
-        if (_activeShip != null)
-        {
-            _visual.UpdateShipPosition(_activeShip.Position, _activeShip.Velocity);
-            _visual.UpdateEnergyGauge(_activeShip.Position, _activeShip.Energy / GameConstants.ShipPhysics.DefaultEnergy);
+            case ShipPhase.PendingLanding:    ProcessLanding();   break;
+            case ShipPhase.PendingFlightEnd:  ProcessFlightEnd(); break;
+            case ShipPhase.Docked:            UpdateDocked();     break;
+            case ShipPhase.InFlight:          UpdateInFlight();   break;
+            // Disabled / Ready: 아무것도 안 함 (입력 콜백이 전이 트리거)
         }
     }
 
-    bool IsReadyToLaunch => _activeShip == null && _dockedPlanet == null;
+    void UpdateInFlight()
+    {
+        if (_activeShip == null || _visual == null) return;
+        _activeShip.Tick(Time.deltaTime);
+        // Tick 도중 OnLanding/OnFlightEnded이 발행되면 _phase가 Pending*으로 바뀜.
+        // _activeShip 자체는 ProcessLanding/End에서 null화되므로 여기선 마지막 프레임 렌더만.
+        if (_activeShip == null) return;
+        _visual.UpdateShipPosition(_activeShip.Position, _activeShip.Velocity);
+        _visual.UpdateEnergyGauge(_activeShip.Position, _activeShip.Energy / GameConstants.ShipPhysics.DefaultEnergy);
+    }
+
+    void UpdateDocked()
+    {
+        _remainingEnergy = Mathf.Max(0f, _remainingEnergy - GameConstants.ShipPhysics.DefaultEnergyDrain * Time.deltaTime);
+
+        Vector2 shipPos = _dockedPlanet.GetDockedShipPosition();
+        Vector2 launchDir = _dockedPlanet.GetDockedLaunchDirection();
+        _visual.UpdateShipPosition(shipPos, launchDir);
+        _visual.UpdateEnergyGauge(shipPos, _remainingEnergy / GameConstants.ShipPhysics.DefaultEnergy);
+        _visual.ShowTrajectoryPreview(shipPos, launchDir * GameConstants.ShipPhysics.RelaunchPower, _remainingEnergy);
+
+        if (_remainingEnergy <= 0f) _phase = ShipPhase.PendingFlightEnd;
+    }
+
+    // ── 콜백 라이프사이클 ────────────────────────────────────────────
+
+    void SubscribeInput()
+    {
+        _input.OnAimStart  += OnAimStart;
+        _input.OnAimUpdate += OnAimUpdate;
+        _input.OnLaunch    += OnLaunch;
+        _input.OnAimCancel += OnAimCancel;
+    }
+
+    void UnsubscribeInput()
+    {
+        _input.OnAimStart  -= OnAimStart;
+        _input.OnAimUpdate -= OnAimUpdate;
+        _input.OnLaunch    -= OnLaunch;
+        _input.OnAimCancel -= OnAimCancel;
+    }
+
+    /// <summary>
+    /// ShipModel 인스턴스마다 1회 구독. ShipModel은 매 발사마다 새로 만들어지므로 -=가 불필요하나,
+    /// 명시적 명명 메서드로 두어 라이프사이클을 코드로 보이게 함 (구 lambda 클로저 대비).
+    /// </summary>
+    void SubscribeShipEvents(ShipModel ship)
+    {
+        ship.OnFlightEnded       += OnShipFlightEnded;
+        ship.OnLanding           += OnShipLanding;
+        ship.OnPlanetEncountered += OnPlanetEncountered;
+    }
+
+    void OnShipFlightEnded() => _phase = ShipPhase.PendingFlightEnd;
+
+    void OnShipLanding(PlanetBody planet)
+    {
+        _dockedPlanet = planet;
+        _phase = ShipPhase.PendingLanding;
+    }
+
+    void OnPlanetEncountered(PlanetBody planet)
+    {
+        planet.Highlight(true);
+        OnPlanetHit?.Invoke(planet);
+    }
+
+    // ── 입력 핸들러 (Ready/Docked에서만 의미) ───────────────────────
+
+    bool IsReadyToLaunch => _phase == ShipPhase.Ready;
 
     void OnAimStart(Vector2 pos)
     {
@@ -143,9 +186,7 @@ public class ShipController : MonoBehaviour
     void OnAimUpdate(Vector2 origin, Vector2 clampedPullPos, float pullRatio)
     {
         if (!IsReadyToLaunch) return;
-
         _visual.ShowSlingshotBand(origin, clampedPullPos, pullRatio);
-
         Vector2 pullVec = origin - clampedPullPos;
         Vector2 launchVelocity = pullVec * GameConstants.ShipPhysics.LaunchPowerMultiplier;
         _visual.ShowTrajectoryPreview(origin, launchVelocity);
@@ -164,28 +205,55 @@ public class ShipController : MonoBehaviour
 
         _visual.HideSlingshotBand();
         _visual.HideTrajectoryPreview();
-
         _roundEncounters.Clear();
 
-        _activeShip = new ShipModel();
-        _activeShip.OnFlightEnded += () => _pendingFlightEnd = true;
-        _activeShip.OnLanding += planet => { _dockedPlanet = planet; _pendingLanding = true; };
-        _activeShip.OnPlanetEncountered += OnPlanetEncountered;
-        _activeShip.Launch(origin, direction * power, GameConstants.ShipPhysics.DefaultEnergy);
-
+        CreateAndLaunchShip(origin, direction * power, GameConstants.ShipPhysics.DefaultEnergy);
         _visual.SpawnShip(origin);
         OnFlightStarted?.Invoke();
     }
 
-    void OnPlanetEncountered(PlanetBody planet)
+    void OnDockedClick()
     {
-        planet.Highlight(true);
-        OnPlanetHit?.Invoke(planet);
+        if (_phase != ShipPhase.Docked) return;
+
+        Vector2 origin = _dockedPlanet.GetDockedShipPosition();
+        Vector2 launchDir = _dockedPlanet.GetDockedLaunchDirection();
+
+        _input.IsDockedMode = false;
+        _input.OnDockedClick -= OnDockedClick;
+        _visual.HideTrajectoryPreview();
+
+        _dockedPlanet.Undock();
+        _dockedPlanet = null;
+
+        _visual.DestroyShip();
+        _visual.SpawnShip(origin);
+
+        CreateAndLaunchShip(origin, launchDir * GameConstants.ShipPhysics.RelaunchPower, _remainingEnergy);
     }
+
+    /// <summary>
+    /// ShipModel 생성 + 이벤트 구독 + Launch + 상태 전이를 한 메서드로 묶음.
+    /// 최초 발사(OnLaunch)와 도킹 후 재발사(OnDockedClick) 양쪽이 호출.
+    /// </summary>
+    void CreateAndLaunchShip(Vector2 origin, Vector2 velocity, float energy)
+    {
+        _activeShip = new ShipModel();
+        SubscribeShipEvents(_activeShip);
+        _activeShip.Launch(origin, velocity, energy);
+        _phase = ShipPhase.InFlight;
+    }
+
+    // ── 전이 처리 (Pending* → 다음 안정 상태) ─────────────────────────
 
     void ProcessLanding()
     {
-        if (_activeShip == null || _dockedPlanet == null) return;
+        if (_activeShip == null || _dockedPlanet == null)
+        {
+            // 비정상 상태 — 안전하게 라운드 종료로 전이
+            _phase = ShipPhase.PendingFlightEnd;
+            return;
+        }
 
         _remainingEnergy = Mathf.Min(
             _activeShip.Energy + GameConstants.ShipPhysics.DefaultEnergy * 0.3f,
@@ -201,34 +269,9 @@ public class ShipController : MonoBehaviour
 
         _input.IsDockedMode = true;
         _input.OnDockedClick += OnDockedClick;
+
+        _phase = ShipPhase.Docked;
     }
-
-    void OnDockedClick()
-    {
-        if (_dockedPlanet == null) return;
-
-        Vector2 origin = _dockedPlanet.GetDockedShipPosition();
-        Vector2 launchDir = _dockedPlanet.GetDockedLaunchDirection();
-
-        _input.IsDockedMode = false;
-        _input.OnDockedClick -= OnDockedClick;
-        _visual.HideTrajectoryPreview();
-
-        _dockedPlanet.Undock();
-        _dockedPlanet = null;
-
-        _visual.DestroyShip();
-        _visual.SpawnShip(origin);
-
-        _activeShip = new ShipModel();
-        _activeShip.OnFlightEnded += () => _pendingFlightEnd = true;
-        _activeShip.OnLanding += planet => { _dockedPlanet = planet; _pendingLanding = true; };
-        _activeShip.OnPlanetEncountered += OnPlanetEncountered;
-        _activeShip.Launch(origin, launchDir * GameConstants.ShipPhysics.RelaunchPower, _remainingEnergy);
-    }
-
-    /// <summary>외부에서 현재 비행 중인 ShipModel을 조회 (SynergyContext 등 구성용).</summary>
-    public ShipModel ActiveShip => _activeShip;
 
     void ProcessFlightEnd()
     {
@@ -251,6 +294,9 @@ public class ShipController : MonoBehaviour
             p.ReactivateGravity();
             p.Highlight(false);
         }
+
+        // 다음 라운드를 위해 Ready로 복귀
+        _phase = ShipPhase.Ready;
 
         OnFlightEnded?.Invoke(allEncounters);
 
