@@ -46,6 +46,11 @@ public class ShipVisual : MonoBehaviour
         if (_gateRing != null) _gateRing.positionCount = 0;
     }
 
+    private const float MaxChargeWidth = 0.12f;
+    private const float BaseChargeWidth = 0.04f;
+    private const float ChargeWidthGain = 0.06f;
+    private const float EndAlphaScale = 0.4f;       // 비활성 시 끝 알파 = 시작 알파 × 이 값
+
     /// <summary>
     /// 슬링샷 고무줄을 origin → clampedPullPos로 렌더.
     /// pullRatio(0~1)에 따라 색/폭이 변하고, ratio ≥ 1이면 빨강 + 미세 떨림.
@@ -53,28 +58,9 @@ public class ShipVisual : MonoBehaviour
     public void ShowSlingshotBand(Vector2 origin, Vector2 clampedPullPos, float pullRatio)
     {
         Vector2 endPoint = clampedPullPos;
-        float width;
-        Color startCol, endCol;
+        if (pullRatio >= 1f) endPoint += SlingshotJitter();
 
-        if (pullRatio >= 1f)
-        {
-            float jitterFreq = GameConstants.VFXAnimation.SlingshotJitterFrequency;
-            float nx = Mathf.PerlinNoise(Time.time * jitterFreq, 0f) - 0.5f;
-            float ny = Mathf.PerlinNoise(0f, Time.time * jitterFreq) - 0.5f;
-            endPoint += new Vector2(nx, ny) * GameConstants.VFXAnimation.SlingshotJitterAmplitude;
-            width = 0.12f;
-            startCol = GameConstants.Colors.SlingshotBandMaxStart;
-            endCol = GameConstants.Colors.SlingshotBandMaxEnd;
-        }
-        else
-        {
-            float intensity = Mathf.Clamp01(pullRatio);
-            Color c = Color.Lerp(GameConstants.Colors.SlingshotBandIdle,
-                                 GameConstants.Colors.SlingshotBandCharged, intensity);
-            startCol = c;
-            endCol = new Color(c.r, c.g, c.b, c.a * 0.4f);
-            width = 0.04f + intensity * 0.06f;
-        }
+        var (startCol, endCol, width) = ResolveBandStyle(pullRatio);
 
         _band.positionCount = 2;
         _band.SetPosition(0, (Vector3)origin);
@@ -83,6 +69,32 @@ public class ShipVisual : MonoBehaviour
         _band.endColor = endCol;
         _band.startWidth = width;
         _band.endWidth = width * 0.5f;
+    }
+
+    /// <summary>최대 충전 시 미세 떨림 오프셋 (Perlin 노이즈 기반).</summary>
+    static Vector2 SlingshotJitter()
+    {
+        float freq = GameConstants.VFXAnimation.SlingshotJitterFrequency;
+        float amp  = GameConstants.VFXAnimation.SlingshotJitterAmplitude;
+        float nx = Mathf.PerlinNoise(Time.time * freq, 0f) - 0.5f;
+        float ny = Mathf.PerlinNoise(0f, Time.time * freq) - 0.5f;
+        return new Vector2(nx, ny) * amp;
+    }
+
+    /// <summary>당김 비율에 따른 (시작색, 끝색, 폭). 최대 충전(=1)이면 빨강 고정 폭.</summary>
+    static (Color start, Color end, float width) ResolveBandStyle(float pullRatio)
+    {
+        if (pullRatio >= 1f)
+            return (GameConstants.Colors.SlingshotBandMaxStart,
+                    GameConstants.Colors.SlingshotBandMaxEnd,
+                    MaxChargeWidth);
+
+        float intensity = Mathf.Clamp01(pullRatio);
+        Color c = Color.Lerp(GameConstants.Colors.SlingshotBandIdle,
+                             GameConstants.Colors.SlingshotBandCharged, intensity);
+        Color end = new Color(c.r, c.g, c.b, c.a * EndAlphaScale);
+        float width = BaseChargeWidth + intensity * ChargeWidthGain;
+        return (c, end, width);
     }
 
     public void HideSlingshotBand()
