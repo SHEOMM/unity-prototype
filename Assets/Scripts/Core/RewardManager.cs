@@ -106,10 +106,6 @@ public class RewardManager : MonoBehaviour
 
     // ── Choice 팩토리 ─────────────────────────────────────────────
 
-    static readonly Color OrbitColor  = new Color(0.55f, 0.9f, 1f, 1f);   // 시안
-    static readonly Color PlanetColor = new Color(1f, 0.85f, 0.4f, 1f);   // 금빛
-    static readonly Color RelicColor  = new Color(0.9f, 0.55f, 1f, 1f);   // 보라
-
     RewardChoice MakeOrbitChoice(OrbitSO o) => new RewardChoice
     {
         Payload = o,
@@ -117,7 +113,7 @@ public class RewardManager : MonoBehaviour
         Description = o.description,
         Icon = null,   // 궤도는 별도 렌더 (반경 원 그리기) — 카드 측에서 처리
         TypeLabel = "궤도",
-        TypeColor = OrbitColor,
+        TypeColor = GameConstants.Colors.RewardOrbit,
     };
 
     RewardChoice MakePlanetChoice(PlanetSO p) => new RewardChoice
@@ -127,7 +123,7 @@ public class RewardManager : MonoBehaviour
         Description = p.description,
         Icon = PlanetSpriteResolver.Resolve(p),
         TypeLabel = "행성",
-        TypeColor = PlanetColor,
+        TypeColor = GameConstants.Colors.RewardPlanet,
     };
 
     RewardChoice MakeRelicChoice(RelicSO r) => new RewardChoice
@@ -137,6 +133,6 @@ public class RewardManager : MonoBehaviour
         Description = r.description,
         Icon = r.icon,
         TypeLabel = "유물",
-        TypeColor = RelicColor,
+        TypeColor = GameConstants.Colors.RewardRelic,
     };
 }

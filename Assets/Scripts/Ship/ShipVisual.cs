@@ -46,6 +46,11 @@ public class ShipVisual : MonoBehaviour
         if (_gateRing != null) _gateRing.positionCount = 0;
     }
 
+    private const float MaxChargeWidth = 0.12f;
+    private const float BaseChargeWidth = 0.04f;
+    private const float ChargeWidthGain = 0.06f;
+    private const float EndAlphaScale = 0.4f;       // 비활성 시 끝 알파 = 시작 알파 × 이 값
+
     /// <summary>
     /// 슬링샷 고무줄을 origin → clampedPullPos로 렌더.
     /// pullRatio(0~1)에 따라 색/폭이 변하고, ratio ≥ 1이면 빨강 + 미세 떨림.
@@ -53,27 +58,9 @@ public class ShipVisual : MonoBehaviour
     public void ShowSlingshotBand(Vector2 origin, Vector2 clampedPullPos, float pullRatio)
     {
         Vector2 endPoint = clampedPullPos;
-        float width;
-        Color startCol, endCol;
+        if (pullRatio >= 1f) endPoint += SlingshotJitter();
 
-        if (pullRatio >= 1f)
-        {
-            float nx = Mathf.PerlinNoise(Time.time * 15f, 0f) - 0.5f;
-            float ny = Mathf.PerlinNoise(0f, Time.time * 15f) - 0.5f;
-            endPoint += new Vector2(nx, ny) * 0.05f;
-            width = 0.12f;
-            startCol = new Color(1f, 0.25f, 0.2f, 0.95f);
-            endCol = new Color(1f, 0.4f, 0.2f, 0.55f);
-        }
-        else
-        {
-            float intensity = Mathf.Clamp01(pullRatio);
-            Color c = Color.Lerp(new Color(1f, 1f, 0.7f, 0.35f),
-                                 new Color(1f, 0.7f, 0.25f, 0.9f), intensity);
-            startCol = c;
-            endCol = new Color(c.r, c.g, c.b, c.a * 0.4f);
-            width = 0.04f + intensity * 0.06f;
-        }
+        var (startCol, endCol, width) = ResolveBandStyle(pullRatio);
 
         _band.positionCount = 2;
         _band.SetPosition(0, (Vector3)origin);
@@ -82,6 +69,32 @@ public class ShipVisual : MonoBehaviour
         _band.endColor = endCol;
         _band.startWidth = width;
         _band.endWidth = width * 0.5f;
+    }
+
+    /// <summary>최대 충전 시 미세 떨림 오프셋 (Perlin 노이즈 기반).</summary>
+    static Vector2 SlingshotJitter()
+    {
+        float freq = GameConstants.VFXAnimation.SlingshotJitterFrequency;
+        float amp  = GameConstants.VFXAnimation.SlingshotJitterAmplitude;
+        float nx = Mathf.PerlinNoise(Time.time * freq, 0f) - 0.5f;
+        float ny = Mathf.PerlinNoise(0f, Time.time * freq) - 0.5f;
+        return new Vector2(nx, ny) * amp;
+    }
+
+    /// <summary>당김 비율에 따른 (시작색, 끝색, 폭). 최대 충전(=1)이면 빨강 고정 폭.</summary>
+    static (Color start, Color end, float width) ResolveBandStyle(float pullRatio)
+    {
+        if (pullRatio >= 1f)
+            return (GameConstants.Colors.SlingshotBandMaxStart,
+                    GameConstants.Colors.SlingshotBandMaxEnd,
+                    MaxChargeWidth);
+
+        float intensity = Mathf.Clamp01(pullRatio);
+        Color c = Color.Lerp(GameConstants.Colors.SlingshotBandIdle,
+                             GameConstants.Colors.SlingshotBandCharged, intensity);
+        Color end = new Color(c.r, c.g, c.b, c.a * EndAlphaScale);
+        float width = BaseChargeWidth + intensity * ChargeWidthGain;
+        return (c, end, width);
     }
 
     public void HideSlingshotBand()
@@ -121,7 +134,8 @@ public class ShipVisual : MonoBehaviour
             var sr = dot.GetComponent<SpriteRenderer>();
             float t = i / (float)(dotCount - 1);
             float alpha = Mathf.Lerp(0.85f, 0.25f, t);
-            sr.color = new Color(1f, 0.95f, 0.6f, alpha);
+            var c = GameConstants.Colors.TrajectoryDot;
+            sr.color = new Color(c.r, c.g, c.b, alpha);
         }
     }
 
@@ -139,7 +153,7 @@ public class ShipVisual : MonoBehaviour
         _shipGo = new GameObject("Ship");
         var sr = _shipGo.AddComponent<SpriteRenderer>();
         sr.sprite = UIFactory.MakePixel();
-        sr.color = new Color(1f, 0.9f, 0.5f, 1f);
+        sr.color = GameConstants.Colors.ShipBody;
         sr.sortingOrder = GameConstants.SortingOrder.SpellEffect;
         _shipGo.transform.localScale = Vector3.one * 0.15f;
         _shipGo.transform.position = (Vector3)position;
@@ -149,8 +163,8 @@ public class ShipVisual : MonoBehaviour
         _trail.endWidth = 0.01f;
         _trail.time = 2f;
         _trail.material = GameConstants.SpriteMaterial;
-        _trail.startColor = new Color(1f, 0.8f, 0.3f, 0.8f);
-        _trail.endColor = new Color(1f, 0.5f, 0.1f, 0f);
+        _trail.startColor = GameConstants.Colors.ShipTrailStart;
+        _trail.endColor = GameConstants.Colors.ShipTrailEnd;
         _trail.sortingOrder = GameConstants.SortingOrder.SpellEffect - 1;
 
         var sprite = UIFactory.MakePixel();
@@ -158,14 +172,14 @@ public class ShipVisual : MonoBehaviour
         _gaugeBg = new GameObject("EnergyGaugeBg");
         var bgSr = _gaugeBg.AddComponent<SpriteRenderer>();
         bgSr.sprite = sprite;
-        bgSr.color = new Color(0.15f, 0.15f, 0.15f, 0.75f);
+        bgSr.color = GameConstants.Colors.EnergyGaugeBg;
         bgSr.sortingOrder = GameConstants.SortingOrder.SpellEffect + 1;
         _gaugeBg.transform.localScale = new Vector3(GaugeWidth, GaugeHeight, 1f);
 
         _gaugeFill = new GameObject("EnergyGaugeFill");
         var fillSr = _gaugeFill.AddComponent<SpriteRenderer>();
         fillSr.sprite = sprite;
-        fillSr.color = new Color(0.3f, 0.9f, 0.4f, 0.9f);
+        fillSr.color = GameConstants.Colors.EnergyGaugeHigh;
         fillSr.sortingOrder = GameConstants.SortingOrder.SpellEffect + 2;
         _gaugeFill.transform.localScale = new Vector3(GaugeWidth, GaugeHeight, 1f);
     }
@@ -188,12 +202,12 @@ public class ShipVisual : MonoBehaviour
         _gaugeFill.transform.position = new Vector3(fillX, gaugeY, 0f);
         _gaugeFill.transform.localScale = new Vector3(fillWidth, GaugeHeight, 1f);
 
-        // green → yellow → red
+        // 게이지 색상: 0~50% red→yellow, 50~100% yellow→green
         var fillSr = _gaugeFill.GetComponent<SpriteRenderer>();
         if (fillSr != null)
             fillSr.color = ratio > 0.5f
-                ? Color.Lerp(new Color(0.95f, 0.85f, 0.1f, 0.9f), new Color(0.3f, 0.9f, 0.4f, 0.9f), (ratio - 0.5f) * 2f)
-                : Color.Lerp(new Color(0.9f, 0.2f, 0.15f, 0.9f), new Color(0.95f, 0.85f, 0.1f, 0.9f), ratio * 2f);
+                ? Color.Lerp(GameConstants.Colors.EnergyGaugeMid, GameConstants.Colors.EnergyGaugeHigh, (ratio - 0.5f) * 2f)
+                : Color.Lerp(GameConstants.Colors.EnergyGaugeLow, GameConstants.Colors.EnergyGaugeMid, ratio * 2f);
     }
 
     public void HideEnergyGauge()
@@ -232,8 +246,8 @@ public class ShipVisual : MonoBehaviour
         _band.startWidth = 0.06f;
         _band.endWidth = 0.03f;
         _band.material = GameConstants.SpriteMaterial;
-        _band.startColor = new Color(1f, 0.9f, 0.4f, 0.5f);
-        _band.endColor = new Color(1f, 0.9f, 0.4f, 0.15f);
+        _band.startColor = GameConstants.Colors.SlingshotBandRest;
+        _band.endColor = GameConstants.Colors.SlingshotBandRestEnd;
         _band.sortingOrder = GameConstants.SortingOrder.Label;
         _band.positionCount = 0;
     }
@@ -245,7 +259,7 @@ public class ShipVisual : MonoBehaviour
         _originDot.transform.SetParent(transform);
         var sr = _originDot.AddComponent<SpriteRenderer>();
         sr.sprite = UIFactory.MakePixel();
-        sr.color = new Color(1f, 0.85f, 0.35f, 0.9f);
+        sr.color = GameConstants.Colors.OriginDot;
         sr.sortingOrder = GameConstants.SortingOrder.Label;
         _originDot.transform.localScale = Vector3.one * 0.22f;
         _originDot.SetActive(false);
@@ -259,7 +273,7 @@ public class ShipVisual : MonoBehaviour
         _gateRing.startWidth = 0.03f;
         _gateRing.endWidth = 0.03f;
         _gateRing.material = GameConstants.SpriteMaterial;
-        var ringCol = new Color(1f, 0.85f, 0.4f, 0.35f);
+        var ringCol = GameConstants.Colors.GateRing;
         _gateRing.startColor = ringCol;
         _gateRing.endColor = ringCol;
         _gateRing.sortingOrder = GameConstants.SortingOrder.Label - 1;
@@ -292,7 +306,7 @@ public class ShipVisual : MonoBehaviour
             dot.transform.SetParent(transform);
             var sr = dot.AddComponent<SpriteRenderer>();
             sr.sprite = sprite;
-            sr.color = new Color(1f, 0.95f, 0.6f, 0.8f);
+            sr.color = GameConstants.Colors.TrajectoryDot;
             sr.sortingOrder = GameConstants.SortingOrder.Label - 1;
             dot.transform.localScale = Vector3.one * 0.06f;
             dot.SetActive(false);

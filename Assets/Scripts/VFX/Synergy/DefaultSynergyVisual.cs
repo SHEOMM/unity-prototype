@@ -18,19 +18,20 @@ public class DefaultSynergyVisual : ISynergyVisual
         lr.loop = true;
         lr.useWorldSpace = false;
 
-        const int segs = 24;
+        int segs = GameConstants.SynergyVisuals.DefaultSegments;
         lr.positionCount = segs;
 
-        float duration = 0.3f;
+        float duration = GameConstants.SynergyVisuals.DefaultDuration;
         float elapsed = 0f;
-        float maxR = 1.2f;
+        float maxR = GameConstants.SynergyVisuals.DefaultMaxRadius;
 
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
             float t = elapsed / duration;
-            float r = Mathf.Lerp(0.1f, maxR, t);
-            float width = Mathf.Lerp(0.1f, 0.02f, t);
+            float r = Mathf.Lerp(GameConstants.SynergyVisuals.PulseInitialRadius, maxR, t);
+            float width = Mathf.Lerp(GameConstants.SynergyVisuals.DefaultStartWidth,
+                                     GameConstants.SynergyVisuals.DefaultEndWidth, t);
             float alpha = 1f - t;
 
             for (int i = 0; i < segs; i++)

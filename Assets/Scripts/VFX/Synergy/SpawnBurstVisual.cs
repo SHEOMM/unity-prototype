@@ -10,10 +10,14 @@ public class SpawnBurstVisual : ISynergyVisual
 {
     public IEnumerator Play(SynergyVisualContext ctx)
     {
-        int bursts = Mathf.Clamp(ctx.Rule?.spawnCount ?? 1, 1, 5);
+        int bursts = Mathf.Clamp(ctx.Rule?.spawnCount ?? 1, 1,
+                                 GameConstants.SynergyVisuals.SpawnBurstCountMax);
         Vector3 center = new Vector3(ctx.Rule?.spawnArea.center.x ?? ctx.Anchor.x,
                                      ctx.Rule?.spawnArea.center.y ?? ctx.Anchor.y, 0f);
-        float span = Mathf.Max(1.5f, (ctx.Rule?.spawnArea.width ?? 2f) * 0.5f);
+        float span = Mathf.Max(
+            GameConstants.SynergyVisuals.SpawnBurstSpanMin,
+            (ctx.Rule?.spawnArea.width ?? GameConstants.SynergyVisuals.SpawnBurstSpawnAreaFallback)
+                * GameConstants.SynergyVisuals.SpawnBurstSpawnAreaScale);
 
         for (int i = 0; i < bursts; i++)
         {
@@ -26,19 +30,20 @@ public class SpawnBurstVisual : ISynergyVisual
             lr.sortingOrder = GameConstants.SortingOrder.SpellEffect;
             lr.loop = true;
             lr.useWorldSpace = false;
-            const int segs = 20;
+            int segs = GameConstants.SynergyVisuals.SpawnBurstSegments;
             lr.positionCount = segs;
 
-            float duration = 0.35f;
+            float duration = GameConstants.SynergyVisuals.SpawnBurstDuration;
             float elapsed = 0f;
-            float maxR = 0.9f;
+            float maxR = GameConstants.SynergyVisuals.SpawnBurstMaxRadius;
             var c = ctx.ElementColor;
             while (elapsed < duration)
             {
                 elapsed += Time.deltaTime;
                 float t = elapsed / duration;
-                float r = Mathf.Lerp(0.1f, maxR, t);
-                float width = Mathf.Lerp(0.18f, 0.03f, t);
+                float r = Mathf.Lerp(GameConstants.SynergyVisuals.PulseInitialRadius, maxR, t);
+                float width = Mathf.Lerp(GameConstants.SynergyVisuals.SpawnBurstStartWidth,
+                                         GameConstants.SynergyVisuals.SpawnBurstEndWidth, t);
                 float alpha = 1f - t;
                 for (int s = 0; s < segs; s++)
                 {
@@ -50,7 +55,7 @@ public class SpawnBurstVisual : ISynergyVisual
                 yield return null;
             }
             Object.Destroy(fx);
-            yield return new WaitForSeconds(0.08f);
+            yield return new WaitForSeconds(GameConstants.SynergyVisuals.SpawnBurstDelayBetween);
         }
     }
 }

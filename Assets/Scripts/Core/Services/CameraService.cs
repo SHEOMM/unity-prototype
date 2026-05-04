@@ -74,15 +74,15 @@ public class CameraService : MonoBehaviour
     /// <summary>
     /// 조준 시작 시 호출. 2× 줌아웃.
     /// 규칙: 발사점이 가로 중심, 발사점의 화면 Y 비율이 줌 전후로 동일.
-    /// cameraY = 2 * normalCameraY - launchOriginY (normalY 기준으로 launchOriginY를 반사)
     /// </summary>
     public void ZoomToAim(Vector2 launchOrigin)
     {
         if (Camera == null) return;
-        if (_shakeCoroutine != null) { StopCoroutine(_shakeCoroutine); _shakeCoroutine = null; }
+        StopShake();
         if (_zoomCoroutine != null) StopCoroutine(_zoomCoroutine);
         float targetSize = _normalOrthoSize * ZoomFactor;
         float z = Camera.transform.position.z;
+        // "발사점의 화면 Y 비율 유지" = 정상 시점의 Y에 대해 launchOrigin을 반사
         float targetY = 2f * _normalPosition.y - launchOrigin.y;
         _zoomCoroutine = StartCoroutine(LerpCameraRoutine(
             new Vector3(launchOrigin.x, targetY, z),
@@ -93,9 +93,17 @@ public class CameraService : MonoBehaviour
     public void ZoomToNormal()
     {
         if (Camera == null) return;
-        if (_shakeCoroutine != null) { StopCoroutine(_shakeCoroutine); _shakeCoroutine = null; }
+        StopShake();
         if (_zoomCoroutine != null) StopCoroutine(_zoomCoroutine);
         _zoomCoroutine = StartCoroutine(LerpCameraRoutine(_normalPosition, _normalOrthoSize));
+    }
+
+    /// <summary>진행 중인 셰이크 코루틴이 있으면 중단. Zoom 호출 전에 항상 선행.</summary>
+    void StopShake()
+    {
+        if (_shakeCoroutine == null) return;
+        StopCoroutine(_shakeCoroutine);
+        _shakeCoroutine = null;
     }
 
     IEnumerator LerpCameraRoutine(Vector3 targetPos, float targetSize)

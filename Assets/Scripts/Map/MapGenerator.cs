@@ -115,15 +115,16 @@ public static class MapGenerator
 
     static RoomType RollRoomType(MapNode node, MapData map, System.Random rng)
     {
-        for (int attempt = 0; attempt < 10; attempt++)
+        for (int attempt = 0; attempt < GameConstants.MapGeneration.RoomTypeMaxAttempts; attempt++)
         {
             float roll = (float)rng.NextDouble();
             RoomType type;
 
-            if (roll < 0.55f) type = RoomType.Combat;
-            else if (roll < 0.65f) type = RoomType.Elite;
-            else if (roll < 0.77f) type = RoomType.Rest;
-            else if (roll < 0.85f) type = RoomType.Shop;
+            // CDF 분포: Combat 55% | Elite 10% | Rest 12% | Shop 8% | Event 15%
+            if (roll < GameConstants.MapGeneration.CombatRoomCdf) type = RoomType.Combat;
+            else if (roll < GameConstants.MapGeneration.EliteRoomCdf) type = RoomType.Elite;
+            else if (roll < GameConstants.MapGeneration.RestRoomCdf)  type = RoomType.Rest;
+            else if (roll < GameConstants.MapGeneration.ShopRoomCdf)  type = RoomType.Shop;
             else type = RoomType.Event;
 
             // 연속 규칙: 엘리트/상점/휴식은 이전 층에서 같은 타입이면 불가
@@ -177,8 +178,8 @@ public static class MapGenerator
 
     static void AssignMapPositions(MapData map)
     {
-        float colSpacing = 2f;
-        float floorSpacing = 1.2f;
+        float colSpacing = GameConstants.MapGeneration.NodeColSpacing;
+        float floorSpacing = GameConstants.MapGeneration.NodeFloorSpacing;
         float offsetX = -(map.Columns - 1) * colSpacing * 0.5f;
 
         foreach (var node in map.ActiveNodes)
