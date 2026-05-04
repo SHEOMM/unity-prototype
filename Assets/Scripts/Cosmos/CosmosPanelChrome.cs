@@ -37,7 +37,7 @@ public class CosmosPanelChrome : MonoBehaviour
         go.transform.localScale = new Vector3(w, h, 1f);
         var sr = go.AddComponent<SpriteRenderer>();
         sr.sprite = UIFactory.MakePixel();
-        sr.color = new Color(0.05f, 0.06f, 0.1f, 0.92f);
+        sr.color = GameConstants.Colors.CosmosPanelBg;
         sr.sortingOrder = GameConstants.SortingOrder.CosmosPanelBg;
     }
 
@@ -52,7 +52,7 @@ public class CosmosPanelChrome : MonoBehaviour
         tm.characterSize = 0.08f;
         tm.anchor = TextAnchor.MiddleCenter;
         tm.alignment = TextAlignment.Center;
-        tm.color = new Color(1f, 0.95f, 0.6f, 1f);
+        tm.color = GameConstants.Colors.CosmosTitle;
         var mr = go.GetComponent<MeshRenderer>();
         if (mr != null) mr.sortingOrder = GameConstants.SortingOrder.CosmosLabel;
     }
@@ -66,7 +66,7 @@ public class CosmosPanelChrome : MonoBehaviour
         go.transform.localScale = new Vector3(CloseScale, CloseScale, 1f);
         var bgX = go.AddComponent<SpriteRenderer>();
         bgX.sprite = UIFactory.MakePixel();
-        bgX.color = new Color(0.6f, 0.2f, 0.2f, 0.9f);
+        bgX.color = GameConstants.Colors.CosmosCloseBg;
         bgX.sortingOrder = GameConstants.SortingOrder.CosmosCloseBg;
 
         var xGo = new GameObject("X");

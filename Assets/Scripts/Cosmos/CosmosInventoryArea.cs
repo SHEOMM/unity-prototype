@@ -23,7 +23,7 @@ public class CosmosInventoryArea : MonoBehaviour
         _size = size;
         _bg = gameObject.AddComponent<SpriteRenderer>();
         _bg.sprite = UIFactory.MakePixel();
-        _bg.color = new Color(0.1f, 0.12f, 0.16f, 0.85f);
+        _bg.color = GameConstants.Colors.CosmosInventoryBg;
         _bg.sortingOrder = GameConstants.SortingOrder.CosmosInventoryBg;
         transform.localScale = new Vector3(size.x, size.y, 1f);
 
@@ -46,7 +46,7 @@ public class CosmosInventoryArea : MonoBehaviour
         _labelTm.characterSize = 0.1f;
         _labelTm.anchor = TextAnchor.MiddleLeft;
         _labelTm.alignment = TextAlignment.Left;
-        _labelTm.color = new Color(0.85f, 0.85f, 0.9f, 1f);
+        _labelTm.color = GameConstants.Colors.CosmosLabelText;
         var mr = labelGo.GetComponent<MeshRenderer>();
         if (mr != null) mr.sortingOrder = GameConstants.SortingOrder.CosmosLabel;
 

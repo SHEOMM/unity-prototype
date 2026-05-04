@@ -10,12 +10,12 @@ public static class SynergyVisualElementPalette
     {
         switch (e)
         {
-            case Element.Fire:     return new Color(1f, 0.45f, 0.18f, 1f);
-            case Element.Water:    return new Color(0.3f, 0.65f, 1f, 1f);
-            case Element.Wind:     return new Color(0.55f, 0.95f, 0.95f, 1f);
-            case Element.Earth:    return new Color(0.65f, 0.45f, 0.22f, 1f);
-            case Element.Darkness: return new Color(0.6f, 0.3f, 0.85f, 1f);
-            default:               return new Color(1f, 0.85f, 0.3f, 1f); // None=gold
+            case Element.Fire:     return GameConstants.Colors.ElementFire;
+            case Element.Water:    return GameConstants.Colors.ElementWater;
+            case Element.Wind:     return GameConstants.Colors.ElementWind;
+            case Element.Earth:    return GameConstants.Colors.ElementEarth;
+            case Element.Darkness: return GameConstants.Colors.ElementDarkness;
+            default:               return GameConstants.Colors.ElementDefault;
         }
     }
 }

@@ -134,19 +134,79 @@ public static class GameConstants
     }
 
     // ── 색상 ──
+    /// <summary>
+    /// 명명된 헥스 팔레트. 인라인 `new Color(r,g,b,a)` 대신 의도가 보이는 이름을 참조.
+    /// 추가 시: <see cref="Hex"/> 헬퍼로 hex 문자열 + α를 받아 readonly Color로 정의.
+    /// </summary>
     public static class Colors
     {
-        public static readonly Color PlanetHighlight = new Color(1f, 1f, 0.5f, 1f);
-        public static readonly Color HPFull = new Color(0.2f, 0.85f, 0.2f, 0.9f);
-        public static readonly Color HPEmpty = new Color(0.85f, 0.2f, 0.2f, 0.9f);
-        public static readonly Color HPBarBg = new Color(0.2f, 0.2f, 0.2f, 0.7f);
-        public static readonly Color DividerLine = new Color(1f, 1f, 1f, 0.2f);
-        public static readonly Color OrbitPath = new Color(1f, 1f, 1f, 0.15f);
-        public static readonly Color SkyLabel = new Color(0.7f, 0.8f, 1f, 0.3f);
-        public static readonly Color GroundLabel = new Color(1f, 0.7f, 0.7f, 0.3f);
-        public static readonly Color StarLabel = new Color(1f, 1f, 0.8f, 0.8f);
-        public static readonly Color PlanetLabel = new Color(1f, 1f, 1f, 0.9f);
-        public static readonly Color EnemyLabel = new Color(1f, 0.8f, 0.8f, 0.85f);
+        // ── 헬퍼 ──
+        /// <summary>
+        /// 헥스 문자열(예: "#FFB340")과 α(0~1)로 Color 생성. 잘못된 헥스는 magenta 폴백.
+        /// </summary>
+        static Color Hex(string hex, float alpha = 1f)
+        {
+            if (!ColorUtility.TryParseHtmlString(hex, out var c)) c = Color.magenta;
+            c.a = alpha;
+            return c;
+        }
+
+        // ── HP / 라벨 / 궤도 (기존 유지) ──
+        public static readonly Color PlanetHighlight = Hex("#FFFF80");        // 노란 강조
+        public static readonly Color HPFull          = Hex("#33D933", 0.9f);
+        public static readonly Color HPEmpty         = Hex("#D93333", 0.9f);
+        public static readonly Color HPBarBg         = Hex("#333333", 0.7f);
+        public static readonly Color DividerLine     = Hex("#FFFFFF", 0.2f);
+        public static readonly Color OrbitPath       = Hex("#FFFFFF", 0.15f);
+        public static readonly Color SkyLabel        = Hex("#B3CCFF", 0.3f);
+        public static readonly Color GroundLabel     = Hex("#FFB3B3", 0.3f);
+        public static readonly Color StarLabel       = Hex("#FFFFCC", 0.8f);
+        public static readonly Color PlanetLabel     = Hex("#FFFFFF", 0.9f);
+        public static readonly Color EnemyLabel      = Hex("#FFCCCC", 0.85f);
+
+        // ── 슬링샷 밴드 (ShipVisual.ShowSlingshotBand) ──
+        public static readonly Color SlingshotBandIdle    = Hex("#FFFFB3", 0.35f);  // 옅은 크림
+        public static readonly Color SlingshotBandCharged = Hex("#FFB340", 0.90f);  // 호박
+        public static readonly Color SlingshotBandMaxStart = Hex("#FF4033", 0.95f); // 최대 충전 빨강
+        public static readonly Color SlingshotBandMaxEnd   = Hex("#FF6633", 0.55f); // 최대 충전 끝(주황 페이드)
+        public static readonly Color SlingshotBandRest     = Hex("#FFE666", 0.50f); // 비활성 시작
+        public static readonly Color SlingshotBandRestEnd  = Hex("#FFE666", 0.15f); // 비활성 끝
+
+        // ── 에너지 게이지 (ShipVisual.UpdateEnergyGauge) ──
+        public static readonly Color EnergyGaugeBg    = Hex("#262626", 0.75f);
+        public static readonly Color EnergyGaugeHigh  = Hex("#4DE666", 0.90f);  // 50% 초과: 초록
+        public static readonly Color EnergyGaugeMid   = Hex("#F2D919", 0.90f);  // ~50%: 노랑
+        public static readonly Color EnergyGaugeLow   = Hex("#E63326", 0.90f);  // 0~50%: 빨강
+
+        // ── 발사체 본체·트레일 (ShipVisual.SpawnShip) ──
+        public static readonly Color ShipBody        = Hex("#FFE680");
+        public static readonly Color ShipTrailStart  = Hex("#FFCC4D", 0.8f);
+        public static readonly Color ShipTrailEnd    = Hex("#FF801A", 0.0f);
+
+        // ── 슬링샷 원점 인디케이터 (ShipVisual.CreateOriginIndicator) ──
+        public static readonly Color OriginDot       = Hex("#FFD959", 0.9f);
+        public static readonly Color GateRing        = Hex("#FFD966", 0.35f);
+        public static readonly Color TrajectoryDot   = Hex("#FFF299", 0.8f);
+
+        // ── Cosmos 패널 (CosmosPanelChrome / CosmosInventoryArea) ──
+        public static readonly Color CosmosPanelBg     = Hex("#0D1019", 0.92f);  // 깊은 청흑
+        public static readonly Color CosmosInventoryBg = Hex("#191F29", 0.85f);  // 어두운 슬레이트
+        public static readonly Color CosmosTitle       = Hex("#FFF299");         // 따뜻한 크림 타이틀
+        public static readonly Color CosmosLabelText   = Hex("#D9D9E6");         // 차분한 보조 라벨
+        public static readonly Color CosmosCloseBg     = Hex("#993333", 0.9f);   // 닫기 X 배경(붉은 톤)
+
+        // ── Reward 카드 타입 (RewardManager) ──
+        public static readonly Color RewardOrbit  = Hex("#8CE6FF");  // 시안 — 궤도
+        public static readonly Color RewardPlanet = Hex("#FFD966");  // 금빛 — 행성
+        public static readonly Color RewardRelic  = Hex("#E68CFF");  // 보라 — 유물
+
+        // ── 시너지 원소 (SynergyVisualElementPalette가 위임) ──
+        public static readonly Color ElementFire     = Hex("#FF732E");
+        public static readonly Color ElementWater    = Hex("#4DA6FF");
+        public static readonly Color ElementWind     = Hex("#8CF2F2");
+        public static readonly Color ElementEarth    = Hex("#A67338");
+        public static readonly Color ElementDarkness = Hex("#994DD9");
+        public static readonly Color ElementDefault  = Hex("#FFD94D");  // None=gold 폴백
     }
 
     // ── 적 스포너 기본값 ──
