@@ -85,7 +85,7 @@ public class ShipModel
 
     private void HandlePlanetEncounter(PlanetBody planet)
     {
-        float cost = planet.Planet.gravityStrength * planet.Planet.gravityEnergyRatio;
+        float cost = planet.Planet.gravityStrength * GameConstants.ShipPhysics.GravityEnergyRatio;
         Energy = Mathf.Max(0f, Energy - cost);
         planet.DeactivateGravity();
         OnPlanetEncountered?.Invoke(planet);
@@ -95,55 +95,13 @@ public class ShipModel
             _landed = true;
             OnLanding?.Invoke(planet);
         }
-        else
-        {
-            Vector2 contactNormal = (Position - planet.Position).normalized;
-            Vector2 tempVector = Velocity + contactNormal * GameConstants.ShipPhysics.NormalFactor;
-            PlanetBody target = FindNearestPlanetInCone(Position, tempVector, planet);
-            float speed = tempVector.magnitude;
-            Velocity = target != null
-                ? (target.Position - Position).normalized * speed
-                : tempVector;
-        }
-    }
-
-    private PlanetBody FindNearestPlanetInCone(Vector2 origin, Vector2 coneDir, PlanetBody exclude)
-    {
-        float cosHalf = Mathf.Cos(GameConstants.ShipPhysics.ConeHalfAngleDeg * Mathf.Deg2Rad);
-        Vector2 coneNorm = coneDir.normalized;
-
-        PlanetBody nearest = null;
-        float nearestSqDist = float.MaxValue;
-
-        for (int i = 0; i < _sourceCount; i++)
-        {
-            var src = _sources[i];
-            if (!src.IsActive) continue;
-            if (!(src is PlanetBody pb)) continue;
-            if (pb == exclude) continue;
-
-            Vector2 toTarget = pb.Position - origin;
-            float sqDist = toTarget.sqrMagnitude;
-            if (sqDist < 0.0001f) continue;
-
-            float dot = Vector2.Dot(coneNorm, toTarget * (1f / Mathf.Sqrt(sqDist)));
-            if (dot < cosHalf) continue;
-
-            if (sqDist < nearestSqDist)
-            {
-                nearestSqDist = sqDist;
-                nearest = pb;
-            }
-        }
-
-        return nearest;
     }
 
     private bool IsOutOfBounds()
     {
-        // 카메라 ortho size 6 기준: 높이 ±6, 너비 ±8 (aspect ~1.3)
-        float m = GameConstants.ShipPhysics.BoundsMargin;
-        return Position.x < -9f - m || Position.x > 9f + m
-            || Position.y < -7f - m || Position.y > 7f + m;
+        return Position.x < -GameConstants.ShipPhysics.WorldBoundsX
+            || Position.x >  GameConstants.ShipPhysics.WorldBoundsX
+            || Position.y <  GameConstants.ShipPhysics.WorldBoundsYMin
+            || Position.y >  GameConstants.ShipPhysics.WorldBoundsYMax;
     }
 }

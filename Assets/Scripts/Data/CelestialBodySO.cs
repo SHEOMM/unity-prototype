@@ -38,11 +38,7 @@ public abstract class CelestialBodySO : ScriptableObject, IRewardApplicable
     [Range(1f, 20f)]
     public float gravityFieldRangeRatio = 4f;
 
-    [Tooltip("표면 접촉 에너지 소모 = gravityStrength × 이 값")]
-    [Range(0f, 5f)]
-    public float gravityEnergyRatio = 1f;
-
-    [Header("자전")]
+[Header("자전")]
     [Tooltip("자전 속도 (도/초). 투사체 착지 시 표면 회전 속도. 음수=시계 방향.")]
     [Range(-1800f, 1800f)]
     public float spinSpeed = 1350f;

@@ -9,8 +9,6 @@ public static class TrajectorySimulator
 {
     private static readonly GravityAccumulator _gravity = new GravityAccumulator();
 
-    private const float BoundsX = 9f;
-    private const float BoundsY = 7f;
 
     /// <summary>
     /// stepCount만큼 순방향 시뮬레이션. 매 스텝 위치를 outBuffer에 채운다.
@@ -34,7 +32,6 @@ public static class TrajectorySimulator
         Vector2 pos = origin;
         Vector2 vel = initialVelocity;
         float e = energy;
-        float margin = GameConstants.ShipPhysics.BoundsMargin;
         int limit = Mathf.Min(stepCount, outBuffer.Length);
 
         int count = 0;
@@ -67,8 +64,10 @@ public static class TrajectorySimulator
                 }
             }
 
-            if (pos.x < -BoundsX - margin || pos.x > BoundsX + margin
-                || pos.y < -BoundsY - margin || pos.y > BoundsY + margin)
+            if (pos.x < -GameConstants.ShipPhysics.WorldBoundsX
+                || pos.x >  GameConstants.ShipPhysics.WorldBoundsX
+                || pos.y <  GameConstants.ShipPhysics.WorldBoundsYMin
+                || pos.y >  GameConstants.ShipPhysics.WorldBoundsYMax)
                 break;
         }
         return count;

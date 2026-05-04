@@ -66,21 +66,27 @@ public class CameraService : MonoBehaviour
     private float _normalOrthoSize;
     private Coroutine _zoomCoroutine;
     private const float ZoomDuration = 0.5f;
-    private const float ZoomFactor = 4f;
+    private const float ZoomFactor = 2f;
 
-    /// <summary>카메라 줌 전환 중이면 true. ShipInput이 드래그를 블록하는 데 사용.</summary>
+    /// <summary>카메라 줌 전환 중이면 true.</summary>
     public bool IsZooming => _zoomCoroutine != null;
 
-    /// <summary>조준 시작 시 호출. 발사 원점이 화면 중앙에 오도록 카메라를 4× 줌아웃.</summary>
+    /// <summary>
+    /// 조준 시작 시 호출. 2× 줌아웃.
+    /// 규칙: 발사점이 가로 중심, 발사점의 화면 Y 비율이 줌 전후로 동일.
+    /// cameraY = 2 * normalCameraY - launchOriginY (normalY 기준으로 launchOriginY를 반사)
+    /// </summary>
     public void ZoomToAim(Vector2 launchOrigin)
     {
         if (Camera == null) return;
         if (_shakeCoroutine != null) { StopCoroutine(_shakeCoroutine); _shakeCoroutine = null; }
         if (_zoomCoroutine != null) StopCoroutine(_zoomCoroutine);
+        float targetSize = _normalOrthoSize * ZoomFactor;
         float z = Camera.transform.position.z;
+        float targetY = 2f * _normalPosition.y - launchOrigin.y;
         _zoomCoroutine = StartCoroutine(LerpCameraRoutine(
-            new Vector3(launchOrigin.x, launchOrigin.y, z),
-            _normalOrthoSize * ZoomFactor));
+            new Vector3(launchOrigin.x, targetY, z),
+            targetSize));
     }
 
     /// <summary>발사체 소멸 / 조준 취소 시 호출. 원래 뷰로 복귀.</summary>

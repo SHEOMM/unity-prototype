@@ -107,10 +107,17 @@ public class ShipController : MonoBehaviour
         // Docked: 행성 자전에 맞춰 선박 위치 갱신 + 실시간 궤적 미리보기
         if (_dockedPlanet != null)
         {
+            _remainingEnergy = Mathf.Max(0f, _remainingEnergy - GameConstants.ShipPhysics.DefaultEnergyDrain * Time.deltaTime);
+
             Vector2 shipPos = _dockedPlanet.GetDockedShipPosition();
             Vector2 launchDir = _dockedPlanet.GetDockedLaunchDirection();
             _visual.UpdateShipPosition(shipPos, launchDir);
+            _visual.UpdateEnergyGauge(shipPos, _remainingEnergy / GameConstants.ShipPhysics.DefaultEnergy);
             _visual.ShowTrajectoryPreview(shipPos, launchDir * GameConstants.ShipPhysics.RelaunchPower, _remainingEnergy);
+
+            if (_remainingEnergy <= 0f)
+                _pendingFlightEnd = true;
+
             return;
         }
 
@@ -119,7 +126,10 @@ public class ShipController : MonoBehaviour
         _activeShip.Tick(Time.deltaTime);
 
         if (_activeShip != null)
+        {
             _visual.UpdateShipPosition(_activeShip.Position, _activeShip.Velocity);
+            _visual.UpdateEnergyGauge(_activeShip.Position, _activeShip.Energy / GameConstants.ShipPhysics.DefaultEnergy);
+        }
     }
 
     bool IsReadyToLaunch => _activeShip == null && _dockedPlanet == null;
@@ -127,6 +137,7 @@ public class ShipController : MonoBehaviour
     void OnAimStart(Vector2 pos)
     {
         if (!IsReadyToLaunch) return;
+        CameraService.Instance?.ZoomToAim(_input.LaunchOrigin);
     }
 
     void OnAimUpdate(Vector2 origin, Vector2 clampedPullPos, float pullRatio)
@@ -144,6 +155,7 @@ public class ShipController : MonoBehaviour
     {
         _visual.HideSlingshotBand();
         _visual.HideTrajectoryPreview();
+        CameraService.Instance?.ZoomToNormal();
     }
 
     void OnLaunch(Vector2 origin, Vector2 direction, float power)
@@ -182,7 +194,9 @@ public class ShipController : MonoBehaviour
     {
         if (_activeShip == null || _dockedPlanet == null) return;
 
-        _remainingEnergy = _activeShip.Energy;
+        _remainingEnergy = Mathf.Min(
+            _activeShip.Energy + GameConstants.ShipPhysics.DefaultEnergy * 0.3f,
+            GameConstants.ShipPhysics.DefaultEnergy);
         _roundEncounters.AddRange(_activeShip.Encounters);
 
         Vector2 contactPos = _activeShip.Position;
@@ -190,6 +204,7 @@ public class ShipController : MonoBehaviour
 
         _dockedPlanet.Dock(contactPos);
         _visual.UpdateShipPosition(contactPos, Vector2.zero);
+        _visual.SetTrailEnabled(false);
 
         _input.IsDockedMode = true;
         _input.OnDockedClick += OnDockedClick;
@@ -232,6 +247,7 @@ public class ShipController : MonoBehaviour
             _roundEncounters.AddRange(_activeShip.Encounters);
 
         _visual.DestroyShip();
+        CameraService.Instance?.ZoomToNormal();
 
         _input.LaunchOrigin = new Vector2(_input.launchOriginX, _input.celestialYMin);
         _visual.ShowOriginIndicator(_input.LaunchOrigin, GameConstants.ShipPhysics.PullGateRadius);

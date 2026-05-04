@@ -10,6 +10,12 @@ public class ShipVisual : MonoBehaviour
     private TrailRenderer _trail;
     private LineRenderer _band;
 
+    private GameObject _gaugeBg;
+    private GameObject _gaugeFill;
+    private const float GaugeWidth = 2f;
+    private const float GaugeHeight = 0.24f;
+    private const float GaugeOffsetY = 0.6f;
+
     // 원점 지속 표시(슬링샷 시트 + 클릭 게이트 링)
     private GameObject _originDot;
     private LineRenderer _gateRing;
@@ -146,6 +152,54 @@ public class ShipVisual : MonoBehaviour
         _trail.startColor = new Color(1f, 0.8f, 0.3f, 0.8f);
         _trail.endColor = new Color(1f, 0.5f, 0.1f, 0f);
         _trail.sortingOrder = GameConstants.SortingOrder.SpellEffect - 1;
+
+        var sprite = UIFactory.MakePixel();
+
+        _gaugeBg = new GameObject("EnergyGaugeBg");
+        var bgSr = _gaugeBg.AddComponent<SpriteRenderer>();
+        bgSr.sprite = sprite;
+        bgSr.color = new Color(0.15f, 0.15f, 0.15f, 0.75f);
+        bgSr.sortingOrder = GameConstants.SortingOrder.SpellEffect + 1;
+        _gaugeBg.transform.localScale = new Vector3(GaugeWidth, GaugeHeight, 1f);
+
+        _gaugeFill = new GameObject("EnergyGaugeFill");
+        var fillSr = _gaugeFill.AddComponent<SpriteRenderer>();
+        fillSr.sprite = sprite;
+        fillSr.color = new Color(0.3f, 0.9f, 0.4f, 0.9f);
+        fillSr.sortingOrder = GameConstants.SortingOrder.SpellEffect + 2;
+        _gaugeFill.transform.localScale = new Vector3(GaugeWidth, GaugeHeight, 1f);
+    }
+
+    public void SetTrailEnabled(bool enabled)
+    {
+        if (_trail != null) _trail.enabled = enabled;
+    }
+
+    public void UpdateEnergyGauge(Vector2 shipPos, float ratio)
+    {
+        if (_gaugeBg == null || _gaugeFill == null) return;
+        ratio = Mathf.Clamp01(ratio);
+
+        float gaugeY = shipPos.y + GaugeOffsetY;
+        _gaugeBg.transform.position = new Vector3(shipPos.x, gaugeY, 0f);
+
+        float fillWidth = GaugeWidth * ratio;
+        float fillX = shipPos.x - GaugeWidth * 0.5f + fillWidth * 0.5f;
+        _gaugeFill.transform.position = new Vector3(fillX, gaugeY, 0f);
+        _gaugeFill.transform.localScale = new Vector3(fillWidth, GaugeHeight, 1f);
+
+        // green → yellow → red
+        var fillSr = _gaugeFill.GetComponent<SpriteRenderer>();
+        if (fillSr != null)
+            fillSr.color = ratio > 0.5f
+                ? Color.Lerp(new Color(0.95f, 0.85f, 0.1f, 0.9f), new Color(0.3f, 0.9f, 0.4f, 0.9f), (ratio - 0.5f) * 2f)
+                : Color.Lerp(new Color(0.9f, 0.2f, 0.15f, 0.9f), new Color(0.95f, 0.85f, 0.1f, 0.9f), ratio * 2f);
+    }
+
+    public void HideEnergyGauge()
+    {
+        if (_gaugeBg != null) _gaugeBg.SetActive(false);
+        if (_gaugeFill != null) _gaugeFill.SetActive(false);
     }
 
     public void UpdateShipPosition(Vector2 position, Vector2 velocity)
@@ -164,6 +218,10 @@ public class ShipVisual : MonoBehaviour
     {
         if (_shipGo != null) Object.Destroy(_shipGo, 0.5f);
         _shipGo = null;
+        if (_gaugeBg != null) Object.Destroy(_gaugeBg);
+        _gaugeBg = null;
+        if (_gaugeFill != null) Object.Destroy(_gaugeFill);
+        _gaugeFill = null;
     }
 
     void CreateBand()

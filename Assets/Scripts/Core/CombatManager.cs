@@ -18,6 +18,8 @@ public class CombatManager : MonoBehaviour
     public float celestialCenterXOffset = -3f;
     [Tooltip("궤도 간 수평 간격 (각 궤도가 기준점에서 이 거리씩 퍼짐).")]
     public float celestialSpreadX = 2.5f;
+    [Tooltip("궤도 간 수직 간격 (홀짝 인덱스 교대로 ±이 값만큼 오프셋).")]
+    public float celestialSpreadY = 1.5f;
     public float celestialRadius = 3f;
 
     private float _launchOriginX;
@@ -48,7 +50,10 @@ public class CombatManager : MonoBehaviour
         GetOrAdd<AllyRegistry>();
         GetOrAdd<StructureRegistry>();
 
-        _launchOriginX = 0f;
+        var cam = CameraService.Instance?.Camera;
+        _launchOriginX = cam != null
+            ? cam.transform.position.x - cam.orthographicSize * cam.aspect + 1f
+            : 0f;
 
         var input = GetOrAdd<ShipInput>();
         var resolver = GetOrAdd<SpellResolver>();
@@ -125,7 +130,8 @@ public class CombatManager : MonoBehaviour
         {
             if (orbitSo == null) continue;
             float xOff = total > 1 ? (idx - (total - 1) * 0.5f) * celestialSpreadX : 0f;
-            var orbitBody = _deck.CreateOrbit(orbitSo, baseCenter + new Vector2(xOff, 0f));
+            float yOff = (idx % 2 == 0 ? 1f : -1f) * celestialSpreadY * 0.5f;
+            var orbitBody = _deck.CreateOrbit(orbitSo, baseCenter + new Vector2(xOff, yOff));
 
             string planetName = FindAssignedPlanet(assignments, orbitSo.orbitName);
             if (!string.IsNullOrEmpty(planetName))
