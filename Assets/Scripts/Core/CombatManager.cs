@@ -10,9 +10,17 @@ public class CombatManager : MonoBehaviour
 
     public SynergyRuleSO[] synergyRules;
     public CometSO[] cometPool;
-    public float celestialYCenter = 2.5f;
+    [Tooltip("발사 원점 Y 좌표 (= 지상/천상 경계선). 천체 배치와 독립.")]
+    public float launchOriginY = -0.5f;
+    [Tooltip("천체 클러스터 중심 Y. launchOriginY보다 높게 설정.")]
+    public float celestialYCenter = 5f;
+    [Tooltip("천체 클러스터 기준 X = 발사 원점 X + 이 오프셋.")]
+    public float celestialCenterXOffset = -3f;
+    [Tooltip("궤도 간 수평 간격 (각 궤도가 기준점에서 이 거리씩 퍼짐).")]
+    public float celestialSpreadX = 2.5f;
     public float celestialRadius = 3f;
 
+    private float _launchOriginX;
     private DeckManager _deck;
     private ShipController _shipController;
     private EnemySpawner _spawner;
@@ -40,12 +48,15 @@ public class CombatManager : MonoBehaviour
         GetOrAdd<AllyRegistry>();
         GetOrAdd<StructureRegistry>();
 
+        _launchOriginX = 0f;
+
         var input = GetOrAdd<ShipInput>();
         var resolver = GetOrAdd<SpellResolver>();
         var visual = GetOrAdd<ShipVisual>();
         var spellFx = GetOrAdd<SpellEffectManager>();
 
-        input.celestialYMin = celestialYCenter - celestialRadius;
+        input.launchOriginX = _launchOriginX;
+        input.celestialYMin = launchOriginY;
 
         _shipController = GetOrAdd<ShipController>();
         _shipController.Initialize(input, resolver, spellFx, visual);
@@ -66,7 +77,7 @@ public class CombatManager : MonoBehaviour
             SetupCosmos(orbits, assignments, planetDeck);
 
         var divider = new GameObject("DividerLine").AddComponent<CombatDividerView>();
-        divider.Initialize(celestialYCenter - celestialRadius);
+        divider.Initialize(launchOriginY);
 
         if (cometPool != null && cometPool.Length > 0)
         {
@@ -104,20 +115,29 @@ public class CombatManager : MonoBehaviour
                      System.Collections.Generic.List<OrbitAssignment> assignments,
                      System.Collections.Generic.List<PlanetSO> planetDeck)
     {
-        Vector2 center = new Vector2(0f, celestialYCenter);
+        Vector2 baseCenter = new Vector2(_launchOriginX + celestialCenterXOffset, celestialYCenter);
+
+        int total = 0;
+        foreach (var o in orbits) if (o != null) total++;
+
+        int idx = 0;
         foreach (var orbitSo in orbits)
         {
             if (orbitSo == null) continue;
-            var orbitBody = _deck.CreateOrbit(orbitSo, center);
+            float xOff = total > 1 ? (idx - (total - 1) * 0.5f) * celestialSpreadX : 0f;
+            var orbitBody = _deck.CreateOrbit(orbitSo, baseCenter + new Vector2(xOff, 0f));
 
             string planetName = FindAssignedPlanet(assignments, orbitSo.orbitName);
-            if (string.IsNullOrEmpty(planetName)) continue;
-
-            var planetSo = FindPlanetByName(planetDeck, planetName);
-            if (planetSo == null) continue;
-
-            var planetBody = _deck.CreatePlanet(planetSo);
-            orbitBody.PlacePlanet(planetBody);
+            if (!string.IsNullOrEmpty(planetName))
+            {
+                var planetSo = FindPlanetByName(planetDeck, planetName);
+                if (planetSo != null)
+                {
+                    var planetBody = _deck.CreatePlanet(planetSo);
+                    orbitBody.PlacePlanet(planetBody);
+                }
+            }
+            idx++;
         }
     }
 

@@ -10,13 +10,17 @@ using UnityEngine.InputSystem;
 public class ShipInput : MonoBehaviour
 {
     private float _celestialYMin = 0f;
+
+    /// <summary>발사 원점 X 좌표. CombatManager가 화면 왼쪽 끝 기준으로 설정.</summary>
+    public float launchOriginX = 0f;
+
     public float celestialYMin
     {
         get => _celestialYMin;
-        set { _celestialYMin = value; LaunchOrigin = new Vector2(0f, value); }
+        set { _celestialYMin = value; LaunchOrigin = new Vector2(launchOriginX, value); }
     }
 
-    /// <summary>발사 원점. 초기값은 지면 원점(0, celestialYMin). 착지 시 ShipController가 갱신.</summary>
+    /// <summary>발사 원점. 초기값은 지면 원점(launchOriginX, celestialYMin). 착지 시 ShipController가 갱신.</summary>
     public Vector2 LaunchOrigin { get; set; }
 
     /// <summary>도킹 모드일 때 슬링샷 대신 단순 클릭으로 재발사.</summary>
@@ -36,7 +40,7 @@ public class ShipInput : MonoBehaviour
     void Start()
     {
         _mouse = Mouse.current;
-        LaunchOrigin = new Vector2(0f, celestialYMin);
+        LaunchOrigin = new Vector2(launchOriginX, celestialYMin);
     }
 
     void Update()
@@ -77,6 +81,7 @@ public class ShipInput : MonoBehaviour
         if (_mouse.leftButton.wasReleasedThisFrame && _aiming)
         {
             _aiming = false;
+
             Vector2 origin = LaunchOrigin;
             Vector2 delta = mp - origin;
             float dist = delta.magnitude;

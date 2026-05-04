@@ -233,7 +233,7 @@ public class ShipController : MonoBehaviour
 
         _visual.DestroyShip();
 
-        _input.LaunchOrigin = new Vector2(0f, _input.celestialYMin);
+        _input.LaunchOrigin = new Vector2(_input.launchOriginX, _input.celestialYMin);
         _visual.ShowOriginIndicator(_input.LaunchOrigin, GameConstants.ShipPhysics.PullGateRadius);
 
         _activeShip = null;

@@ -67,7 +67,7 @@ public class CombatSceneBoot : SceneBootBase
         var groundSet = BackgroundResolver.ResolveGround(key);
         if (spaceSet == null && groundSet == null) return;
 
-        float dividerY = combat.celestialYCenter - combat.celestialRadius;
+        float dividerY = combat.launchOriginY;
         float camTop = cam.transform.position.y + cam.orthographicSize;
         float camBottom = cam.transform.position.y - cam.orthographicSize;
 

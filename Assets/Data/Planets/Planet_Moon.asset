@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33e7e47c8e0924e4b932d77d0877b17f, type: 3}
+  m_Name: Planet_Moon
+  m_EditorClassIdentifier: Assembly-CSharp::PlanetSO
+  bodyName: "달"
+  description: "구부리는 굴절. 물 속성 + 선회."
+  icon: {fileID: 0}
+  bodyColor: {r: 0.75, g: 0.8, b: 1, a: 1}
+  element: 1
+  keywords:
+  - tide
+  - lunar
+  gravityStrength: 18
+  gravityTypeId: orbital
+  encounterRadius: 0.52
+  gravityFieldRangeRatio: 4
+  gravityEnergyRatio: 1
+  spinSpeed: 0
+  effectId: moon
+  baseDamage: 11
+  visualScale: 0.65
+  synergyFamily: 1
+  phaseThreshold: 3
+  phaseEffectId:
+  allowsDocking: 0

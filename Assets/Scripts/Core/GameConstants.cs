@@ -180,6 +180,8 @@ public static class GameConstants
         public const float PullGateRadius = 1.5f;            // 조준 시작 히트 반경 (슬링샷 잡기)
         public const int TrajectoryPreviewSteps = 300;       // 2.5초 @ FixedDt
         public const int TrajectoryPreviewDotCount = 40;
+        public const float NormalFactor = 5f;                // 충돌 법선 반사 계수 (tempVector 산출)
+        public const float ConeHalfAngleDeg = 60f;           // 행성 탐지 원뿔 반각 (도)
     }
 
     // ── 캐싱된 공유 리소스 ──

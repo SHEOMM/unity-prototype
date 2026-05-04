@@ -31,3 +31,4 @@ MonoBehaviour:
   synergyFamily: 0
   phaseThreshold: 4
   phaseEffectId: twin
+  spinSpeed: 0

@@ -30,3 +30,4 @@ MonoBehaviour:
   synergyFamily: 0
   phaseThreshold: 3
   phaseEffectId: scorpion
+  spinSpeed: 0

@@ -31,3 +31,4 @@ MonoBehaviour:
   synergyFamily: 0
   phaseThreshold: 2
   phaseEffectId: assassin
+  spinSpeed: 0

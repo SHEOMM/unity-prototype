@@ -57,6 +57,57 @@ public class CameraService : MonoBehaviour
         Camera.orthographicSize = env.orthographicSize;
         Camera.backgroundColor = env.backgroundColor;
         Camera.clearFlags = CameraClearFlags.SolidColor;
+        _normalPosition = Camera.transform.position;
+        _normalOrthoSize = Camera.orthographicSize;
+    }
+
+    // ── 조준 줌 ──
+    private Vector3 _normalPosition;
+    private float _normalOrthoSize;
+    private Coroutine _zoomCoroutine;
+    private const float ZoomDuration = 0.5f;
+    private const float ZoomFactor = 4f;
+
+    /// <summary>카메라 줌 전환 중이면 true. ShipInput이 드래그를 블록하는 데 사용.</summary>
+    public bool IsZooming => _zoomCoroutine != null;
+
+    /// <summary>조준 시작 시 호출. 발사 원점이 화면 중앙에 오도록 카메라를 4× 줌아웃.</summary>
+    public void ZoomToAim(Vector2 launchOrigin)
+    {
+        if (Camera == null) return;
+        if (_shakeCoroutine != null) { StopCoroutine(_shakeCoroutine); _shakeCoroutine = null; }
+        if (_zoomCoroutine != null) StopCoroutine(_zoomCoroutine);
+        float z = Camera.transform.position.z;
+        _zoomCoroutine = StartCoroutine(LerpCameraRoutine(
+            new Vector3(launchOrigin.x, launchOrigin.y, z),
+            _normalOrthoSize * ZoomFactor));
+    }
+
+    /// <summary>발사체 소멸 / 조준 취소 시 호출. 원래 뷰로 복귀.</summary>
+    public void ZoomToNormal()
+    {
+        if (Camera == null) return;
+        if (_shakeCoroutine != null) { StopCoroutine(_shakeCoroutine); _shakeCoroutine = null; }
+        if (_zoomCoroutine != null) StopCoroutine(_zoomCoroutine);
+        _zoomCoroutine = StartCoroutine(LerpCameraRoutine(_normalPosition, _normalOrthoSize));
+    }
+
+    IEnumerator LerpCameraRoutine(Vector3 targetPos, float targetSize)
+    {
+        Vector3 startPos = Camera.transform.position;
+        float startSize = Camera.orthographicSize;
+        float elapsed = 0f;
+        while (elapsed < ZoomDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / ZoomDuration));
+            Camera.transform.position = Vector3.Lerp(startPos, targetPos, t);
+            Camera.orthographicSize = Mathf.Lerp(startSize, targetSize, t);
+            yield return null;
+        }
+        Camera.transform.position = targetPos;
+        Camera.orthographicSize = targetSize;
+        _zoomCoroutine = null;
     }
 
     private Coroutine _shakeCoroutine;
