@@ -160,18 +160,12 @@ public class ShipController : MonoBehaviour
 
     void OnLaunch(Vector2 origin, Vector2 direction, float power)
     {
-        if (!IsReadyToLaunch)
-        {
-            Debug.Log($"[Ship] 발사 차단: 비행/도킹 중");
-            return;
-        }
+        if (!IsReadyToLaunch) return;
 
         _visual.HideSlingshotBand();
         _visual.HideTrajectoryPreview();
 
         _roundEncounters.Clear();
-
-        Debug.Log($"[Ship] 발사! origin={origin}, dir={direction}, power={power:F1}");
 
         _activeShip = new ShipModel();
         _activeShip.OnFlightEnded += () => _pendingFlightEnd = true;
@@ -186,7 +180,6 @@ public class ShipController : MonoBehaviour
     void OnPlanetEncountered(PlanetBody planet)
     {
         planet.Highlight(true);
-        Debug.Log($"[Ship] 행성 조우: {planet.Planet.bodyName}");
         OnPlanetHit?.Invoke(planet);
     }
 
@@ -208,8 +201,6 @@ public class ShipController : MonoBehaviour
 
         _input.IsDockedMode = true;
         _input.OnDockedClick += OnDockedClick;
-
-        Debug.Log($"[Ship] 착지: {_dockedPlanet.Planet.bodyName}, 잔여 에너지={_remainingEnergy:F1}");
     }
 
     void OnDockedClick()
@@ -234,8 +225,6 @@ public class ShipController : MonoBehaviour
         _activeShip.OnLanding += planet => { _dockedPlanet = planet; _pendingLanding = true; };
         _activeShip.OnPlanetEncountered += OnPlanetEncountered;
         _activeShip.Launch(origin, launchDir * GameConstants.ShipPhysics.RelaunchPower, _remainingEnergy);
-
-        Debug.Log($"[Ship] 재발사: origin={origin}, dir={launchDir}, energy={_remainingEnergy:F1}");
     }
 
     /// <summary>외부에서 현재 비행 중인 ShipModel을 조회 (SynergyContext 등 구성용).</summary>
@@ -256,8 +245,6 @@ public class ShipController : MonoBehaviour
 
         var allEncounters = new List<PlanetBody>(_roundEncounters);
         _roundEncounters.Clear();
-
-        Debug.Log($"[Ship] 라운드 종료. 총 조우 {allEncounters.Count}개");
 
         foreach (var p in allEncounters)
         {

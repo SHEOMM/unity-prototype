@@ -80,7 +80,7 @@ IMoveable   : BaseSpeed + ApplyKnockback
 ## Scene & Camera 아키텍처
 
 - **PersistentScene이 유일한 Main Camera + Global Light 2D 소유자**. 전환 씬에 추가 금지.
-- 게임 코드는 `Camera.main` 금지 → `CameraService.Instance.Camera` / `.ScreenToWorld2D(screenPos)` / `.PushTemporaryView(pos, size)` / `.Shake(strength, duration)`.
+- 게임 코드는 `Camera.main` 금지 → `CameraService.Instance.Camera` / `.ScreenToWorld2D(screenPos)` / `.PushTemporaryView(pos, size)` / `.Shake(strength, duration)` / `.ZoomToAim(launchOrigin)` / `.ZoomToNormal()`.
 - 씬 진입 시 `SceneBootBase.Start()` 템플릿이 (1) `SetActiveScene` (2) `SceneEnvironment` 적용 (3) `OnBoot()` 호출.
 - `Editor/SceneValidator.cs`가 중복 Main Camera / Global Light / SceneBootBase 누락을 저장 시 자동 검출.
 
@@ -88,11 +88,14 @@ IMoveable   : BaseSpeed + ApplyKnockback
 
 ## Ship (주문 비행) 파이프라인
 
+상태 머신: `Ready → InFlight → (Docked → InFlight)* → Ready`. 도킹 가능 행성(`PlanetSO.allowsDocking`) 충돌 시 착지 → 클릭 재발사 반복. 비도킹 행성은 그대로 통과(중력만 1회 비활성화). Phase 9d 에너지 소진 또는 월드 경계 이탈 시 라운드 종료.
+
 ```
-ShipInput (슬링샷 드래그, 마우스 반대방향 발사)
-  → ShipController (이벤트 3종: OnFlightStarted/OnPlanetHit/OnFlightEnded)
-    → ShipModel (FixedTimestepSimulator + GravityAccumulator + ShipIntegrator)
-    → ShipVisual (밴드 + 궤적 프리뷰 + 트레일)
+ShipInput (슬링샷 드래그, 마우스 반대방향 발사 / 도킹 중에는 OnDockedClick)
+  → ShipController (이벤트: OnFlightStarted/OnPlanetHit/OnFlightEnded)
+    → ShipModel (FixedTimestepSimulator + GravityAccumulator + ShipIntegrator + Energy)
+    │     └─ OnPlanetEncountered / OnLanding(allowsDocking) / OnFlightEnded(에너지 0 또는 OOB)
+    → ShipVisual (밴드 + 궤적 프리뷰 + 트레일 + 에너지 게이지 4×)
     → SpellResolver (히트 시퀀스 → SpellResult)
     → SpellEffectManager → VisualRegistry → ISpellVisual
   → SynergyDispatcher 이벤트 구독 → 시너지 발동 → OnSynergyFired → Toast/Visual
@@ -157,6 +160,7 @@ StartRun → [Map] → [Combat] → [Reward] → [Map] → … → [Boss] → [V
 - Boot 스크립트는 항상 `SceneBootBase` 상속 (씬마다 `SceneEnvironment` 에셋 바인딩 필수)
 - 전투 종료 시 `AllyRegistry.DestroyAll()` + `StructureRegistry.DestroyAll()` (combat-scoped)
 - 새 `IStatusEffect` 구현 시 `IconId` 오버라이드 고려 (기본 null = 아이콘 표시 안 함)
+- 발사 시작 시 `CameraService.Instance?.ZoomToAim(launchOrigin)`, 라운드 종료/조준 취소 시 `ZoomToNormal()` 호출 — 진행 중 셰이크와 충돌 시 셰이크가 자동 중단됨
 
 ---
 
@@ -208,13 +212,67 @@ MapScene 오버레이 패널. 플레이어가 궤도↔행성 배치를 **수동
 | `CelestialSystem/PlanetBody` | 행성 런타임. OrbitBody의 child로 배치되어 공전 |
 | `RunState.unlockedOrbits` + `orbitAssignments` | 보유 궤도 목록 + 행성↔궤도 매핑 (`OrbitAssignment struct`) |
 | `GameManager.startingOrbits` + `defaultAssignments` | 런 시작 시 주어지는 초기 구성 |
-| `CombatManager.SetupCosmos` | 전투 시작 시 궤도들을 월드 원점 y=celestialYCenter에 동심원으로 배치 + 매핑된 행성 부착 |
+| `CombatManager.SetupCosmos` | 전투 시작 시 궤도들을 `(_launchOriginX + celestialCenterXOffset, celestialYCenter)` 기준으로 수평 분산(`celestialSpreadX`)하고 홀짝 인덱스에 따라 ±`celestialSpreadY*0.5` 만큼 Y 엇갈림 배치. 매핑된 행성 부착 |
 
 **규칙**: 1 궤도 = 1 천체. 천체 수 > 궤도 수면 일부 미배치 (RunState에 매핑 없으면 생성 안 함). 궤도·천체는 스테이지 클리어 보상으로 획득 (Phase 9b 예정).
 
 ### 확장
 - 새 궤도 = `OrbitSO` 에셋 추가 → `GameManager.startingOrbits` 또는 보상 풀에 배치
 - 새 천체 = 기존 `PlanetSO` 추가 가이드 그대로
+
+---
+
+## 발사체 에너지 + 도킹 (Phase 9d)
+
+발사체에 에너지(시간 + 충돌) 개념이 추가되어 라운드가 시간 제한을 가진다. 동시에 일부 행성은 표면 도킹이 가능해 클릭 재발사 체인이 만들어진다.
+
+### 에너지 시스템
+
+| 항목 | 값/동작 | 위치 |
+|---|---|---|
+| 초기 에너지 | `DefaultEnergy = 100` | `GameConstants.ShipPhysics` |
+| 시간 소진 | `DefaultEnergyDrain = 33.33/s` (≈3초) — 도킹 중에도 동일 차감 | `ShipModel.SimulateStep` / `ShipController.Update`(docked) |
+| 충돌 소진 | `planet.gravityStrength × GravityEnergyRatio(0.35)` 추가 차감 | `ShipModel.HandlePlanetEncounter` |
+| 라운드 종료 | `Energy ≤ 0` 또는 월드 경계 이탈 → `OnFlightEnded` | `ShipModel.Tick` |
+| 게이지 표시 | `ShipVisual.UpdateEnergyGauge(shipPos, ratio)` — 4× 크기, 회전 미추종, green→yellow→red | `ShipVisual.cs` |
+
+`GravityEnergyRatio`는 **전역 단일 상수**. 행성별 오버라이드 없음 (구 `CelestialBodySO.gravityEnergyRatio` 필드는 제거됨).
+
+### 도킹 메커닉
+
+`PlanetSO.allowsDocking = true`인 행성(현재 **Mercury** 1개)에 충돌 시:
+
+1. `ShipModel`이 `_landed = true` 설정 + `OnLanding(planet)` 발행
+2. `ShipController.ProcessLanding`: 잔여 에너지에 30%(`DefaultEnergy * 0.3`) 가산(상한 100), `_dockedPlanet.Dock(contactPos)`
+3. `ShipInput.IsDockedMode = true` → 다음 클릭이 `OnDockedClick`로 라우팅
+4. 매 프레임 행성 자전에 맞춰 발사체 위치 + 궤적 미리보기 갱신, 에너지는 계속 소진
+5. 클릭 시 `_remainingEnergy`로 `RelaunchPower(=20)` 방향 재발사
+
+`allowsDocking = false`: 그대로 통과 (반발력 제거됨, e759b67). 비도킹 행성과의 차이는 Visual에서 `Highlight(true)` + 시너지 누적 + 한 번의 중력 비활성화뿐.
+
+### 월드 경계 (카메라 무관)
+
+| 상수 | 값 | 의도 |
+|---|---|---|
+| `WorldBoundsX` | ±50 | 좌우 이탈 시 라운드 종료 |
+| `WorldBoundsYMin` | -15 | 지면 아래 이탈 |
+| `WorldBoundsYMax` | 50 | 위쪽 이탈 |
+
+구 카메라 가시 영역(`-9` 등) 의존 제거. 줌 효과로 화면 비율이 바뀌어도 발사체 시뮬레이션은 동일하게 유지.
+
+### 카메라 줌 (`CameraService`)
+
+- `ZoomToAim(launchOrigin)` — 조준 시작 시 `2× orthoSize`로 줌아웃. 발사점이 가로 중심에 오고, 발사점의 화면 Y 비율이 줌 전후 동일하도록 `cameraY = 2*normalY - launchY`.
+- `ZoomToNormal()` — 발사 종료 / 조준 취소 시 원래 뷰 복귀.
+- 두 메서드 모두 `_zoomCoroutine` 단일 보유, 진행 중 호출 시 기존 코루틴 중단 후 재시작.
+
+### 신규 행성 효과
+
+| effectId | 클래스 | 특이점 |
+|---|---|---|
+| `mercury` | `MercuryEffect` | `[EffectId("mercury")]` + `allowsDocking=true`. 단타 + 선행 행성 수에 비례한 데미지 증폭. 위상 = 연속 발사 |
+| `moon` | `MoonEffect` | 물 속성, 다중 파동(1+선행 수)타. 위상 = 만조 AoE |
+| `sun` | `SunEffect` | 화염 속성, 전체 적 AoE. 위상 = 플레어(2× 배율) |
 
 ---
 
