@@ -99,3 +99,7 @@ InitTestScene*.unity*
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
 .idea/
 .claude/plans/
+.claude/settings.local.json
+
+# Work-progress screenshots — not part of game build
+/[Aa]ssets/[Ss]creenshots/
